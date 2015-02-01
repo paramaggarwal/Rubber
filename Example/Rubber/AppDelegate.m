@@ -35,6 +35,14 @@
         self.context = context;
         
         context.exceptionHandler = ^(JSContext *context, JSValue *exception) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Javascript Exception"
+                                                                     message:exception.toString
+                                                                    delegate:self
+                                                           cancelButtonTitle:@"OK"
+                                                           otherButtonTitles:nil];
+                [alertView show];
+            });
             NSLog(@"JS Error: %@", exception);
         };
         

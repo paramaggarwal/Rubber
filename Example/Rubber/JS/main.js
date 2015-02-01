@@ -1,10 +1,116 @@
 var window = this;
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function (global){
 /** @jsx tag */
+var tag = require('./tag');
 
-var _ = require('underscore'),
-	tag = require('./tag');
+var num = 0;
+var top = 300;
+var left = 50;
+
+var Button1 = {
+  onClick: function (e) {
+    num++;
+  },
+
+  onDrag: function (x, y) {
+    left += x;
+    top += y;
+  },
+
+  render: function () {
+
+    return tag("Text", {onClick:this.onClick,
+    needsClickHandler:true,
+    onDrag:this.onDrag,
+    needsPanGesture:true,
+    style:{
+      backgroundColor: '#1D62F0',
+      color: '#FFFFFF',
+      borderRadius: 10,
+      textAlign: 'center',
+      height: 50,
+      width: 200,
+      top: top,
+      left: left
+    },
+    value:num ? ('Tapped me ' + num + ((num==1) ? ' time.' : ' times.')) : 'Hello there! Tap me...'} )
+  }
+};
+
+module.exports = Button1;
+},{"./tag":7}],2:[function(require,module,exports){
+/** @jsx tag */
+var tag = require('./tag');
+
+var num = 0;
+var top = 500;
+var left = 50;
+
+var Button2 = {
+  onClick: function (e) {
+    num++;
+  },
+
+  onDrag: function (x, y) {
+    left += x;
+    top += y;
+  },
+
+  render: function () {
+
+    return (
+      tag("Text", {onClick:this.onClick,
+    needsClickHandler:true,
+    onDrag:this.onDrag,
+    needsPanGesture:true,
+    style:{
+      backgroundColor: '#F01D62',
+      color: '#FFFFFF',
+      borderRadius: 10,
+      textAlign: 'center',
+      height: 50,
+      width: 200,
+      top: top,
+      left: left
+    },
+    value:num ? ('Tapped me ' + num + ((num==1) ? ' time.' : ' times.')) : 'Hello there! Tap me...'} ));
+  }
+};
+
+module.exports = Button2;
+},{"./tag":7}],3:[function(require,module,exports){
+/** @jsx tag */
+var tag = require('./tag');
+
+var CustomTableView = {
+  render: function() {
+    return tag("TableView", {style:{
+            flex: 1,
+            backgroundColor: '#FFFFFF',
+            height: 400,
+            top: 800
+          }}, [
+            tag("Text", {style:{
+              color: '#F01D62',
+              height: 44,
+              width: 200
+            },
+            value:"Small Cell One"} ),
+            tag("Text", {style:{
+              color: '#1D62F0',
+              height: 88,
+              width: 200
+            },
+            value:"Large Cell Two"} )
+          ])
+  }
+};
+
+module.exports = CustomTableView;
+},{"./tag":7}],4:[function(require,module,exports){
+/** @jsx tag */
+var tag = require('./tag');
+var _ = require('underscore');
 
 var example1 = {
   before: {},
@@ -88,150 +194,39 @@ var p3 = diff(example3.before, example3.after);
 //console.log('Example2', p2);
 //console.log('Example3', p3);
 
-var factorial = function (x) {
+module.exports = diff;
+},{"./tag":7,"underscore":6}],5:[function(require,module,exports){
+(function (global){
+/** @jsx tag */
+var tag = require('./tag');
 
-    console.log(x);
-    
-    if (x==0) return 1;
-    if (x==1) return 1;
-    
-    return x * factorial(x-1);
-};
+var _ = require('underscore');
+var diff = require('./diff');
+
+var Button1 = require('./Button1');
+var Button2 = require('./Button2');
+var CustomTableView = require('./CustomTableView');
 
 var previousRenderedTree;
 var renderedTree = {};
-var num1 = 0;
-var num2 = 0;
-
-var top1 = 300;
-var left1 = 50;
-
-var top2 = 500;
-var left2 = 50;
 
 var Cortex = {
-  onClick1: function (e) {
-    num1++;
-  },
-
-  onDrag1: function (x, y) {
-    left1 += x;
-    top1 += y;
-  },
-
-  onDrag2: function (x, y) {
-    left2 += x;
-    top2 += y;
-  },
-
-  onClick2: function (e) {
-    num2++;
-  },
-
   render: function () {
-    
-    return {
-      type: 'ViewController',
-      props: {
-        title: 'Demo',
-        style: {}
-      },
-      children: [
-      {
-      type: 'ScrollView',
-      props: {
-        style: {
+    return (
+      tag("ViewController", {title:"Demo", style:{}}, [
+        tag("ScrollView", {style:{
           flex: 1,
           backgroundColor: '#EEEEEE',
           justifyContent: 'center',
           paddingBottom: 300
-        }
-      },
-      children: [
-      {
-        type: 'Text',
-        props: {
-          onClick: this.onClick1,
-          needsClickHandler: true,
-          onDrag: this.onDrag1,
-          needsPanGesture: true,
-          style: {
-            backgroundColor: '#1D62F0',
-            color: '#FFFFFF',
-            borderRadius: 10,
-            textAlign: 'center',
-            height: 50,
-            width: 200,
-            top: top1,
-            left: left1
-          },
-          value: num1 ? ('Tapped me ' + num1 + ((num1==1) ? ' time.' : ' times.')) : 'Hello there! Tap me...'
-        },
-        children: []
-      },
-      {
-        type: 'Text',
-        props: {
-          onClick: this.onClick2,
-          needsClickHandler: true,
-          onDrag: this.onDrag2,
-          needsPanGesture: true,
-          style: {
-            backgroundColor: '#F01D62',
-            color: '#FFFFFF',
-            borderRadius: 10,
-            alignSelf: 'center',
-            textAlign: 'center',
-            height: 50,
-            width: 200,
-            top: top2,
-            left: left2
-          },
-          value: num2 ? ('Tapped me ' + num2 + ((num2==1) ? ' time.' : ' times.')) : 'Hello there! Tap me...'
-        },
-        children: []
-      },
-      {
-        type: 'TableView',
-        props: {
-          style: {
-            flex: 1,
-            backgroundColor: '#FFFFFF',
-            height: 400,
-            top: 800
-          }
-        },
-        children: [
-        {
-        type: 'Text',
-        props: {
-          style: {
-            color: '#F01D62',
-            height: 44,
-            width: 200
-          },
-          value: 'Small Cell One'
-        },
-        children: []
-      },
-      {
-        type: 'Text',
-        props: {
-          style: {
-            color: '#1D62F0',
-            height: 88,
-            width: 200
-          },
-          value: 'Large Cell Two'
-        },
-        children: []
-      }]
-      }
-      ]
-    }]
-    };
+        }} , [
+          Button1.render(),
+          Button2.render(),
+          CustomTableView.render()
+        ])
+      ]));
   }
-}
+};
 
 function mergeNodes (original, overlap) {
   original.props.style.left = overlap.left;
@@ -344,7 +339,7 @@ global.panHandler = panHandler;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./tag":3,"underscore":2}],2:[function(require,module,exports){
+},{"./Button1":1,"./Button2":2,"./CustomTableView":3,"./diff":4,"./tag":7,"underscore":6}],6:[function(require,module,exports){
 //     Underscore.js 1.7.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -1761,7 +1756,7 @@ global.panHandler = panHandler;
   }
 }.call(this));
 
-},{}],3:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 function tag(name, props, children){
 	var o; 
 	if(Array.isArray(props)){
@@ -1777,4 +1772,4 @@ function tag(name, props, children){
 }
 
 module.exports = tag;
-},{}]},{},[1]);
+},{}]},{},[5]);
