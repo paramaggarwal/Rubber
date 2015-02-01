@@ -14,7 +14,6 @@
 		8BCF76371A7E045100A2D551 /* RubberTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCF76361A7E045100A2D551 /* RubberTests.m */; };
 		8BCF76411A7E045D00A2D551 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCF76401A7E045D00A2D551 /* JavaScriptCore.framework */; };
 		8BCF76451A7E070800A2D551 /* main.js in Resources */ = {isa = PBXBuildFile; fileRef = 8BCF76431A7E070800A2D551 /* main.js */; };
-		8BCF76461A7E070800A2D551 /* underscore-min.js in Resources */ = {isa = PBXBuildFile; fileRef = 8BCF76441A7E070800A2D551 /* underscore-min.js */; };
 		8E5F01A3D20A33C53BCD9328 /* libPods-Rubber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7622F4E8A3E38DDF796B1179 /* libPods-Rubber.a */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +42,6 @@
 		8BCF76361A7E045100A2D551 /* RubberTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RubberTests.m; sourceTree = "<group>"; };
 		8BCF76401A7E045D00A2D551 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		8BCF76431A7E070800A2D551 /* main.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = main.js; sourceTree = "<group>"; };
-		8BCF76441A7E070800A2D551 /* underscore-min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "underscore-min.js"; sourceTree = "<group>"; };
 		E14D5C7CFD0A7CF8611AE2C4 /* Pods-Rubber.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rubber.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rubber/Pods-Rubber.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,7 +129,6 @@
 			isa = PBXGroup;
 			children = (
 				8BCF76431A7E070800A2D551 /* main.js */,
-				8BCF76441A7E070800A2D551 /* underscore-min.js */,
 			);
 			path = JS;
 			sourceTree = "<group>";
@@ -236,7 +233,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BCF762B1A7E045100A2D551 /* LaunchScreen.xib in Resources */,
-				8BCF76461A7E070800A2D551 /* underscore-min.js in Resources */,
 				8BCF76281A7E045100A2D551 /* Images.xcassets in Resources */,
 				8BCF76451A7E070800A2D551 /* main.js in Resources */,
 			);

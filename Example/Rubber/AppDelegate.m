@@ -30,9 +30,6 @@
         NSString *jsFile = [path stringByAppendingPathComponent:@"main.js"];
         NSString *jsString = [NSString stringWithContentsOfFile:jsFile encoding:NSUTF8StringEncoding error:nil];
         
-        NSString *underscoreJsFile = [path stringByAppendingPathComponent:@"underscore-min.js"];
-        NSString *underscoreJsString = [NSString stringWithContentsOfFile:underscoreJsFile encoding:NSUTF8StringEncoding error:nil];
-        
         JSVirtualMachine *machine = [[JSVirtualMachine alloc] init];
         JSContext *context = [[JSContext alloc] initWithVirtualMachine:machine];
         self.context = context;
@@ -51,9 +48,6 @@
                 [callback callWithArguments:@[error]];
             }];
         };
-        
-        // load underscore
-        [context evaluateScript:underscoreJsString];
         
         Rubber *rubber = [[Rubber alloc] init];
         rubber.gestureDelegate = self;
@@ -76,6 +70,7 @@
                 }
             });
         };
+        
         jsString = [@"var window = this;" stringByAppendingString:jsString];
         [context evaluateScript:jsString];
     });
