@@ -6,14 +6,14 @@
 //  Copyright (c) 2015 Param Aggarwal. All rights reserved.
 //
 
-#import "TextComponentModel.h"
-#import "NSDictionary+Additions.h"
+#import "RBTextModel.h"
+#import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 
-@implementation TextComponentModel
+@implementation RBTextModel
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     NSDictionary *parentKeys = [super JSONKeyPathsByPropertyKey];
-    return [parentKeys extendWithDictionary:@{
+    return [parentKeys mtl_dictionaryByAddingEntriesFromDictionary:@{
                                               @"value": @"props.value"
                                               }];
 }

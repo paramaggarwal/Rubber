@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Param Aggarwal. All rights reserved.
 //
 
-#import "ComponentModel.h"
+#import "RBViewModel.h"
 
-@interface TextComponentModel : ComponentModel
+@interface RBTextModel : RBViewModel
 
 @property (nonatomic, copy, readonly) NSString *value;
 

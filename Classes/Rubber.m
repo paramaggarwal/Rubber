@@ -7,127 +7,122 @@
 //
 
 #import "Rubber.h"
-#import "Fetcher.h"
 #import "CSSLayout.h"
-#import "ComponentRenderer.h"
 
-// #import <AsyncDisplayKit/AsyncDisplayKit.h>
+#import "RBView.h"
+#import "RBScrollView.h"
+#import "RBTableView.h"
+#import "RBText.h"
+#import "RBViewController.h"
 
 @interface Rubber ()
 
-@property ComponentModel *storedModel;
-@property UIView *layoutView;
+// the changes to apply
+@property RBViewModel *patchTree;
 
-@property ComponentModel *patchModel;
-@property ComponentModel *previousPatchModel;
+// primarily for references to the corresponding objects
+@property RBViewModel *previousPatchTree;
 
 @end
 
 @implementation Rubber
 
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+- (id)applyPatch:(NSDictionary *)patchDictionary {
+    self.previousPatchTree = self.patchTree;
+    self.patchTree = [RBViewModel modelFromJSON:patchDictionary];
+    [self applyPatch:self.patchTree previousPatch:self.previousPatchTree];
+    return self.patchTree.correspondingObject;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)applyPatch:(NSDictionary *)patchDictionary {
-    self.previousPatchModel = self.patchModel;
-    self.patchModel = [self convertToModel:patchDictionary];
+- (void)applyPatch:(RBViewModel *)tree previousPatch:(RBViewModel *)previousTree {
     
-    [self applyPatch:self.patchModel toView:self.view previousPatch:self.previousPatchModel];
-}
-
-- (void)applyPatch:(ComponentModel *)model toView:(UIView *)view previousPatch:(ComponentModel *)previousModel {
+    tree.correspondingObject = previousTree.correspondingObject;
     
-    model.renderedView = previousModel.renderedView;
-    
-    if ([model.action isEqualToString:@"add"]) {
-        UIView *newView = [self createComponent:model];
-        [view addSubview:newView];
+    if ([tree.action isEqualToString:@"update"]) {
         
-    } else if ([model.action isEqualToString:@"remove"]) {
-        [model.renderedView removeFromSuperview];
+        // depth first, so that parent has access to rendered children
+        for (int i=0; i < tree.children.count; i++) {
+            RBViewModel *child = [tree.children objectAtIndex:i];
+            RBViewModel *previousChild = [previousTree.children objectAtIndex:i];
+            
+            [self applyPatch:child previousPatch:previousChild];
+        }
+
+        RBView *renderedView = (RBView *)tree.correspondingObject;
+        [renderedView update:tree];
         
-    } else if ([model.action isEqualToString:@"update"]) {
-        [self updateComponent:model.renderedView withModel:model withPreviousModel:previousModel];
+    } else if ([tree.action isEqualToString:@"add"]) {
+        tree.correspondingObject = [self createComponent:tree];
+        
+    } else if ([tree.action isEqualToString:@"remove"]) {
+        // will be handled by the parent internally
+        // [tree.correspondingObject removeFromSuperview];
+        
+    } else if ([tree.action isEqualToString:@"replace"]) {
+        // removal will be handled by the parent internally
+        // [tree.correspondingObject removeFromSuperview];
+        tree.correspondingObject = [self createComponent:tree];
     }
+    
 }
 
-- (void)updateComponent:(UIView *)view withModel:(ComponentModel *)model withPreviousModel:(ComponentModel *)previousModel {
+- (id)createComponent:(RBViewModel *)model {
     
-    UIView *updatedView =  [ComponentRenderer updateComponent:view withModel:model];
+    // depth first, so that parent has access to rendered children
+    for (RBViewModel *child in model.children) {
+        child.correspondingObject = [self createComponent:child];
+    }
+
+    id correspondingObject;
+    if ([model isKindOfClass:RBViewModel.class]) {
+        correspondingObject = [RBView create:model];
+    }
     
-    for (int i=0; i<model.children.count; i++) {
-        ComponentModel *child = [model.children objectAtIndex:i];
-        ComponentModel *previousChild = [previousModel.children objectAtIndex:i];
+    if ([model isKindOfClass:RBScrollViewModel.class]) {
+        correspondingObject = [RBScrollView create:model];
+    }
+    
+    if ([model isKindOfClass:RBTableViewModel.class]) {
+        correspondingObject = [RBTableView create:model];
+    }
+    
+    if ([model isKindOfClass:RBTextModel.class]) {
+        correspondingObject = [RBText create:model];
+    }
+    
+    if ([model isKindOfClass:RBViewControllerModel.class]) {
+        correspondingObject = [RBViewController create:model];
+    }
+    
+    if ([correspondingObject isKindOfClass:UIView.class]) {
+        UIView *view = (UIView *)correspondingObject;
         
-        [self applyPatch:child toView:updatedView previousPatch:previousChild];
-    }
-}
-
-- (UIView *)createComponent:(ComponentModel *)model {
-    UIView *view = [ComponentRenderer renderComponent:model];
-    model.renderedView = view;
-    
-    if (model.needsClickHandler) {
-        UITapGestureRecognizer *gestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
-        [view addGestureRecognizer:gestureRecogniser];
-        [view setUserInteractionEnabled:YES];
-    }
-    
-    if (model.needsPanGesture) {
-        UIPanGestureRecognizer *gestureRecogniser = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
-        [view addGestureRecognizer:gestureRecogniser];
-        [view setUserInteractionEnabled:YES];
-    }
-
-    if (![model.type isEqualToString:@"TableView"]) {
-        for (ComponentModel *child in model.children) {
-            UIView *childView = [self createComponent:child];
-            [view addSubview:childView];
+        if (model.needsClickHandler) {
+            UITapGestureRecognizer *gestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+            [view addGestureRecognizer:gestureRecogniser];
+            [view setUserInteractionEnabled:YES];
+        }
+        
+        if (model.needsPanGesture) {
+            UIPanGestureRecognizer *gestureRecogniser = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+            [view addGestureRecognizer:gestureRecogniser];
+            [view setUserInteractionEnabled:YES];
         }
     }
     
-    return view;
+    
+    return correspondingObject;
 }
 
-- (ComponentModel *)convertToModel:(NSDictionary *)componentDictionary {
-    NSError *error;
-    ComponentModel *model = [MTLJSONAdapter modelOfClass:ComponentModel.class
-                                      fromJSONDictionary:componentDictionary error:&error];
-    if (error) {
-        NSLog(@"Unable to convert JSON to model.");
-        return nil;
-    }
-    
-    return model;
-}
-
-+ (NSDictionary *)convertToDictionary:(LayoutModel *)layout {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithDictionary:layout.dictionaryValue];
-    
-    [layout.children enumerateObjectsUsingBlock:^(LayoutModel *m, NSUInteger index, BOOL *stop) {
-        dict[@"children"][index] = [self convertToDictionary:m];
-    }];
-    
-    return [dict copy];
-}
-
-- (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary {
-    ComponentModel *model = [self convertToModel:layoutDictionary];
-    LayoutModel *layout = [CSSLayout computeLayout:model inRect:self.view.bounds];
-    return [self.class convertToDictionary:layout];
++ (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary {
+    RBViewModel *model = [RBViewModel modelFromJSON:layoutDictionary];
+    LayoutModel *layout = [CSSLayout computeLayout:model inRect:[[UIScreen mainScreen] bounds]];
+    return [layout convertToDictionary];
 }
 
 - (void)handleGesture:(UIGestureRecognizer *)recognizer {
     
-    NSString *path = [self.patchModel searchPath:@"0" forView:recognizer.view];
+    NSString *path = [self.patchTree searchPath:@"0" forView:recognizer.view];
 
     if ([recognizer isKindOfClass:UITapGestureRecognizer.class]) {
         if ([self.gestureDelegate respondsToSelector:@selector(pathTapped:)]) {

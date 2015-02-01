@@ -7,13 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ComponentModel.h"
+#import "RBViewModel.h"
 
 @interface Fetcher : NSObject
 
-+ (ComponentModel *)fetch;
++ (RBViewModel *)fetch;
 + (void)fetchComponent:(NSString *)url
-               success:(void (^)(ComponentModel *model))success
+               success:(void (^)(RBViewModel *model))success
                failure:(void (^)(NSError *error))failure;
 
 @end

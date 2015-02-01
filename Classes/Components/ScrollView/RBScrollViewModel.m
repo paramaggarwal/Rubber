@@ -1,15 +1,15 @@
 //
-//  RBTableViewModel.m
+//  RBScrollViewModel.m
 //  Pods
 //
 //  Created by Param Aggarwal on 01/02/15.
 //
 //
 
-#import "RBTableViewModel.h"
+#import "RBScrollViewModel.h"
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 
-@implementation RBTableViewModel
+@implementation RBScrollViewModel
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     NSDictionary *parentKeys = [super JSONKeyPathsByPropertyKey];

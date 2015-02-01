@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RBTableViewModel.h"
 
 @interface RBTableView : UITableView <UITableViewDataSource, UITableViewDelegate>
 
 @property NSArray *modelData;
+
++ (instancetype)create:(RBTableViewModel *)model;
+- (void)update:(RBTableViewModel *)model;
 
 @end

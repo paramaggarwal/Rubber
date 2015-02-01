@@ -7,7 +7,7 @@
 //
 
 #import "SlideshowCollectionView.h"
-#import "ComponentRenderer.h"
+#import "RBView.h"
 #import "SlideshowCollectionViewCell.h"
 
 @implementation SlideshowCollectionView
@@ -23,7 +23,7 @@
 //    cell.layer.borderWidth = 2.0f;
 //    cell.layer.borderColor = [UIColor redColor].CGColor;
     
-    ComponentModel *modelData = [self.modelData objectAtIndex:indexPath.row];
+    RBViewModel *modelData = [self.modelData objectAtIndex:indexPath.row];
     cell.modelData = modelData;
     cell.mainController = self.mainController;
     

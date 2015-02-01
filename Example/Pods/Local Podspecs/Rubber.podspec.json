@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "summary": "iOS Apps in JavaScript",
   "description": "                   Build iOS apps like you build web-apps.\n                   Inspired by React Native.\n",
-  "homepage": "http://bitbucket.org/myntra/Rubber",
+  "homepage": "http://github.com/paramaggarwal/Rubber",
+  "source": {
+    "git": "https://github.com/paramaggarwal/Rubber.git",
+    "tag": "v0.1.0"
+  },
   "license": "Private",
   "authors": {
     "Param Aggarwal": "paramaggarwal@gmail.com"
@@ -12,10 +16,6 @@
     "ios": "7.0"
   },
   "requires_arc": true,
-  "source": {
-    "git": "https://bitbucket.org/myntra/Rubber.git",
-    "tag": "v0.1.0"
-  },
   "public_header_files": "Classes/Rubber.h",
   "source_files": [
     "Classes",
@@ -23,6 +23,7 @@
   ],
   "exclude_files": "Classes/Exclude",
   "resources": "Fonts/**/*.{ttf}",
+  "frameworks": "JavaScriptCore",
   "dependencies": {
     "AFNetworking": [
 

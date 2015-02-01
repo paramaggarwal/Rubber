@@ -1,5 +1,5 @@
 //
-//  NSDictionary+NSDictionary_Additions.h
+//  TextComponentRenderer.h
 //  LayoutTest
 //
 //  Created by Param Aggarwal on 08/01/15.
@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RBTextModel.h"
 
-@interface NSDictionary (NSDictionary_Additions)
+@interface RBText : UILabel
 
-- (instancetype)extendWithDictionary:(NSDictionary *)dict;
++ (UILabel *)create:(RBTextModel *)model;
+- (void)update:(RBTextModel *)model;
 
 @end

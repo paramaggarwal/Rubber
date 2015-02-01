@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Rubber : UIViewController
+@interface Rubber : NSObject
 
-- (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary;
-- (void)applyPatch:(NSDictionary *)patchDictionary;
+@property NSObject *gestureDelegate;
 
-@property UIViewController *gestureDelegate;
++ (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary;
+
+- (id)applyPatch:(NSDictionary *)patchDictionary;
 
 @end
 

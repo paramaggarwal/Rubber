@@ -7,13 +7,13 @@
 //
 
 #import "SlideshowComponentModel.h"
-#import "NSDictionary+Additions.h"
+#import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 
 @implementation SlideshowComponentModel
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     NSDictionary *parentKeys = [super JSONKeyPathsByPropertyKey];
-    return [parentKeys extendWithDictionary:@{}];
+    return [parentKeys mtl_dictionaryByAddingEntriesFromDictionary:@{}];
 }
 
 @end
