@@ -71,7 +71,6 @@
             });
         };
         
-        jsString = [@"var window = this;" stringByAppendingString:jsString];
         [context evaluateScript:jsString];
     });
 
