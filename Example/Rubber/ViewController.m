@@ -30,8 +30,8 @@
         NSString *jsFile = [path stringByAppendingPathComponent:@"main.js"];
         NSString *jsString = [NSString stringWithContentsOfFile:jsFile encoding:NSUTF8StringEncoding error:nil];
         
-        NSString *underscoreJsFile = [path stringByAppendingPathComponent:@"underscore-min.js"];
-        NSString *underscoreJsString = [NSString stringWithContentsOfFile:underscoreJsFile encoding:NSUTF8StringEncoding error:nil];
+        // NSString *underscoreJsFile = [path stringByAppendingPathComponent:@"underscore-min.js"];
+        // NSString *underscoreJsString = [NSString stringWithContentsOfFile:underscoreJsFile encoding:NSUTF8StringEncoding error:nil];
 
         JSVirtualMachine *machine = [[JSVirtualMachine alloc] init];
         JSContext *context = [[JSContext alloc] initWithVirtualMachine:machine];
@@ -56,7 +56,7 @@
         };
     
         // load underscore
-        [context evaluateScript:underscoreJsString];
+        // [context evaluateScript:underscoreJsString];
         
         context[@"computeLayout"] = ^(NSDictionary *layoutDictionary) {
             return [vc computeLayout:layoutDictionary];
@@ -67,6 +67,8 @@
                 [vc applyPatch:patchDictionary];
             });
         };
+
+        jsString = [@"var window = this;" stringByAppendingString:jsString];
 
         [context evaluateScript:jsString];
 
