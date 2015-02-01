@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SlideshowComponentModel.h"
+#import "LayoutModel.h"
 
 @interface SlideshowComponentRenderer : NSObject
 

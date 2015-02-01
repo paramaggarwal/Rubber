@@ -10,6 +10,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "SlideshowCollectionView.h"
 #import "SlideshowCollectionViewCell.h"
+#import "LayoutModel.h"
 
 @implementation SlideshowComponentRenderer
 

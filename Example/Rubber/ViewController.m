@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import <JavaScriptCore/JavaScriptCore.h>
 #import <Rubber/Rubber.h>
+#import <AFNetworking/AFNetworking.h>
 
 @interface ViewController ()
 
@@ -44,6 +45,15 @@
         vc.gestureDelegate = self;
 
         context[@"console"][@"log"] =  ^(JSValue *val) { NSLog(@"JSLog: %@", val); };
+        
+        context[@"request"] = @{};
+        context[@"request"][@"get"] =  ^(NSString *url, JSValue *callback) {
+            [[AFHTTPSessionManager manager] GET:url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                [callback callWithArguments:@[@NO, responseObject]];
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                [callback callWithArguments:@[error]];
+            }];
+        };
     
         // load underscore
         [context evaluateScript:underscoreJsString];

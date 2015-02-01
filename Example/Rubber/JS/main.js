@@ -314,3 +314,9 @@ function generatePatch () {
 }
 
 generatePatch();
+
+
+request.get('http://developer.myntra.com/search/data/nike', function (err, res) {
+  console.log(err);
+  console.log(JSON.stringify(res, null, 2));
+});
