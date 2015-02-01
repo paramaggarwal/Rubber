@@ -157,7 +157,14 @@ var Cortex = {
   render: function () {
     
     return {
-      type: 'tile',
+      type: 'ViewController',
+      props: {
+        title: 'Demo',
+        style: {}
+      },
+      children: [
+      {
+      type: 'View',
       props: {
         style: {
           flex: 1,
@@ -168,7 +175,7 @@ var Cortex = {
       },
       children: [
       {
-        type: 'text',
+        type: 'Text',
         props: {
           onClick: this.onClick1,
           needsClickHandler: true,
@@ -189,7 +196,7 @@ var Cortex = {
         children: []
       },
       {
-        type: 'text',
+        type: 'Text',
         props: {
           onClick: this.onClick2,
           needsClickHandler: true,
@@ -222,7 +229,7 @@ var Cortex = {
         },
         children: [
         {
-        type: 'text',
+        type: 'Text',
         props: {
           style: {
             color: '#F01D62',
@@ -234,7 +241,7 @@ var Cortex = {
         children: []
       },
       {
-        type: 'text',
+        type: 'Text',
         props: {
           style: {
             color: '#1D62F0',
@@ -247,6 +254,7 @@ var Cortex = {
       }]
       }
       ]
+    }]
     };
   }
 }
@@ -332,7 +340,7 @@ request.get('http://developer.myntra.com/search/data/nike', function (err, res) 
 
   var renderedChildren = _.map(productNames, function (name) {
     return {
-        type: 'text',
+        type: 'Text',
         props: {
           style: {
             color: '#1D62F0',
@@ -346,7 +354,7 @@ request.get('http://developer.myntra.com/search/data/nike', function (err, res) 
   });
 
   var tree = Cortex.render();
-  tree.children[2].children = renderedChildren;
+  tree.children[0].children[2].children = renderedChildren;
 
   // generatePatch(tree);
 

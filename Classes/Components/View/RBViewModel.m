@@ -10,6 +10,7 @@
 #import "RBScrollViewModel.h"
 #import "RBTableViewModel.h"
 #import "RBTextModel.h"
+#import "RBViewControllerModel.h"
 
 #import "ImageComponentModel.h"
 #import "IconComponentModel.h"
@@ -42,6 +43,10 @@
         return RBTextModel.class;
     }
     
+    if ([JSONDictionary[@"type"]  isEqual:@"ViewController"]) {
+        return RBViewControllerModel.class;
+    }
+
     if ([JSONDictionary[@"type"]  isEqual:@"image"]) {
         return ImageComponentModel.class;
     }
