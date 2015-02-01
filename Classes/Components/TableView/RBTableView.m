@@ -8,7 +8,7 @@
 
 #import "RBTableView.h"
 #import "RBTableViewCell.h"
-#import "ComponentModel.h"
+#import "RBViewModel.h"
 
 @implementation RBTableView
 
@@ -45,7 +45,7 @@
 //    cell.layer.borderWidth = 2.0f;
 //    cell.layer.borderColor = [UIColor redColor].CGColor;
     
-    ComponentModel *modelData = [self.modelData objectAtIndex:indexPath.row];
+    RBViewModel *modelData = [self.modelData objectAtIndex:indexPath.row];
     cell.modelData = modelData;
     
     [cell renderView];
@@ -55,7 +55,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    ComponentModel *modelData = [self.modelData objectAtIndex:indexPath.row];
+    RBViewModel *modelData = [self.modelData objectAtIndex:indexPath.row];
     
     return modelData.style.height.floatValue;
 }

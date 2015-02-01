@@ -7,12 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RBView.h"
 
 @interface Rubber : NSObject
-
-@property RBViewModel *patchTree; // the changes to apply
-@property RBViewModel *previousPatchTree; // primarily for references to the views
 
 @property NSObject *gestureDelegate;
 

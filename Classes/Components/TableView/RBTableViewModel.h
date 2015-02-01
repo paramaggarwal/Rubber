@@ -6,8 +6,8 @@
 //
 //
 
-#import "ComponentModel.h"
+#import "RBViewModel.h"
 
-@interface RBTableViewModel : ComponentModel
+@interface RBTableViewModel : RBViewModel
 
 @end

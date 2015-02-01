@@ -19,10 +19,10 @@
     
     RBView *view;
     if ([model isKindOfClass:RBViewModel.class]) {
-        CGRect windowBox = CGRectMake(component.style.left.floatValue,
-                                      component.style.top.floatValue,
-                                      component.style.width.floatValue,
-                                      component.style.height.floatValue);
+        CGRect windowBox = CGRectMake(model.style.left.floatValue,
+                                      model.style.top.floatValue,
+                                      model.style.width.floatValue,
+                                      model.style.height.floatValue);
         
         view = [[UIView alloc] initWithFrame:windowBox];
         view.clipsToBounds = YES;
@@ -34,8 +34,7 @@
         view = [RBTableView create:model];
         
     } else if ([model isKindOfClass:RBTextModel.class]) {
-        RBTextModel *componentModel = (RBTextModel *)model;
-        view = [RBText render:componentModel];
+        view = [RBText create:model];
         
     }
     
@@ -91,9 +90,9 @@
         url = [url substringWithRange:NSMakeRange(4, url.length-1-4)];
         [imageView sd_setImageWithURL:[NSURL URLWithString:url]];
         
-        if (component.style.backgroundSize == BackgroundImageSizeFill) {
+        if (model.style.backgroundSize == BackgroundImageSizeFill) {
             imageView.contentMode = UIViewContentModeScaleAspectFill;
-        } else if (component.style.backgroundSize == BackgroundImageSizeFit) {
+        } else if (model.style.backgroundSize == BackgroundImageSizeFit) {
             imageView.contentMode = UIViewContentModeScaleAspectFit;
         }
         

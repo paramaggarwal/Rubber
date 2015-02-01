@@ -8,6 +8,14 @@
 
 #import "Rubber.h"
 #import "CSSLayout.h"
+#import "RBView.h"
+
+@interface Rubber ()
+
+@property RBViewModel *patchTree; // the changes to apply
+@property RBViewModel *previousPatchTree; // primarily for references to the views
+
+@end
 
 @implementation Rubber
 
@@ -49,6 +57,12 @@
 }
 
 - (RBView *)createComponent:(RBViewModel *)model {
+    
+    // depth first, so that parent has access to rendered children
+    for (RBViewModel *child in model.children) {
+        UIView *childView = [self createComponent:child];
+    }
+
     RBView *view = [RBView create:model];
     model.renderedView = view;
     
@@ -62,13 +76,6 @@
         UIPanGestureRecognizer *gestureRecogniser = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
         [view addGestureRecognizer:gestureRecogniser];
         [view setUserInteractionEnabled:YES];
-    }
-
-    if (![model.type isEqualToString:@"TableView"]) {
-        for (RBViewModel *child in model.children) {
-            UIView *childView = [self createComponent:child];
-            [view addSubview:childView];
-        }
     }
     
     return view;

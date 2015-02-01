@@ -73,8 +73,8 @@
         return self;
     }
     
-    for (ComponentModel *childModel in self.children) {
-        ComponentModel *m = [childModel searchView:view];
+    for (RBViewModel *childModel in self.children) {
+        RBViewModel *m = [childModel searchView:view];
         if (m) {
             return m;
         }
@@ -91,7 +91,7 @@
     
     for (int i=0; i<self.children.count; i++) {
         
-        ComponentModel *childModel = [self.children objectAtIndex:i];
+        RBViewModel *childModel = [self.children objectAtIndex:i];
         NSString *childPath = [NSString stringWithFormat:@".%d", i];
         NSString *nextPath = [searchPath stringByAppendingString:childPath];
         
@@ -106,7 +106,7 @@
 
 + (instancetype) modelFromJSON:(NSDictionary *)JSONDictionary {
     NSError *error;
-    ComponentModel *model = [MTLJSONAdapter modelOfClass:self.class
+    RBViewModel *model = [MTLJSONAdapter modelOfClass:self.class
                                       fromJSONDictionary:JSONDictionary error:&error];
     if (error) {
         NSLog(@"Unable to convert JSON to model.");

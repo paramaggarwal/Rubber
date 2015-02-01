@@ -83,9 +83,9 @@
         url = [url substringWithRange:NSMakeRange(4, url.length-1-4)];
         [imageView sd_setImageWithURL:[NSURL URLWithString:url]];
         
-        if (component.style.backgroundSize == BackgroundImageSizeFill) {
+        if (model.style.backgroundSize == BackgroundImageSizeFill) {
             imageView.contentMode = UIViewContentModeScaleAspectFill;
-        } else if (component.style.backgroundSize == BackgroundImageSizeFit) {
+        } else if (model.style.backgroundSize == BackgroundImageSizeFit) {
             imageView.contentMode = UIViewContentModeScaleAspectFit;
         }
         
