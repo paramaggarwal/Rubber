@@ -27,6 +27,28 @@
 
 - (void)update:(RBTextModel *)model {
     
+    if (model.style.left || model.style.top || model.style.width || model.style.height) {
+        CGRect rect = self.frame;
+        
+        if (model.style.left) {
+            rect.origin.x = model.style.left.floatValue;
+        }
+        
+        if (model.style.top) {
+            rect.origin.y = model.style.top.floatValue;
+        }
+        
+        if (model.style.width) {
+            rect.size.width = model.style.width.floatValue;
+        }
+        
+        if (model.style.height) {
+            rect.size.height = model.style.height.floatValue;
+        }
+        
+        self.frame = rect;
+    }
+    
     if (model.value) {
         self.text = model.value;
     }
@@ -37,6 +59,22 @@
     
     if (model.style.color) {
         self.textColor = model.style.color;
+    }
+    
+    if (model.style.backgroundColor) {
+        self.backgroundColor = model.style.backgroundColor;
+    }
+    
+    if (model.style.borderColor) {
+        self.layer.borderColor = model.style.borderColor.CGColor;
+    }
+    
+    if (model.style.borderWidth) {
+        self.layer.borderWidth = model.style.borderWidth.floatValue;
+    }
+    
+    if (model.style.borderRadius) {
+        self.layer.cornerRadius = model.style.borderRadius.floatValue;
     }
     
     NSString *fontName = @"Arial";

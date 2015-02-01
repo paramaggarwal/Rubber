@@ -164,7 +164,7 @@ var Cortex = {
       },
       children: [
       {
-      type: 'View',
+      type: 'ScrollView',
       props: {
         style: {
           flex: 1,
