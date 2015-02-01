@@ -9,17 +9,20 @@ Pod::Spec.new do |s|
                    Inspired by React Native.
                    DESC
 
-  s.homepage     = "http://bitbucket.org/myntra/Rubber" 
+  s.homepage     = "http://github.com/paramaggarwal/Rubber"
+  s.source       = { :git => "https://github.com/paramaggarwal/Rubber.git", :tag => "v0.1.0" }
+
   s.license      = "Private"
   s.author       = { "Param Aggarwal" => "paramaggarwal@gmail.com" }
   s.platform     = :ios, '7.0'
   s.requires_arc = true
-  s.source       = { :git => "https://bitbucket.org/myntra/Rubber.git", :tag => "v0.1.0" }
+  
   s.public_header_files = 'Classes/Rubber.h'
   s.source_files  = "Classes", "Classes/**/*.{h,m,c}"
   s.exclude_files = "Classes/Exclude"
   s.resources     = "Fonts/**/*.{ttf}"
-
+  s.frameworks    = "JavaScriptCore"
+  
   s.dependency "AFNetworking"
   s.dependency "AsyncDisplayKit"
   s.dependency "Mantle"
