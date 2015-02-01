@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ComponentRenderer.h"
+#import "RBView.h"
 
 @interface RBTableViewCell : UITableViewCell
 
 - (void)renderView;
 
-@property ComponentModel *modelData;
+@property RBViewModel *modelData;
 @property UIView *renderedView;
 
 @end

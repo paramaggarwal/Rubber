@@ -170,7 +170,18 @@ var Cortex = {
 
   render: function () {
     return {
+<<<<<<< HEAD
       type: "tile",
+=======
+      type: 'ViewController',
+      props: {
+        title: 'Demo',
+        style: {}
+      },
+      children: [
+      {
+      type: 'ScrollView',
+>>>>>>> 67211fc37c71b6c5f9851f4ffc5bb8cd571ef53b
       props: {
         style: {
           flex: 1,
@@ -179,8 +190,14 @@ var Cortex = {
           paddingBottom: 300
         }
       },
+<<<<<<< HEAD
       children: [{
         type: "text",
+=======
+      children: [
+      {
+        type: 'Text',
+>>>>>>> 67211fc37c71b6c5f9851f4ffc5bb8cd571ef53b
         props: {
           onClick: this.onClick1,
           needsClickHandler: true,
@@ -199,8 +216,14 @@ var Cortex = {
           value: num1 ? "Tapped me " + num1 + (num1 == 1 ? " time." : " times.") : "Hello there! Tap me..."
         },
         children: []
+<<<<<<< HEAD
       }, {
         type: "text",
+=======
+      },
+      {
+        type: 'Text',
+>>>>>>> 67211fc37c71b6c5f9851f4ffc5bb8cd571ef53b
         props: {
           onClick: this.onClick2,
           needsClickHandler: true,
@@ -230,6 +253,7 @@ var Cortex = {
             top: 800
           }
         },
+<<<<<<< HEAD
         children: [{
           type: "text",
           props: {
@@ -250,10 +274,38 @@ var Cortex = {
               width: 200
             },
             value: "Large Cell Two"
+=======
+        children: [
+        {
+        type: 'Text',
+        props: {
+          style: {
+            color: '#F01D62',
+            height: 44,
+            width: 200
+          },
+          value: 'Small Cell One'
+        },
+        children: []
+      },
+      {
+        type: 'Text',
+        props: {
+          style: {
+            color: '#1D62F0',
+            height: 88,
+            width: 200
+>>>>>>> 67211fc37c71b6c5f9851f4ffc5bb8cd571ef53b
           },
           children: []
         }]
       }]
+<<<<<<< HEAD
+=======
+      }
+      ]
+    }]
+>>>>>>> 67211fc37c71b6c5f9851f4ffc5bb8cd571ef53b
     };
   }
 };
@@ -327,11 +379,25 @@ function panHandler(path, translation) {
   generatePatch();
 }
 
+<<<<<<< HEAD
 global.clickHandler = clickHandler;
 global.panHandler = panHandler;
+=======
+function generatePatch (tree) {
+  if (!tree) {
+    tree = Cortex.render();
+  };
+
+  mergeNodes(tree, computeLayout(tree));
+>>>>>>> 67211fc37c71b6c5f9851f4ffc5bb8cd571ef53b
 
 
+<<<<<<< HEAD
 generatePatch();
+=======
+  var patch = diff(previousRenderedTree, renderedTree);
+  console.log(JSON.stringify(patch, null, 2));
+>>>>>>> 67211fc37c71b6c5f9851f4ffc5bb8cd571ef53b
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"react":153,"underscore":154}],2:[function(require,module,exports){
@@ -1254,6 +1320,7 @@ assign(CallbackQueue.prototype, {
     this.reset();
   }
 
+<<<<<<< HEAD
 });
 
 PooledClass.addPoolingTo(CallbackQueue);
@@ -20925,3 +20992,43 @@ process.chdir = function (dir) {
 };
 
 },{}]},{},[1]);
+=======
+request.get('http://developer.myntra.com/search/data/nike', function (err, res) {
+
+  if (err) {
+    console.log(err);
+    return;
+  }
+
+  var products = res.data.results.products
+
+  var productNames = _.pluck(products, 'product');
+
+  var renderedChildren = _.map(productNames, function (name) {
+    return {
+        type: 'Text',
+        props: {
+          style: {
+            color: '#1D62F0',
+            height: 44,
+            width: 300
+          },
+          value: name
+        },
+        children: []
+      };
+  });
+
+  var tree = Cortex.render();
+  tree.children[0].children[2].children = renderedChildren;
+
+  // generatePatch(tree);
+
+});
+
+
+
+
+
+
+>>>>>>> 67211fc37c71b6c5f9851f4ffc5bb8cd571ef53b

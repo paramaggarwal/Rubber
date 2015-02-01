@@ -22,7 +22,7 @@
 
 - (void)renderView {
     
-    self.renderedView = [ComponentRenderer renderComponent:self.modelData];
+    self.renderedView = [RBView create:self.modelData];
     
     // reset frame origin
     CGRect frame = self.renderedView.frame;

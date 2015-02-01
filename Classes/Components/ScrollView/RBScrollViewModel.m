@@ -1,15 +1,15 @@
 //
-//  TileComponentModel.m
-//  LayoutTest
+//  RBScrollViewModel.m
+//  Pods
 //
-//  Created by Param Aggarwal on 08/01/15.
-//  Copyright (c) 2015 Param Aggarwal. All rights reserved.
+//  Created by Param Aggarwal on 01/02/15.
+//
 //
 
-#import "TileComponentModel.h"
+#import "RBScrollViewModel.h"
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 
-@implementation TileComponentModel
+@implementation RBScrollViewModel
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     NSDictionary *parentKeys = [super JSONKeyPathsByPropertyKey];

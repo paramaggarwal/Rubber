@@ -7,8 +7,14 @@
 //
 
 #import "AppDelegate.h"
+#import <JavaScriptCore/JavaScriptCore.h>
+#import <Rubber/Rubber.h>
+#import <AFNetworking/AFNetworking.h>
 
 @interface AppDelegate ()
+
+@property JSContext *context;
+@property UIView *renderedView;
 
 @end
 
@@ -17,6 +23,59 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
+        NSString *path = [[NSBundle mainBundle] bundlePath];
+        NSString *jsFile = [path stringByAppendingPathComponent:@"main.js"];
+        NSString *jsString = [NSString stringWithContentsOfFile:jsFile encoding:NSUTF8StringEncoding error:nil];
+        
+        NSString *underscoreJsFile = [path stringByAppendingPathComponent:@"underscore-min.js"];
+        NSString *underscoreJsString = [NSString stringWithContentsOfFile:underscoreJsFile encoding:NSUTF8StringEncoding error:nil];
+        
+        JSVirtualMachine *machine = [[JSVirtualMachine alloc] init];
+        JSContext *context = [[JSContext alloc] initWithVirtualMachine:machine];
+        self.context = context;
+        
+        context.exceptionHandler = ^(JSContext *context, JSValue *exception) {
+            NSLog(@"JS Error: %@", exception);
+        };
+        
+        context[@"console"][@"log"] =  ^(JSValue *val) { NSLog(@"JSLog: %@", val); };
+        
+        context[@"request"] = @{};
+        context[@"request"][@"get"] =  ^(NSString *url, JSValue *callback) {
+            [[AFHTTPSessionManager manager] GET:url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                [callback callWithArguments:@[@NO, responseObject]];
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                [callback callWithArguments:@[error]];
+            }];
+        };
+        
+        // load underscore
+        [context evaluateScript:underscoreJsString];
+        
+        Rubber *rubber = [[Rubber alloc] init];
+        rubber.gestureDelegate = self;
+
+        context[@"computeLayout"] = ^(NSDictionary *layoutDictionary) {
+            return [Rubber computeLayout:layoutDictionary];
+        };
+        
+        context[@"applyPatch"] = ^(NSDictionary *patchDictionary) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                id rootObject = [rubber applyPatch:patchDictionary];
+                self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+                self.window.backgroundColor = [UIColor whiteColor];
+                UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:(UIViewController *)rootObject];
+                [self.window setRootViewController:nc];
+                [self.window makeKeyAndVisible];
+            });
+        };
+        
+        [context evaluateScript:jsString];
+    });
+
     return YES;
 }
 
@@ -40,6 +99,24 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+
+# pragma mark - gesture handling methods
+
+- (void)pathTapped:(NSString *)path {
+    JSValue *JSClickHandler = self.context[@"clickHandler"];
+    [JSClickHandler callWithArguments:@[path]];
+}
+
+- (void)pathPanned:(NSString *)path :(NSValue *)pointValue {
+    NSDictionary *pan = @{
+                          @"x": [NSNumber numberWithFloat:pointValue.CGPointValue.x],
+                          @"y": [NSNumber numberWithFloat:pointValue.CGPointValue.y]
+                          };
+    
+    JSValue *JSClickHandler = self.context[@"panHandler"];
+    [JSClickHandler callWithArguments:@[path, pan]];
 }
 
 @end
