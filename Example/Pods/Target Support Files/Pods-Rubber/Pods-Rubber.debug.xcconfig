@@ -1,0 +1,8 @@
+CLANG_CXX_LANGUAGE_STANDARD = c++11
+CLANG_CXX_LIBRARY = libc++
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/AsyncDisplayKit" "${PODS_ROOT}/Headers/Public/FontAwesome+iOS" "${PODS_ROOT}/Headers/Public/HexColors" "${PODS_ROOT}/Headers/Public/Mantle" "${PODS_ROOT}/Headers/Public/Rubber" "${PODS_ROOT}/Headers/Public/SDWebImage"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AFNetworking" -isystem "${PODS_ROOT}/Headers/Public/AsyncDisplayKit" -isystem "${PODS_ROOT}/Headers/Public/FontAwesome+iOS" -isystem "${PODS_ROOT}/Headers/Public/HexColors" -isystem "${PODS_ROOT}/Headers/Public/Mantle" -isystem "${PODS_ROOT}/Headers/Public/Rubber" -isystem "${PODS_ROOT}/Headers/Public/SDWebImage"
+OTHER_LDFLAGS = -ObjC -l"Pods-Rubber-AFNetworking" -l"Pods-Rubber-AsyncDisplayKit" -l"Pods-Rubber-FontAwesome+iOS" -l"Pods-Rubber-HexColors" -l"Pods-Rubber-Mantle" -l"Pods-Rubber-Rubber" -l"Pods-Rubber-SDWebImage" -l"c++" -framework "AssetsLibrary" -framework "CoreGraphics" -framework "Foundation" -framework "ImageIO" -framework "MobileCoreServices" -framework "Security" -framework "SystemConfiguration" -framework "UIKit" -weak_framework "Photos"
+OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
+PODS_ROOT = ${SRCROOT}/Pods

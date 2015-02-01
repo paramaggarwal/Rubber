@@ -1,0 +1,58 @@
+README
+
+
+
+
+# Register fonts
+
+Add this XML to `dict` in `Info.plist`.
+
+
+```xml
+<key>UIAppFonts</key>
+  <array>
+    <string>AmaticSC-Bold.ttf</string>
+    <string>AmaticSC-Regular.ttf</string>
+    <string>Anton.ttf</string>
+    <string>Audiowide-Regular.ttf</string>
+    <string>Bangers.ttf</string>
+    <string>Chewy.ttf</string>
+    <string>Comfortaa-Bold.ttf</string>
+    <string>Comfortaa-Light.ttf</string>
+    <string>Comfortaa-Regular.ttf</string>
+    <string>ComingSoon.ttf</string>
+    <string>DancingScript-Bold.ttf</string>
+    <string>DancingScript-Regular.ttf</string>
+    <string>FrancoisOne.ttf</string>
+    <string>IndieFlower.ttf</string>
+    <string>Lobster-Regular.ttf</string>
+    <string>MavenPro-Black.ttf</string>
+    <string>MavenPro-Bold.ttf</string>
+    <string>MavenPro-Medium.ttf</string>
+    <string>MavenPro-Regular.ttf</string>
+    <string>Orbitron-Black.ttf</string>
+    <string>Orbitron-Bold.ttf</string>
+    <string>Orbitron-Medium.ttf</string>
+    <string>Orbitron-Regular.ttf</string>
+    <string>Pacifico.ttf</string>
+    <string>PermanentMarker.ttf</string>
+    <string>Playball-Regular.ttf</string>
+    <string>PoiretOne-Regular.ttf</string>
+    <string>PT_Sans-Web-Bold.ttf</string>
+    <string>PT_Sans-Web-BoldItalic.ttf</string>
+    <string>PT_Sans-Web-Italic.ttf</string>
+    <string>PT_Sans-Web-Regular.ttf</string>
+    <string>Raleway-Bold.ttf</string>
+    <string>Raleway-ExtraBold.ttf</string>
+    <string>Raleway-ExtraLight.ttf</string>
+    <string>Raleway-Heavy.ttf</string>
+    <string>Raleway-Light.ttf</string>
+    <string>Raleway-Medium.ttf</string>
+    <string>Raleway-Regular.ttf</string>
+    <string>Raleway-SemiBold.ttf</string>
+    <string>Raleway-Thin.ttf</string>
+    <string>Satisfy-Regular.ttf</string>
+    <string>ShadowsIntoLight.ttf</string>
+    <string>FontAwesome.ttf</string>
+  </array>
+```

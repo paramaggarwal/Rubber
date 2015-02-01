@@ -1,0 +1,5 @@
+#include "Pods-Rubber-FontAwesome+iOS.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/FontAwesome+iOS" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/AsyncDisplayKit" "${PODS_ROOT}/Headers/Public/FontAwesome+iOS" "${PODS_ROOT}/Headers/Public/HexColors" "${PODS_ROOT}/Headers/Public/Mantle" "${PODS_ROOT}/Headers/Public/Rubber" "${PODS_ROOT}/Headers/Public/SDWebImage"
+OTHER_LDFLAGS = ${PODS_RUBBER_FONTAWESOME_IOS_OTHER_LDFLAGS} -ObjC
+PODS_ROOT = ${SRCROOT}
