@@ -69,7 +69,7 @@
 
 - (instancetype)searchView:(UIView *)view {
     
-    if ([view isEqual:self.renderedView]) {
+    if ([view isEqual:self.correspondingObject]) {
         return self;
     }
     
@@ -85,7 +85,7 @@
 
 - (NSString *)searchPath:(NSString *)searchPath forView:(UIView *)view {
     
-    if ([view isEqual:self.renderedView]) {
+    if ([view isEqual:self.correspondingObject]) {
         return searchPath;
     }
     

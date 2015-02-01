@@ -28,7 +28,7 @@
                                   model.style.width.floatValue,
                                   model.style.height.floatValue);
 
-    RBScrollView *view = [[UIScrollView alloc] initWithFrame:windowBox];
+    RBScrollView *view = [[RBScrollView alloc] initWithFrame:windowBox];
     view.contentSize = boundingBox.size;
     
     [view update:model];

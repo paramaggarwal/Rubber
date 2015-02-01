@@ -24,7 +24,7 @@
                                       model.style.width.floatValue,
                                       model.style.height.floatValue);
         
-        view = [[UIView alloc] initWithFrame:windowBox];
+        view = [[RBView alloc] initWithFrame:windowBox];
         view.clipsToBounds = YES;
 
     } else if ([model isKindOfClass:RBScrollViewModel.class]) {

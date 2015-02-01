@@ -13,7 +13,7 @@
 
 + (UILabel *)create:(RBTextModel *)model {
     
-    RBText *label = [[UILabel alloc] initWithFrame:CGRectMake(model.style.left.floatValue,
+    RBText *label = [[RBText alloc] initWithFrame:CGRectMake(model.style.left.floatValue,
                                                                model.style.top.floatValue,
                                                                model.style.width.floatValue,
                                                                model.style.height.floatValue)];
