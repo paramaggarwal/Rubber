@@ -20,7 +20,7 @@
 @property (nonatomic, assign, readonly) BOOL needsPanGesture;
 
 // helpers
-@property (nonatomic, weak) UIView *renderedView;
+@property (nonatomic, weak) NSObject *correspondingObject;
 
 + (instancetype) modelFromJSON:(NSDictionary *)JSONDictionary;
 

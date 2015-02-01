@@ -12,8 +12,11 @@
 
 @interface Rubber ()
 
-@property RBViewModel *patchTree; // the changes to apply
-@property RBViewModel *previousPatchTree; // primarily for references to the views
+// the changes to apply
+@property RBViewModel *patchTree;
+
+// primarily for references to the corresponding objects
+@property RBViewModel *previousPatchTree;
 
 @end
 
@@ -27,7 +30,7 @@
 
 - (void)applyPatch:(RBViewModel *)tree previousPatch:(RBViewModel *)previousTree {
     
-    tree.renderedView = previousTree.renderedView;
+    tree.correspondingObject = previousTree.correspondingObject;
     
     if ([tree.action isEqualToString:@"update"]) {
         
@@ -39,18 +42,20 @@
             [self applyPatch:child previousPatch:previousChild];
         }
 
-        RBView *renderedView = (RBView *)tree.renderedView;
+        RBView *renderedView = (RBView *)tree.correspondingObject;
         [renderedView update:tree];
         
     } else if ([tree.action isEqualToString:@"add"]) {
         UIView *newView = [self createComponent:tree];
-        // newView is set to model.renderedView by createComponent:
+        // newView is set to model.correspondingObject by createComponent:
         
     } else if ([tree.action isEqualToString:@"remove"]) {
-        [tree.renderedView removeFromSuperview];
+        // will be handled by the parent internally
+        // [tree.correspondingObject removeFromSuperview];
         
     } else if ([tree.action isEqualToString:@"replace"]) {
-        [tree.renderedView removeFromSuperview];
+        // removal will be handled by the parent internally
+        // [tree.correspondingObject removeFromSuperview];
         [self createComponent:tree];
     }
     
@@ -64,7 +69,7 @@
     }
 
     RBView *view = [RBView create:model];
-    model.renderedView = view;
+    model.correspondingObject = view;
     
     if (model.needsClickHandler) {
         UITapGestureRecognizer *gestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
