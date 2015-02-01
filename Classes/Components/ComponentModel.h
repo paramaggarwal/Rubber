@@ -24,7 +24,9 @@
 // helpers
 @property (nonatomic, weak) UIView *renderedView;
 
-- (ComponentModel *)searchView:(UIView *)view;
+- (instancetype)searchView:(UIView *)view;
 - (NSString *)searchPath:(NSString *)searchPath forView:(UIView *)view;
+
++ (instancetype) modelFromJSON:(NSDictionary *)JSONDictionary;
 
 @end

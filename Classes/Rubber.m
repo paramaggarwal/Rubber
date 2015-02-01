@@ -38,7 +38,7 @@
 
 - (void)applyPatch:(NSDictionary *)patchDictionary {
     self.previousPatchModel = self.patchModel;
-    self.patchModel = [self convertToModel:patchDictionary];
+    self.patchModel = [ComponentModel modelFromJSON:patchDictionary];
     
     [self applyPatch:self.patchModel toView:self.view previousPatch:self.previousPatchModel];
 }
@@ -97,32 +97,11 @@
     return view;
 }
 
-- (ComponentModel *)convertToModel:(NSDictionary *)componentDictionary {
-    NSError *error;
-    ComponentModel *model = [MTLJSONAdapter modelOfClass:ComponentModel.class
-                                      fromJSONDictionary:componentDictionary error:&error];
-    if (error) {
-        NSLog(@"Unable to convert JSON to model.");
-        return nil;
-    }
-    
-    return model;
-}
-
-+ (NSDictionary *)convertToDictionary:(LayoutModel *)layout {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithDictionary:layout.dictionaryValue];
-    
-    [layout.children enumerateObjectsUsingBlock:^(LayoutModel *m, NSUInteger index, BOOL *stop) {
-        dict[@"children"][index] = [self convertToDictionary:m];
-    }];
-    
-    return [dict copy];
-}
-
 - (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary {
-    ComponentModel *model = [self convertToModel:layoutDictionary];
+    ComponentModel *model = [ComponentModel modelFromJSON:layoutDictionary];
+    
     LayoutModel *layout = [CSSLayout computeLayout:model inRect:self.view.bounds];
-    return [self.class convertToDictionary:layout];
+    return [layout convertToDictionary];
 }
 
 - (void)handleGesture:(UIGestureRecognizer *)recognizer {

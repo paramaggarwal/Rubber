@@ -163,7 +163,6 @@
 		8DD47CFC71179731DD7ED4A1 /* ASTableViewProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = E6A2A98F07C7148A39ED0BB0 /* ASTableViewProtocols.h */; };
 		8EE092D4899DEA67C2F95B72 /* SDWebImageDownloaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BCE0E35D3A1147C04EBA51 /* SDWebImageDownloaderOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		923719DACCCC78DC37C5C48B /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0764D2BA5EACBDCA600EAD31 /* UIRefreshControl+AFNetworking.m */; };
-		9288E4E248CD44C4BAFF45FF /* NSDictionary+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 676EB3DC6770B59070791803 /* NSDictionary+Additions.m */; };
 		928C3FFA302AE69B663C1880 /* ASDisplayNode+Subclasses.h in Headers */ = {isa = PBXBuildFile; fileRef = BFC1B850B7C1DE42671DBC96 /* ASDisplayNode+Subclasses.h */; };
 		92E29292E184BBC84D89741D /* TileComponentModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 490B7F8D38949500C6BD89C7 /* TileComponentModel.h */; };
 		931B4A9F62207E209A553B9C /* TileComponentRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0F24670E45891CE6B0675C74 /* TileComponentRenderer.h */; };
@@ -182,7 +181,6 @@
 		9CD10EAC5C96BE9D17D4EF82 /* AsyncDisplayKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D3BAA73EBFBF4A22FE913AF /* AsyncDisplayKit.h */; };
 		9CD96D5BE203B68A3E4AD103 /* NSDictionary+MTLManipulationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 23874530A54584D34846E11D /* NSDictionary+MTLManipulationAdditions.h */; };
 		9D48266BC6FEDD10394FB246 /* SDWebImagePrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 970BBD6D0946EAFD0D854393 /* SDWebImagePrefetcher.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		9F0D374849F2EC40969CD7D7 /* NSDictionary+Additions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F6DA7C419957FD7F1725703 /* NSDictionary+Additions.h */; };
 		9F3EEAF475BACBBC64C6C26A /* IconComponentRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BD9EA4E97ECD8DB867BDA5EE /* IconComponentRenderer.m */; };
 		A28712294926B326E0500281 /* UIProgressView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = C6A6BDFCF726C9702D61CFAA /* UIProgressView+AFNetworking.h */; };
 		A2ECD6D69D160E604FC3B040 /* AFURLSessionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B1C392A6049A3E139188AAB /* AFURLSessionManager.h */; };
@@ -519,7 +517,6 @@
 		64E51018A67306293467D05B /* SDWebImageDownloader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDownloader.m; path = SDWebImage/SDWebImageDownloader.m; sourceTree = "<group>"; };
 		65389813588C6F5A8959A5B9 /* UIFont+FontAwesome.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIFont+FontAwesome.h"; sourceTree = "<group>"; };
 		65F22844DE18CD45220E37C9 /* ASImageNode.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; name = ASImageNode.mm; path = AsyncDisplayKit/ASImageNode.mm; sourceTree = "<group>"; };
-		676EB3DC6770B59070791803 /* NSDictionary+Additions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Additions.m"; sourceTree = "<group>"; };
 		67CF44123576E73F5C9A2B34 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSData+ImageContentType.h"; path = "SDWebImage/NSData+ImageContentType.h"; sourceTree = "<group>"; };
 		67FA00953BB6C672377401C5 /* ASHighlightOverlayLayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ASHighlightOverlayLayer.h; path = AsyncDisplayKit/Details/ASHighlightOverlayLayer.h; sourceTree = "<group>"; };
 		684879610A870919803D6103 /* SDWebImageCompat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageCompat.m; path = SDWebImage/SDWebImageCompat.m; sourceTree = "<group>"; };
@@ -530,7 +527,6 @@
 		6D3D8A3C837D93C36B3F2DA6 /* TextComponentModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = TextComponentModel.m; sourceTree = "<group>"; };
 		6D690D6C96C1EBA93996F805 /* ASThread.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ASThread.h; path = AsyncDisplayKit/Details/ASThread.h; sourceTree = "<group>"; };
 		6F32137B259A81752BB16EFA /* Comfortaa-Light.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "Comfortaa-Light.ttf"; sourceTree = "<group>"; };
-		6F6DA7C419957FD7F1725703 /* NSDictionary+Additions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Additions.h"; sourceTree = "<group>"; };
 		703E0C75120806580B1B06D1 /* Pods-Rubber-SDWebImage-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Rubber-SDWebImage-prefix.pch"; sourceTree = "<group>"; };
 		717EDFF1B87BB88DF408183C /* EXTRuntimeExtensions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = EXTRuntimeExtensions.m; path = Mantle/extobjc/EXTRuntimeExtensions.m; sourceTree = "<group>"; };
 		72CCF3DF96816F77047CC8D8 /* NSError+MTLModelException.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSError+MTLModelException.h"; path = "Mantle/NSError+MTLModelException.h"; sourceTree = "<group>"; };
@@ -1183,7 +1179,6 @@
 				20FE4C702FA4502DECAB8DF0 /* Rubber.h */,
 				EA94523E637556E9FE73F0D6 /* Rubber.m */,
 				4D040658DBF863419F17EA4F /* CSSLayout */,
-				E79DB76F1E86137C559B6FA7 /* Categories */,
 				4374F6A34EE82B28D82F303C /* Components */,
 			);
 			path = Classes;
@@ -1591,15 +1586,6 @@
 			path = Satisfy;
 			sourceTree = "<group>";
 		};
-		E79DB76F1E86137C559B6FA7 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				6F6DA7C419957FD7F1725703 /* NSDictionary+Additions.h */,
-				676EB3DC6770B59070791803 /* NSDictionary+Additions.m */,
-			);
-			path = Categories;
-			sourceTree = "<group>";
-		};
 		ECF167024832D1ED40F9D097 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1764,7 +1750,6 @@
 				DC904976560AFF4CE6CDA185 /* Layout-utils.h in Headers */,
 				75136FC93A21E9301C50400A /* Layout.h in Headers */,
 				17A6D7683D2DC9D6535F1C01 /* LayoutModel.h in Headers */,
-				9F0D374849F2EC40969CD7D7 /* NSDictionary+Additions.h in Headers */,
 				0F60F9BDF4AFEF193FBFB1C7 /* Rubber.h in Headers */,
 				33D91A10A8EF07EE38F9BDCF /* SlideshowCollectionView.h in Headers */,
 				02182D032CDDD3F36F11189A /* SlideshowCollectionViewCell.h in Headers */,
@@ -2061,7 +2046,6 @@
 				86B9DC08BDD509FF6E83E9D1 /* Layout-utils.c in Sources */,
 				5B516B96A4917675B4091E52 /* Layout.c in Sources */,
 				EEAD0885C3E4FD990FD6A9B8 /* LayoutModel.m in Sources */,
-				9288E4E248CD44C4BAFF45FF /* NSDictionary+Additions.m in Sources */,
 				A4582BA81B77C3F9CD377E0B /* Pods-Rubber-Rubber-dummy.m in Sources */,
 				E2995E7CE2EE203D037BB80E /* Rubber.m in Sources */,
 				0F83A0D7C8E48C9DB2C45B69 /* SlideshowCollectionView.m in Sources */,
