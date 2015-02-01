@@ -6,52 +6,50 @@
 //  Copyright (c) 2015 Param Aggarwal. All rights reserved.
 //
 
-#import "TextComponentRenderer.h"
+#import "RBText.h"
 
-@implementation TextComponentRenderer
+@implementation RBText
 
-+ (UILabel *)render:(TextComponentModel *)component {
+
++ (UILabel *)create:(RBTextModel *)model {
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(component.style.left.floatValue, component.style.top.floatValue, component.style.width.floatValue, component.style.height.floatValue)];
+    RBText *label = [[UILabel alloc] initWithFrame:CGRectMake(model.style.left.floatValue,
+                                                               model.style.top.floatValue,
+                                                               model.style.width.floatValue,
+                                                               model.style.height.floatValue)];
     label.numberOfLines = 0;
     label.clipsToBounds = YES;
     
-    [self updateComponent:label withModel:component];
+    [label update:model];
     
     return label;
 }
 
-+ (UILabel *)updateComponent:(UIView *)view withModel:(ComponentModel *)componentModel {
+- (void)update:(RBTextModel *)model {
     
-    TextComponentModel *component = (TextComponentModel *)componentModel;
-    UILabel *label = (UILabel *)view;
-    
-    if (component.value) {
-        label.text = component.value;
+    if (model.value) {
+        self.text = model.value;
     }
 
-    if (component.style.textAlign) {
-        label.textAlignment = component.style.textAlign;
+    if (model.style.textAlign) {
+        self.textAlignment = model.style.textAlign;
     }
     
-    if (component.style.color) {
-        label.textColor = component.style.color;
+    if (model.style.color) {
+        self.textColor = model.style.color;
     }
     
     NSString *fontName = @"Arial";
-    if (component.style.fontFamily) {
-        fontName = component.style.fontFamily;
+    if (model.style.fontFamily) {
+        fontName = model.style.fontFamily;
     }
     
     NSNumber *fontSize = [NSNumber numberWithFloat:14.0f];
-    if (component.style.fontSize) {
-        fontSize = component.style.fontSize;
+    if (model.style.fontSize) {
+        fontSize = model.style.fontSize;
     }
     
-    label.font = [UIFont fontWithName:fontName size:fontSize.floatValue];
-    
-    return label;
-    
+    self.font = [UIFont fontWithName:fontName size:fontSize.floatValue];
 }
 
 @end

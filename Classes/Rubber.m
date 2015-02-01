@@ -7,72 +7,49 @@
 //
 
 #import "Rubber.h"
-#import "Fetcher.h"
 #import "CSSLayout.h"
-#import "ComponentRenderer.h"
-
-// #import <AsyncDisplayKit/AsyncDisplayKit.h>
-
-@interface Rubber ()
-
-@property ComponentModel *storedModel;
-@property UIView *layoutView;
-
-@property ComponentModel *patchModel;
-@property ComponentModel *previousPatchModel;
-
-@end
 
 @implementation Rubber
 
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)applyPatch:(NSDictionary *)patchDictionary {
-    self.previousPatchModel = self.patchModel;
-    self.patchModel = [ComponentModel modelFromJSON:patchDictionary];
-    
-    [self applyPatch:self.patchModel toView:self.view previousPatch:self.previousPatchModel];
+    self.previousPatchTree = self.patchTree;
+    self.patchTree = [RBViewModel modelFromJSON:patchDictionary];
+    [self applyPatch:self.patchTree previousPatch:self.previousPatchTree];
 }
 
-- (void)applyPatch:(ComponentModel *)model toView:(UIView *)view previousPatch:(ComponentModel *)previousModel {
+- (void)applyPatch:(RBViewModel *)tree previousPatch:(RBViewModel *)previousTree {
     
-    model.renderedView = previousModel.renderedView;
+    tree.renderedView = previousTree.renderedView;
     
-    if ([model.action isEqualToString:@"add"]) {
-        UIView *newView = [self createComponent:model];
-        [view addSubview:newView];
+    if ([tree.action isEqualToString:@"update"]) {
         
-    } else if ([model.action isEqualToString:@"remove"]) {
-        [model.renderedView removeFromSuperview];
+        // depth first, so that parent has access to rendered children
+        for (int i=0; i < tree.children.count; i++) {
+            RBViewModel *child = [tree.children objectAtIndex:i];
+            RBViewModel *previousChild = [previousTree.children objectAtIndex:i];
+            
+            [self applyPatch:child previousPatch:previousChild];
+        }
+
+        RBView *renderedView = (RBView *)tree.renderedView;
+        [renderedView update:tree];
         
-    } else if ([model.action isEqualToString:@"update"]) {
-        [self updateComponent:model.renderedView withModel:model withPreviousModel:previousModel];
+    } else if ([tree.action isEqualToString:@"add"]) {
+        UIView *newView = [self createComponent:tree];
+        // newView is set to model.renderedView by createComponent:
+        
+    } else if ([tree.action isEqualToString:@"remove"]) {
+        [tree.renderedView removeFromSuperview];
+        
+    } else if ([tree.action isEqualToString:@"replace"]) {
+        [tree.renderedView removeFromSuperview];
+        [self createComponent:tree];
     }
+    
 }
 
-- (void)updateComponent:(UIView *)view withModel:(ComponentModel *)model withPreviousModel:(ComponentModel *)previousModel {
-    
-    UIView *updatedView =  [ComponentRenderer updateComponent:view withModel:model];
-    
-    for (int i=0; i<model.children.count; i++) {
-        ComponentModel *child = [model.children objectAtIndex:i];
-        ComponentModel *previousChild = [previousModel.children objectAtIndex:i];
-        
-        [self applyPatch:child toView:updatedView previousPatch:previousChild];
-    }
-}
-
-- (UIView *)createComponent:(ComponentModel *)model {
-    UIView *view = [ComponentRenderer renderComponent:model];
+- (RBView *)createComponent:(RBViewModel *)model {
+    RBView *view = [RBView create:model];
     model.renderedView = view;
     
     if (model.needsClickHandler) {
@@ -88,7 +65,7 @@
     }
 
     if (![model.type isEqualToString:@"TableView"]) {
-        for (ComponentModel *child in model.children) {
+        for (RBViewModel *child in model.children) {
             UIView *childView = [self createComponent:child];
             [view addSubview:childView];
         }
@@ -97,16 +74,15 @@
     return view;
 }
 
-- (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary {
-    ComponentModel *model = [ComponentModel modelFromJSON:layoutDictionary];
-    
-    LayoutModel *layout = [CSSLayout computeLayout:model inRect:self.view.bounds];
++ (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary {
+    RBViewModel *model = [RBViewModel modelFromJSON:layoutDictionary];
+    LayoutModel *layout = [CSSLayout computeLayout:model inRect:[[UIScreen mainScreen] bounds]];
     return [layout convertToDictionary];
 }
 
 - (void)handleGesture:(UIGestureRecognizer *)recognizer {
     
-    NSString *path = [self.patchModel searchPath:@"0" forView:recognizer.view];
+    NSString *path = [self.patchTree searchPath:@"0" forView:recognizer.view];
 
     if ([recognizer isKindOfClass:UITapGestureRecognizer.class]) {
         if ([self.gestureDelegate respondsToSelector:@selector(pathTapped:)]) {

@@ -298,15 +298,18 @@ function panHandler(path, translation) {
   generatePatch();
 }
 
-function generatePatch () {
-  var tree = Cortex.render();
+function generatePatch (tree) {
+  if (!tree) {
+    tree = Cortex.render();
+  };
+
   mergeNodes(tree, computeLayout(tree));
 
   previousRenderedTree = renderedTree;
   renderedTree = tree;
 
   var patch = diff(previousRenderedTree, renderedTree);
-  // console.log(JSON.stringify(patch, null, 2));
+  console.log(JSON.stringify(patch, null, 2));
 
   applyPatch(patch);
 
@@ -317,6 +320,40 @@ generatePatch();
 
 
 request.get('http://developer.myntra.com/search/data/nike', function (err, res) {
-  console.log(err);
-  console.log(JSON.stringify(res, null, 2));
+
+  if (err) {
+    console.log(err);
+    return;
+  }
+
+  var products = res.data.results.products
+
+  var productNames = _.pluck(products, 'product');
+
+  var renderedChildren = _.map(productNames, function (name) {
+    return {
+        type: 'text',
+        props: {
+          style: {
+            color: '#1D62F0',
+            height: 44,
+            width: 300
+          },
+          value: name
+        },
+        children: []
+      };
+  });
+
+  var tree = Cortex.render();
+  tree.children[2].children = renderedChildren;
+
+  generatePatch(tree);
+
 });
+
+
+
+
+
+

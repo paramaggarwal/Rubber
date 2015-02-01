@@ -11,7 +11,7 @@
 
 @implementation CSSLayout
 
-+ (LayoutModel *)computeLayout:(ComponentModel *)component inRect:(CGRect)rect forceDimensions:(BOOL)force {
++ (LayoutModel *)computeLayout:(RBViewModel *)component inRect:(CGRect)rect forceDimensions:(BOOL)force {
     
     css_node_t *node = new_test_css_node();
     
@@ -48,7 +48,7 @@
     }
 }
 
-+ (LayoutModel *)computeLayout:(ComponentModel *)component inRect:(CGRect)rect {
++ (LayoutModel *)computeLayout:(RBViewModel *)component inRect:(CGRect)rect {
     return [self computeLayout:component inRect:rect forceDimensions:NO];
 }
 
@@ -72,7 +72,7 @@
     return layout;
 }
 
-+ (css_node_t *)configureCSSNodeTree:(css_node_t *)node fromComponent:(ComponentModel *)component {
++ (css_node_t *)configureCSSNodeTree:(css_node_t *)node fromComponent:(RBViewModel *)component {
     
     [self configureCSSNode:node fromStyle:component.style];
     

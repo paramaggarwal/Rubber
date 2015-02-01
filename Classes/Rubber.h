@@ -7,13 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RBView.h"
 
-@interface Rubber : UIViewController
+@interface Rubber : NSObject
 
-- (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary;
+@property RBViewModel *patchTree; // the changes to apply
+@property RBViewModel *previousPatchTree; // primarily for references to the views
+
+@property NSObject *gestureDelegate;
+
++ (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary;
+
 - (void)applyPatch:(NSDictionary *)patchDictionary;
-
-@property UIViewController *gestureDelegate;
 
 @end
 

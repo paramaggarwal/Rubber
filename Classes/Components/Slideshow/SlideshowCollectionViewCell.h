@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ComponentRenderer.h"
+#import "RBView.h"
 
 @interface SlideshowCollectionViewCell : UICollectionViewCell
 
 - (void)renderView;
 
-@property ComponentModel *modelData;
+@property RBViewModel *modelData;
 @property UIView *renderedView;
 
 @property UIViewController *mainController;

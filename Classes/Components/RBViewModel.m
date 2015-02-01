@@ -1,21 +1,21 @@
 //
-//  ComponentModel.m
-//  LayoutTest
+//  RBViewModel.m
+//  Pods
 //
-//  Created by Param Aggarwal on 06/11/14.
-//  Copyright (c) 2014 Param Aggarwal. All rights reserved.
+//  Created by Param Aggarwal on 01/02/15.
+//
 //
 
-#import "ComponentModel.h"
+#import "RBViewModel.h"
+#import "RBScrollViewModel.h"
+#import "RBTableViewModel.h"
+#import "RBTextModel.h"
 
-#import "TileComponentModel.h"
-#import "TextComponentModel.h"
 #import "ImageComponentModel.h"
 #import "IconComponentModel.h"
 #import "SlideshowComponentModel.h"
-#import "RBTableViewModel.h"
 
-@implementation ComponentModel
+@implementation RBViewModel
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{
@@ -26,18 +26,22 @@
 }
 
 + (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary {
-    if ([JSONDictionary[@"type"]  isEqual:@"tile"]) {
-        return TileComponentModel.class;
+    if ([JSONDictionary[@"type"]  isEqual:@"View"]) {
+        return RBViewModel.class;
     }
     
-    if ([JSONDictionary[@"type"]  isEqual:@"text"]) {
-        return TextComponentModel.class;
+    if ([JSONDictionary[@"type"]  isEqual:@"ScrollView"]) {
+        return RBScrollViewModel.class;
     }
 
     if ([JSONDictionary[@"type"]  isEqual:@"TableView"]) {
         return RBTableViewModel.class;
     }
 
+    if ([JSONDictionary[@"type"]  isEqual:@"Text"]) {
+        return RBTextModel.class;
+    }
+    
     if ([JSONDictionary[@"type"]  isEqual:@"image"]) {
         return ImageComponentModel.class;
     }
@@ -49,7 +53,7 @@
     if ([JSONDictionary[@"type"]  isEqual:@"slideshow"]) {
         return SlideshowComponentModel.class;
     }
-
+    
     NSLog(@"No matching class for the JSON dictionary '%@'.", JSONDictionary);
     
     return self;

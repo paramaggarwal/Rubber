@@ -12,7 +12,7 @@
 
 @implementation Fetcher
 
-+ (ComponentModel *)fetch {
++ (RBViewModel *)fetch {
     
     NSError *error;
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"banner" ofType:@"json"];
@@ -30,7 +30,7 @@
         return nil;
     }
     
-    ComponentModel *component = [MTLJSONAdapter modelOfClass:ComponentModel.class fromJSONDictionary:dict error:&error];
+    RBViewModel *component = [MTLJSONAdapter modelOfClass:RBViewModel.class fromJSONDictionary:dict error:&error];
     if (error) {
         NSLog(@"Unable to convert JSON to model.");
         return nil;
@@ -39,7 +39,7 @@
     return component;
 }
 
-+ (void)fetchComponent:(NSString *)url success:(void (^)(ComponentModel *model))success failure:(void (^)(NSError *error))failure {
++ (void)fetchComponent:(NSString *)url success:(void (^)(RBViewModel *model))success failure:(void (^)(NSError *error))failure {
 
     [[AFHTTPRequestOperationManager manager] GET:url
                                       parameters:nil
@@ -48,7 +48,7 @@
                                              NSDictionary *dict = responseObject;
 
                                              NSError *error;
-                                             ComponentModel *component = [MTLJSONAdapter modelOfClass:ComponentModel.class fromJSONDictionary:dict error:&error];
+                                             RBViewModel *component = [MTLJSONAdapter modelOfClass:RBViewModel.class fromJSONDictionary:dict error:&error];
                                              if (error) {
                                                  return NSLog(@"Unable to convert JSON to model.");
                                              }

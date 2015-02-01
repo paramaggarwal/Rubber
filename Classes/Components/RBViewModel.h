@@ -1,15 +1,14 @@
 //
-//  ComponentModel.h
-//  LayoutTest
+//  RBViewModel.h
+//  Pods
 //
-//  Created by Param Aggarwal on 06/11/14.
-//  Copyright (c) 2014 Param Aggarwal. All rights reserved.
+//  Created by Param Aggarwal on 01/02/15.
+//
 //
 
-#import <Mantle/Mantle.h>
 #import "StyleModel.h"
 
-@interface ComponentModel : MTLModel <MTLJSONSerializing>
+@interface RBViewModel : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *type;
 @property (nonatomic, copy, readonly) NSString *action;
@@ -17,16 +16,15 @@
 
 // props.*
 @property (nonatomic, strong, readonly) StyleModel *style;
-
 @property (nonatomic, assign, readonly) BOOL needsClickHandler;
 @property (nonatomic, assign, readonly) BOOL needsPanGesture;
 
 // helpers
 @property (nonatomic, weak) UIView *renderedView;
 
++ (instancetype) modelFromJSON:(NSDictionary *)JSONDictionary;
+
 - (instancetype)searchView:(UIView *)view;
 - (NSString *)searchPath:(NSString *)searchPath forView:(UIView *)view;
-
-+ (instancetype) modelFromJSON:(NSDictionary *)JSONDictionary;
 
 @end
