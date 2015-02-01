@@ -30,7 +30,7 @@
         self.title = model.title;
     }
     
-    [self.class parseChildren:model intoView:self.view];
+//    [self.class parseChildren:model intoView:self.view];
 }
 
 + (void)parseChildren:(RBViewModel *)model intoView:(UIView *)view {
