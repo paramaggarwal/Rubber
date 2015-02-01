@@ -331,7 +331,9 @@ request.get('http://developer.myntra.com/search/data/nike', function (err, res) 
 
 });
 
-
+// setup globals
+global.clickHandler = clickHandler;
+global.panHandler = panHandler;
 
 
 
