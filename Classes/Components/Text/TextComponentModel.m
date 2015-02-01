@@ -7,13 +7,13 @@
 //
 
 #import "TextComponentModel.h"
-#import "NSDictionary+Additions.h"
+#import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 
 @implementation TextComponentModel
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     NSDictionary *parentKeys = [super JSONKeyPathsByPropertyKey];
-    return [parentKeys extendWithDictionary:@{
+    return [parentKeys mtl_dictionaryByAddingEntriesFromDictionary:@{
                                               @"value": @"props.value"
                                               }];
 }

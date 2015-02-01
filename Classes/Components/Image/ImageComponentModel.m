@@ -7,13 +7,13 @@
 //
 
 #import "ImageComponentModel.h"
-#import "NSDictionary+Additions.h"
+#import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 
 @implementation ImageComponentModel
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     NSDictionary *parentKeys = [super JSONKeyPathsByPropertyKey];
-    return [parentKeys extendWithDictionary:@{
+    return [parentKeys mtl_dictionaryByAddingEntriesFromDictionary:@{
                                               @"src": @"props.src"
                                               }];
 }

@@ -63,7 +63,7 @@
     return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[self class]];
 }
 
-- (ComponentModel *)searchView:(UIView *)view {
+- (instancetype)searchView:(UIView *)view {
     
     if ([view isEqual:self.renderedView]) {
         return self;
@@ -98,6 +98,18 @@
     }
     
     return nil;
+}
+
++ (instancetype) modelFromJSON:(NSDictionary *)JSONDictionary {
+    NSError *error;
+    ComponentModel *model = [MTLJSONAdapter modelOfClass:self.class
+                                      fromJSONDictionary:JSONDictionary error:&error];
+    if (error) {
+        NSLog(@"Unable to convert JSON to model.");
+        return nil;
+    }
+    
+    return model;
 }
 
 @end
