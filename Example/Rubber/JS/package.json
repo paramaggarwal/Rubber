@@ -2,7 +2,7 @@
   "name": "JS",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "index.js",
   "dependencies": {
     "6to5ify": "^4.0.0",
     "browserify": "^8.1.3",
