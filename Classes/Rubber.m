@@ -8,7 +8,12 @@
 
 #import "Rubber.h"
 #import "CSSLayout.h"
+
 #import "RBView.h"
+#import "RBScrollView.h"
+#import "RBTableView.h"
+#import "RBText.h"
+#import "RBViewController.h"
 
 @interface Rubber ()
 
@@ -22,10 +27,11 @@
 
 @implementation Rubber
 
-- (void)applyPatch:(NSDictionary *)patchDictionary {
+- (id)applyPatch:(NSDictionary *)patchDictionary {
     self.previousPatchTree = self.patchTree;
     self.patchTree = [RBViewModel modelFromJSON:patchDictionary];
     [self applyPatch:self.patchTree previousPatch:self.previousPatchTree];
+    return self.patchTree.correspondingObject;
 }
 
 - (void)applyPatch:(RBViewModel *)tree previousPatch:(RBViewModel *)previousTree {
@@ -46,8 +52,7 @@
         [renderedView update:tree];
         
     } else if ([tree.action isEqualToString:@"add"]) {
-        UIView *newView = [self createComponent:tree];
-        // newView is set to model.correspondingObject by createComponent:
+        tree.correspondingObject = [self createComponent:tree];
         
     } else if ([tree.action isEqualToString:@"remove"]) {
         // will be handled by the parent internally
@@ -56,34 +61,57 @@
     } else if ([tree.action isEqualToString:@"replace"]) {
         // removal will be handled by the parent internally
         // [tree.correspondingObject removeFromSuperview];
-        [self createComponent:tree];
+        tree.correspondingObject = [self createComponent:tree];
     }
     
 }
 
-- (RBView *)createComponent:(RBViewModel *)model {
+- (id)createComponent:(RBViewModel *)model {
     
     // depth first, so that parent has access to rendered children
     for (RBViewModel *child in model.children) {
-        UIView *childView = [self createComponent:child];
+        child.correspondingObject = [self createComponent:child];
     }
 
-    RBView *view = [RBView create:model];
-    model.correspondingObject = view;
-    
-    if (model.needsClickHandler) {
-        UITapGestureRecognizer *gestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
-        [view addGestureRecognizer:gestureRecogniser];
-        [view setUserInteractionEnabled:YES];
+    id correspondingObject;
+    if ([model isKindOfClass:RBViewModel.class]) {
+        correspondingObject = [RBView create:model];
     }
     
-    if (model.needsPanGesture) {
-        UIPanGestureRecognizer *gestureRecogniser = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
-        [view addGestureRecognizer:gestureRecogniser];
-        [view setUserInteractionEnabled:YES];
+    if ([model isKindOfClass:RBScrollViewModel.class]) {
+        correspondingObject = [RBScrollView create:model];
     }
     
-    return view;
+    if ([model isKindOfClass:RBTableViewModel.class]) {
+        correspondingObject = [RBTableView create:model];
+    }
+    
+    if ([model isKindOfClass:RBTextModel.class]) {
+        correspondingObject = [RBText create:model];
+    }
+    
+    if ([model isKindOfClass:RBViewControllerModel.class]) {
+        correspondingObject = [RBViewController create:model];
+    }
+    
+    if ([correspondingObject isKindOfClass:UIView.class]) {
+        UIView *view = (UIView *)correspondingObject;
+        
+        if (model.needsClickHandler) {
+            UITapGestureRecognizer *gestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+            [view addGestureRecognizer:gestureRecogniser];
+            [view setUserInteractionEnabled:YES];
+        }
+        
+        if (model.needsPanGesture) {
+            UIPanGestureRecognizer *gestureRecogniser = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+            [view addGestureRecognizer:gestureRecogniser];
+            [view setUserInteractionEnabled:YES];
+        }
+    }
+    
+    
+    return correspondingObject;
 }
 
 + (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary {

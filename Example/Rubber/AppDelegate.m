@@ -41,9 +41,6 @@
             NSLog(@"JS Error: %@", exception);
         };
         
-        Rubber *rubber = [[Rubber alloc] init];
-        rubber.gestureDelegate = self;
-        
         context[@"console"][@"log"] =  ^(JSValue *val) { NSLog(@"JSLog: %@", val); };
         
         context[@"request"] = @{};
@@ -58,22 +55,25 @@
         // load underscore
         [context evaluateScript:underscoreJsString];
         
+        Rubber *rubber = [[Rubber alloc] init];
+        rubber.gestureDelegate = self;
+
         context[@"computeLayout"] = ^(NSDictionary *layoutDictionary) {
             return [Rubber computeLayout:layoutDictionary];
         };
         
         context[@"applyPatch"] = ^(NSDictionary *patchDictionary) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [rubber applyPatch:patchDictionary];
+                id rootObject = [rubber applyPatch:patchDictionary];
+                self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+                self.window.backgroundColor = [UIColor whiteColor];
+                UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:(UIViewController *)rootObject];
+                [self.window setRootViewController:nc];
+                [self.window makeKeyAndVisible];
             });
         };
         
         [context evaluateScript:jsString];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // [self.navigationController pushViewController:vc animated:YES];
-        });
-        
     });
 
     return YES;

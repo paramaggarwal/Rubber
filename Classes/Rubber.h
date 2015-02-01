@@ -14,7 +14,7 @@
 
 + (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary;
 
-- (void)applyPatch:(NSDictionary *)patchDictionary;
+- (id)applyPatch:(NSDictionary *)patchDictionary;
 
 @end
 

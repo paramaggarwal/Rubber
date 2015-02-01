@@ -7,37 +7,20 @@
 //
 
 #import "RBView.h"
-#import "RBScrollView.h"
-#import "RBTableView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-
-#import "RBText.h"
 
 @implementation RBView
 
 + (UIView *)create:(RBViewModel *)model {
     
-    RBView *view;
-    if ([model isKindOfClass:RBViewModel.class]) {
-        CGRect windowBox = CGRectMake(model.style.left.floatValue,
-                                      model.style.top.floatValue,
-                                      model.style.width.floatValue,
-                                      model.style.height.floatValue);
-        
-        view = [[RBView alloc] initWithFrame:windowBox];
-        view.clipsToBounds = YES;
-
-    } else if ([model isKindOfClass:RBScrollViewModel.class]) {
-        view = [RBScrollView create:model];
-        
-    } else if ([model isKindOfClass:RBTableViewModel.class]) {
-        view = [RBTableView create:model];
-        
-    } else if ([model isKindOfClass:RBTextModel.class]) {
-        view = [RBText create:model];
-        
-    }
+    CGRect windowBox = CGRectMake(model.style.left.floatValue,
+                                  model.style.top.floatValue,
+                                  model.style.width.floatValue,
+                                  model.style.height.floatValue);
     
+    RBView *view = [[RBView alloc] initWithFrame:windowBox];
+    view.clipsToBounds = YES;
+
     [view update:model];
     
     return view;

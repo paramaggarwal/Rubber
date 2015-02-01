@@ -16,7 +16,7 @@
 
 + (UIViewController *)create:(RBViewControllerModel *)model {
     
-    RBViewController *controller = [[UIViewController alloc] init];
+    RBViewController *controller = [[RBViewController alloc] init];
 
     [controller update:model];
     
