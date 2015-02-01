@@ -13,12 +13,6 @@
 - (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary;
 - (void)applyPatch:(NSDictionary *)patchDictionary;
 
-+ (UIView *)renderComponent:(NSDictionary *)component withChildren:childViews;
-
-- (void)renderLayout:(NSDictionary *)layoutDictionary;
-- (void)fetchURL:(NSString *)url;
-- (void)handleTapGesture:(UITapGestureRecognizer *)recognizer;
-
 @property UIViewController *gestureDelegate;
 
 @end

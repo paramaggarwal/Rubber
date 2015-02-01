@@ -19,7 +19,7 @@
 
 // props.*
 @property (nonatomic, strong, readonly) StyleModel *style;
-@property (nonatomic, copy, readonly) NSString *href;
+
 @property (nonatomic, assign, readonly) BOOL needsClickHandler;
 @property (nonatomic, assign, readonly) BOOL needsPanGesture;
 

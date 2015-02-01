@@ -15,8 +15,6 @@
 + (UIView *)renderComponent:(ComponentModel *)component;
 + (UIView *)updateComponent:(UIView *)view withModel:(ComponentModel *)model;
 
-//+ (void)renderComponent:(ComponentModel *)component withLayout:(LayoutModel *)layout toView:(UIView *)view mainController:(UIViewController *)mainController;
-
 + (ComponentModel *)searchView:(UIView *)view inModel:(ComponentModel *)model;
 + (NSString *)searchPath:(NSString *)searchPath forView:(UIView *)view inModel:(ComponentModel *)model;
 

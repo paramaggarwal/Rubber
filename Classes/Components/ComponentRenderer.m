@@ -16,57 +16,6 @@
 
 @implementation ComponentRenderer
 
-//+ (void)renderComponent:(ComponentModel *)component withLayout:(LayoutModel *)layout toView:(UIView *)view mainController:(UIViewController *)mainController {
-
-//    UIView *placeholderView;
-//    if ([component isKindOfClass:TileComponentModel.class]) {
-//        TileComponentModel *componentModel = (TileComponentModel *)component;
-//        placeholderView = [TileComponentRenderer render:componentModel fromLayout:layout];
-//        
-//    } else if ([component isKindOfClass:TextComponentModel.class]) {
-//        TextComponentModel *componentModel = (TextComponentModel *)component;
-//        placeholderView = [TextComponentRenderer render:componentModel fromLayout:layout];
-//    
-//    } else if ([component isKindOfClass:ImageComponentModel.class]) {
-//        ImageComponentModel *componentModel = (ImageComponentModel *)component;
-//        placeholderView = [ImageComponentRenderer render:componentModel fromLayout:layout];
-//    
-//    } else if ([component isKindOfClass:IconComponentModel.class]) {
-//        IconComponentModel *componentModel = (IconComponentModel *)component;
-//        placeholderView = [IconComponentRenderer render:componentModel fromLayout:layout];
-//        
-//    } else if ([component isKindOfClass:SlideshowComponentModel.class]) {
-//        SlideshowComponentModel *componentModel = (SlideshowComponentModel *)component;
-//        placeholderView = [SlideshowComponentRenderer render:componentModel fromLayout:layout mainController:mainController];
-//    }
-//    
-//    // store a weak reference to rendered view on model
-//    component.renderedView = placeholderView;
-//    
-//    if (component.href) {
-//        UITapGestureRecognizer *gestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:mainController action:@selector(handleTapGesture:)];
-//        [placeholderView addGestureRecognizer:gestureRecogniser];
-//        [placeholderView setUserInteractionEnabled:YES];
-//    }
-//    
-//    if (component.style.backgroundColor) {
-//        placeholderView.backgroundColor = component.style.backgroundColor;
-//    }
-//    
-//    if (component.style.borderRadius) {
-//        placeholderView.layer.cornerRadius = component.style.borderRadius.floatValue;
-//    }
-//
-//    [view addSubview:placeholderView];
-//    
-//    if (layout.children.count > 0) {
-//        for (int i = 0; i < layout.children.count; ++i) {
-//            [self renderComponent:component.children[i] withLayout:layout.children[i] toView:placeholderView mainController:mainController];
-//        }
-//    }
-
-//}
-
 + (UIView *)updateComponent:(UIView *)view withModel:(ComponentModel *)model {
     
     if (model.style.left) {

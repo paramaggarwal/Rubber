@@ -231,50 +231,6 @@ function mergeNodes (original, overlap) {
   }
 };
 
-// var renderView = function (node) {
-
-//   var childViews = [];
-//   for (var i = 0; i < node.children.length; i++) {
-//     var v = renderView(node.children[i]);
-//     childViews.push(v);
-//   };
-
-//   var view = renderComponent(node, childViews);
-//   node.view = view;
-
-//   if (node.props.onClick) {
-//     attachClickHandler(view);
-//   };
-
-//   return view;
-// }
-
-// var renderToView = function () {
-//   var tree = Cortex.render();
-//   mergeNodes(tree, computeLayout(tree));
-
-//   var view = renderView(tree);
-//   // console.log(JSON.stringify(tree, null, 2));
-
-//   previousRenderedTree = renderedTree;
-//   renderedTree = tree;
-
-//   console.log(JSON.stringify(diff(previousRenderedTree, renderedTree), null, 2));
-
-//   updateView(view);
-//   return view;
-// }
-
-// function nodeInTreeForView(tree, view) {
-//   if (tree.view === view) {
-//     return tree;
-//   };
-
-//   for (var i=0; i< tree.children.length; i++) {
-//     return nodeInTreeForView(tree.children[i], view);
-//   }
-// }
-
 function nodeAtPath(tree, path) {
   
   // remove first path as it is root
@@ -322,5 +278,3 @@ function generatePatch () {
 }
 
 generatePatch();
-
-// renderToView();

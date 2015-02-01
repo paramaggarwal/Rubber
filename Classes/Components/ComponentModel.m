@@ -19,7 +19,6 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{
              @"style": @"props.style",
-             @"href": @"props.href",
              @"needsClickHandler": @"props.needsClickHandler",
              @"needsPanGesture": @"props.needsPanGesture",
              };

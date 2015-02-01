@@ -51,27 +51,7 @@
         context[@"computeLayout"] = ^(NSDictionary *layoutDictionary) {
             return [vc computeLayout:layoutDictionary];
         };
-    
-//        context[@"renderComponent"] = ^(NSDictionary *componentDictionary, NSArray *childViews) {
-//            return [CortexLayoutViewController renderComponent:componentDictionary withChildren:childViews];
-//        };
-
-//        context[@"attachClickHandler"] = ^(UIView *view) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                UITapGestureRecognizer *gestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClick:)];
-//                [view addGestureRecognizer:gestureRecogniser];
-//                [view setUserInteractionEnabled:YES];
-//            });
-//        };
-//
-//        context[@"updateView"] = ^(UIView *view) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self.renderedView removeFromSuperview];
-//                [self.view addSubview:view];
-//                self.renderedView = view;
-//            });
-//        };
-    
+        
         context[@"applyPatch"] = ^(NSDictionary *patchDictionary) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [vc applyPatch:patchDictionary];
@@ -101,11 +81,6 @@
     JSValue *JSClickHandler = self.context[@"panHandler"];
     [JSClickHandler callWithArguments:@[path, pan]];
 }
-
-//- (void)onClick:(UITapGestureRecognizer *)recognizer {
-//    JSValue *val = self.context[@"clickHandler"];
-//    [val callWithArguments:@[recognizer.view]];
-//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
