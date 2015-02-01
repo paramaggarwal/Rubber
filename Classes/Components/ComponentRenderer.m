@@ -13,6 +13,7 @@
 #import "ImageComponentRenderer.h"
 #import "IconComponentRenderer.h"
 #import "SlideshowComponentRenderer.h"
+#import "RBTableViewManager.h"
 
 @implementation ComponentRenderer
 
@@ -42,6 +43,13 @@
         view.frame = rect;
     }
     
+    if (model.style.backgroundColor) {
+        view.backgroundColor = model.style.backgroundColor;
+    }
+    
+    if (model.style.borderRadius) {
+        view.layer.cornerRadius = model.style.borderRadius.floatValue;
+    }
     
     if ([model.type isEqualToString:@"tile"]) {
         TileComponentModel *componentModel = (TileComponentModel *)model;
@@ -67,6 +75,10 @@
         TextComponentModel *componentModel = (TextComponentModel *)component;
         placeholderView = [TextComponentRenderer render:componentModel];
         
+    } else if ([component isKindOfClass:RBTableViewModel.class]) {
+        RBTableViewModel *componentModel = (RBTableViewModel *)component;
+        placeholderView = [RBTableViewManager create:componentModel];
+        
     }
     
     if (component.style.backgroundColor) {
@@ -79,43 +91,5 @@
     
     return placeholderView;
 }
-
-+ (ComponentModel *)searchView:(UIView *)view inModel:(ComponentModel *)model {
-        
-    if ([view isEqual:model.renderedView]) {
-        return model;
-    }
-    
-    for (ComponentModel *childModel in model.children) {
-        ComponentModel *m = [self searchView:view inModel:childModel];
-        if (m) {
-            return m;
-        }
-    }
-    
-    return nil;
-}
-
-+ (NSString *)searchPath:(NSString *)searchPath forView:(UIView *)view inModel:(ComponentModel *)model {
-   
-    if ([view isEqual:model.renderedView]) {
-        return searchPath;
-    }
-    
-    for (int i=0; i<model.children.count; i++) {
-        
-        ComponentModel *childModel = [model.children objectAtIndex:i];
-        NSString *childPath = [NSString stringWithFormat:@".%d", i];
-        NSString *nextPath = [searchPath stringByAppendingString:childPath];
-        
-        NSString *foundPath = [self searchPath:nextPath forView:view inModel:childModel];
-        if (foundPath) {
-            return foundPath;
-        }
-    }
-    
-    return nil;
-}
-
 
 @end

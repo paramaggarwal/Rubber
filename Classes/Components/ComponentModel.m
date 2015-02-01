@@ -13,6 +13,7 @@
 #import "ImageComponentModel.h"
 #import "IconComponentModel.h"
 #import "SlideshowComponentModel.h"
+#import "RBTableViewModel.h"
 
 @implementation ComponentModel
 
@@ -31,6 +32,10 @@
     
     if ([JSONDictionary[@"type"]  isEqual:@"text"]) {
         return TextComponentModel.class;
+    }
+
+    if ([JSONDictionary[@"type"]  isEqual:@"TableView"]) {
+        return RBTableViewModel.class;
     }
 
     if ([JSONDictionary[@"type"]  isEqual:@"image"]) {
@@ -56,6 +61,43 @@
 
 + (NSValueTransformer *) childrenJSONTransformer {
     return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[self class]];
+}
+
+- (ComponentModel *)searchView:(UIView *)view {
+    
+    if ([view isEqual:self.renderedView]) {
+        return self;
+    }
+    
+    for (ComponentModel *childModel in self.children) {
+        ComponentModel *m = [childModel searchView:view];
+        if (m) {
+            return m;
+        }
+    }
+    
+    return nil;
+}
+
+- (NSString *)searchPath:(NSString *)searchPath forView:(UIView *)view {
+    
+    if ([view isEqual:self.renderedView]) {
+        return searchPath;
+    }
+    
+    for (int i=0; i<self.children.count; i++) {
+        
+        ComponentModel *childModel = [self.children objectAtIndex:i];
+        NSString *childPath = [NSString stringWithFormat:@".%d", i];
+        NSString *nextPath = [searchPath stringByAppendingString:childPath];
+        
+        NSString *foundPath = [childModel searchPath:nextPath forView:view];
+        if (foundPath) {
+            return foundPath;
+        }
+    }
+    
+    return nil;
 }
 
 @end

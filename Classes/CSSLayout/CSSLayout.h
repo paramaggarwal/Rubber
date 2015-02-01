@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ComponentModel.h"
+#import "LayoutModel.h"
 
 @interface CSSLayout : NSObject
 

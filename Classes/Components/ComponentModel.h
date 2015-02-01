@@ -8,10 +8,8 @@
 
 #import <Mantle/Mantle.h>
 #import "StyleModel.h"
-#import "LayoutModel.h"
 
 @interface ComponentModel : MTLModel <MTLJSONSerializing>
-
 
 @property (nonatomic, copy, readonly) NSString *type;
 @property (nonatomic, copy, readonly) NSString *action;
@@ -25,5 +23,8 @@
 
 // helpers
 @property (nonatomic, weak) UIView *renderedView;
+
+- (ComponentModel *)searchView:(UIView *)view;
+- (NSString *)searchPath:(NSString *)searchPath forView:(UIView *)view;
 
 @end

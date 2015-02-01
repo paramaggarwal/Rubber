@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "IconComponentModel.h"
+#import "LayoutModel.h"
 
 @interface IconComponentRenderer : NSObject
 

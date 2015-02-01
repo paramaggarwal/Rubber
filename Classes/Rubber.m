@@ -87,9 +87,11 @@
         [view setUserInteractionEnabled:YES];
     }
 
-    for (ComponentModel *child in model.children) {
-        UIView *childView = [self createComponent:child];
-        [view addSubview:childView];
+    if (![model.type isEqualToString:@"TableView"]) {
+        for (ComponentModel *child in model.children) {
+            UIView *childView = [self createComponent:child];
+            [view addSubview:childView];
+        }
     }
     
     return view;
@@ -125,8 +127,7 @@
 
 - (void)handleGesture:(UIGestureRecognizer *)recognizer {
     
-    // ComponentModel *model = [ComponentRenderer searchView:recognizer.view inModel:self.patchModel];
-    NSString *path = [ComponentRenderer searchPath:@"0" forView:recognizer.view inModel:self.patchModel];
+    NSString *path = [self.patchModel searchPath:@"0" forView:recognizer.view];
 
     if ([recognizer isKindOfClass:UITapGestureRecognizer.class]) {
         if ([self.gestureDelegate respondsToSelector:@selector(pathTapped:)]) {

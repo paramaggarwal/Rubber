@@ -15,7 +15,4 @@
 + (UIView *)renderComponent:(ComponentModel *)component;
 + (UIView *)updateComponent:(UIView *)view withModel:(ComponentModel *)model;
 
-+ (ComponentModel *)searchView:(UIView *)view inModel:(ComponentModel *)model;
-+ (NSString *)searchPath:(NSString *)searchPath forView:(UIView *)view inModel:(ComponentModel *)model;
-
 @end

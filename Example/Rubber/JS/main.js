@@ -209,6 +209,42 @@ var Cortex = {
           value: num2 ? ('Tapped me ' + num2 + ((num2==1) ? ' time.' : ' times.')) : 'Hello there! Tap me...'
         },
         children: []
+      },
+      {
+        type: 'TableView',
+        props: {
+          style: {
+            flex: 1,
+            backgroundColor: '#FFFFFF',
+            height: 400,
+            top: 800
+          }
+        },
+        children: [
+        {
+        type: 'text',
+        props: {
+          style: {
+            color: '#F01D62',
+            height: 44,
+            width: 200
+          },
+          value: 'Small Cell One'
+        },
+        children: []
+      },
+      {
+        type: 'text',
+        props: {
+          style: {
+            color: '#1D62F0',
+            height: 88,
+            width: 200
+          },
+          value: 'Large Cell Two'
+        },
+        children: []
+      }]
       }
       ]
     };

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ImageComponentModel.h"
+#import "LayoutModel.h"
 
 @interface ImageComponentRenderer : NSObject
 
