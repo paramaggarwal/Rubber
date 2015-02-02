@@ -11,9 +11,6 @@
 @interface Rubber : NSObject
 
 @property NSObject *gestureDelegate;
-
-+ (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary;
-
 - (id)applyPatch:(NSDictionary *)patchDictionary;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "RBViewController.h"
+#import "CSSLayout.h"
 
 @interface RBViewController ()
 
@@ -23,12 +24,17 @@
 }
 
 - (void)update:(RBViewControllerModel *)model {
-        
+    
+    LayoutModel *layoutTree = [CSSLayout computeLayout:model.fullObject inRect:self.view.bounds];
+    [CSSLayout mergeLayoutTree:layoutTree intoModel:model];
+    
     if (model.title) {
         self.title = model.title;
     }
+}
 
-    // manage children
+- (void)updateChildren:(RBViewControllerModel *)model {
+    
     for (RBModel *childModel in model.children) {
         UIView *childView = (UIView *)childModel.correspondingObject;
         

@@ -14,5 +14,6 @@
 
 + (LayoutModel *)computeLayout:(RBModel *)component inRect:(CGRect)rect;
 + (LayoutModel *)computeLayout:(RBModel *)component inRect:(CGRect)rect forceDimensions:(BOOL)force;
++ (void)mergeLayoutTree:(LayoutModel *)layoutTree intoModel:(RBModel *)model;
 
 @end

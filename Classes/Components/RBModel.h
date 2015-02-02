@@ -7,12 +7,14 @@
 //
 
 #import "StyleModel.h"
+#import "LayoutModel.h"
 
 @interface RBModel : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *type;
 @property (nonatomic, copy, readonly) NSString *action;
 @property (nonatomic, strong, readonly) NSArray *children;
+@property (nonatomic, strong, readonly) RBModel *fullObject;
 
 // props.*
 @property (nonatomic, strong, readonly) StyleModel *style;
@@ -21,6 +23,7 @@
 
 // helpers
 @property (nonatomic, strong) NSObject *correspondingObject;
+@property (nonatomic, assign) CGRect layoutRect;
 
 + (instancetype) modelFromJSON:(NSDictionary *)JSONDictionary;
 

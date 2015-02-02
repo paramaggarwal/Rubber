@@ -28,18 +28,22 @@ var example3 = {
 
 
 function diff (oldTree, newTree) {
-  var patch = {};
-  
-  if (!(oldTree && oldTree.type)) {
+  var patch = {
+    fullObject: newTree
+  };
+
+  oldTree = oldTree || {};
+  newTree = newTree || {};
+
+  if (!oldTree.type) {
     patch.action = 'add';
     patch.type = newTree.type;
     patch.props = newTree.props;
-    patch.children = newTree.children;
-    return patch;
-  } else if (!(newTree && newTree.type)) {
+
+  } else if (newTree.type) {
     patch.action = 'remove';
     patch.type = oldTree.type;
-    return patch;
+  
   } else if (oldTree.type === newTree.type) {
     patch.type = newTree.type;
     patch.action = 'update';

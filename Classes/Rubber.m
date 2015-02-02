@@ -42,6 +42,10 @@
     
     if ([tree.action isEqualToString:@"update"]) {
         
+        if ([tree isKindOfClass:RBViewControllerModel.class]) {
+            [(RBViewController *)tree.correspondingObject update:(RBViewControllerModel *)tree];
+        }
+
         // depth first, so that parent has access to rendered children
         for (int i=0; i < tree.children.count; i++) {
             
@@ -68,7 +72,7 @@
         }
         
         if ([tree isKindOfClass:RBViewControllerModel.class]) {
-            [(RBViewController *)tree.correspondingObject update:(RBViewControllerModel *)tree];
+            [(RBViewController *)tree.correspondingObject updateChildren:(RBViewControllerModel *)tree];
         }
         
         if ([tree isKindOfClass:RBNavigationControllerModel.class]) {
@@ -91,13 +95,17 @@
 }
 
 - (id)createComponent:(RBModel *)model {
-    
+    id correspondingObject;
+
+    if ([model isKindOfClass:RBViewControllerModel.class]) {
+        correspondingObject = [RBViewController create:(RBViewControllerModel *)model];
+    }
+
     // depth first, so that parent has access to rendered children
     for (RBModel *child in model.children) {
         child.correspondingObject = [self createComponent:child];
     }
 
-    id correspondingObject;
     if ([model isKindOfClass:RBScrollViewModel.class]) {
         correspondingObject = [RBScrollView create:(RBScrollViewModel *)model];
     }
@@ -111,7 +119,7 @@
     }
     
     if ([model isKindOfClass:RBViewControllerModel.class]) {
-        correspondingObject = [RBViewController create:(RBViewControllerModel *)model];
+        [(RBViewController *)correspondingObject updateChildren:(RBViewControllerModel *)model];
     }
     
     if ([model isKindOfClass:RBNavigationControllerModel.class]) {
@@ -140,12 +148,6 @@
     
     
     return correspondingObject;
-}
-
-+ (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary {
-    RBModel *model = [RBModel modelFromJSON:layoutDictionary];
-    LayoutModel *layout = [CSSLayout computeLayout:model inRect:[[UIScreen mainScreen] bounds]];
-    return [layout convertToDictionary];
 }
 
 - (void)handleGesture:(UIGestureRecognizer *)recognizer {

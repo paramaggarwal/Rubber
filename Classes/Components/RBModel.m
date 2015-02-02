@@ -75,6 +75,10 @@
     return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[StyleModel class]];
 }
 
++ (NSValueTransformer *) fullObjectJSONTransformer {
+    return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[self class]];
+}
+
 + (NSValueTransformer *) childrenJSONTransformer {
     return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[self class]];
 }

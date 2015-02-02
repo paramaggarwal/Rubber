@@ -23,8 +23,11 @@
         node->style.position[CSS_RIGHT] = rect.origin.y;
         node->style.dimensions[CSS_WIDTH] = rect.size.width;
         node->style.dimensions[CSS_HEIGHT] = rect.size.height;
+        
         init_css_node_children(node, 1);
         css_node_t *childNode = node->get_child(node->context, 0);
+        childNode->style.flex = 1.0f;
+        
         [self configureCSSNodeTree:childNode fromComponent:component];
     } else if (force) {
         node->style.position[CSS_LEFT] = rect.origin.x;
@@ -70,6 +73,20 @@
     }
     
     return layout;
+}
+
++ (void)mergeLayoutTree:(LayoutModel *)layoutTree intoModel:(RBModel *)model {
+    model.layoutRect = CGRectMake(layoutTree.left,
+                                  layoutTree.top,
+                                  layoutTree.width,
+                                  layoutTree.height);
+    
+    for (int i=0; i<layoutTree.children.count; i++) {
+        LayoutModel *childLayoutTree = layoutTree.children[i];
+        RBModel *childModel = model.children[i];
+        
+        [self mergeLayoutTree:childLayoutTree intoModel:childModel];
+    }
 }
 
 + (css_node_t *)configureCSSNodeTree:(css_node_t *)node fromComponent:(RBModel *)component {

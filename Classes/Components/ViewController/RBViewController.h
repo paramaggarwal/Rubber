@@ -13,5 +13,6 @@
 
 + (instancetype)create:(RBViewControllerModel *)model;
 - (void)update:(RBViewControllerModel *)model;
+- (void)updateChildren:(RBViewControllerModel *)model;
 
 @end

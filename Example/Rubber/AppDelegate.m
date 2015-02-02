@@ -58,10 +58,6 @@
         
         Rubber *rubber = [[Rubber alloc] init];
         rubber.gestureDelegate = self;
-
-        context[@"computeLayout"] = ^(NSDictionary *layoutDictionary) {
-            return [Rubber computeLayout:layoutDictionary];
-        };
         
         context[@"applyPatch"] = ^(NSDictionary *patchDictionary) {
             dispatch_async(dispatch_get_main_queue(), ^{

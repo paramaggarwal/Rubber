@@ -22,9 +22,8 @@ var Cortex = {
         <NavigationController>
           <ViewController title='Demo' style={{}}>
             <ScrollView style={{
-              height: 700,
-              backgroundColor: '#EEEEEE',
-              justifyContent: 'center'
+              flex: 1,
+              backgroundColor: '#EEEEEE'
             }} >
               {Button1.render()}
               {Button2.render()}
@@ -32,9 +31,8 @@ var Cortex = {
           </ViewController>
           <ViewController title='Nike' style={{}}>
             <ScrollView style={{
-              height: 700,
-              backgroundColor: '#EEEEEE',
-              justifyContent: 'center',
+              flex: 1,
+              backgroundColor: '#EEEEEE'
             }} >
               {CustomTableView.render({
                 data: products
@@ -48,9 +46,8 @@ var Cortex = {
         <NavigationController>
           <ViewController title='Demo' style={{}}>
             <ScrollView style={{
-              height: 700,
-              backgroundColor: '#EEEEEE',
-              justifyContent: 'center'
+              flex: 1,
+              backgroundColor: '#EEEEEE'
             }} >
               {Button1.render()}
               {Button2.render()}
@@ -62,22 +59,22 @@ var Cortex = {
   }
 };
 
-function mergeNodes (original, overlap) {
-  original.props.style = original.props.style || {};
-  original.props.style.left = overlap.left;
-  original.props.style.top = overlap.top;
-  original.props.style.width = overlap.width;
-  original.props.style.height = overlap.height;
+// function mergeNodes (original, overlap) {
+//   original.props.style = original.props.style || {};
+//   original.props.style.left = overlap.left;
+//   original.props.style.top = overlap.top;
+//   original.props.style.width = overlap.width;
+//   original.props.style.height = overlap.height;
 
-  // console.log(JSON.stringify(original, null, 2));
-  // console.log(JSON.stringify(overlap, null, 2));
+//   // console.log(JSON.stringify(original, null, 2));
+//   // console.log(JSON.stringify(overlap, null, 2));
 
-  for (var i=0; i< original.children.length; i++) {
-    var childOriginal = original.children[i];
-    var childOverlap = overlap.children[i];
-    mergeNodes(childOriginal, childOverlap);
-  }
-};
+//   for (var i=0; i< original.children.length; i++) {
+//     var childOriginal = original.children[i];
+//     var childOverlap = overlap.children[i];
+//     mergeNodes(childOriginal, childOverlap);
+//   }
+// };
 
 function nodeAtPath(tree, path) {
   
@@ -111,13 +108,13 @@ function panHandler(path, translation) {
 }
 
 function renderComponent (tree) {
-  mergeNodes(tree, computeLayout(tree));
+  // mergeNodes(tree, computeLayout(tree));
 
   previousRenderedTree = renderedTree;
   renderedTree = tree;
 
   var patch = diff(previousRenderedTree, renderedTree);
-  // console.log(JSON.stringify(patch, null, 2));
+  console.log(JSON.stringify(patch, null, 2));
 
   applyPatch(patch);
 
@@ -136,9 +133,9 @@ request.get('http://developer.myntra.com/search/data/nike', function (err, res) 
     return;
   }
 
-  products = res.data.results.products;
+  // products = res.data.results.products;
 
-  renderComponent(Cortex.render());
+  // renderComponent(Cortex.render());
 });
 
 // setup globals

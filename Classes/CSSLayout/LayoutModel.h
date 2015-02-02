@@ -18,6 +18,6 @@
 
 @property (nonatomic, strong) NSArray *children;
 
-- (NSDictionary *)convertToDictionary;
+//- (NSDictionary *)convertToDictionary;
 
 @end

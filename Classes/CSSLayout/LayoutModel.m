@@ -14,14 +14,14 @@
     return @{};
 }
 
-- (NSDictionary *)convertToDictionary {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithDictionary:self.dictionaryValue];
-    
-    [self.children enumerateObjectsUsingBlock:^(LayoutModel *child, NSUInteger index, BOOL *stop) {
-        dict[@"children"][index] = [child convertToDictionary];
-    }];
-    
-    return [dict copy];
-}
+//- (NSDictionary *)convertToDictionary {
+//    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithDictionary:self.dictionaryValue];
+//    
+//    [self.children enumerateObjectsUsingBlock:^(LayoutModel *child, NSUInteger index, BOOL *stop) {
+//        dict[@"children"][index] = [child convertToDictionary];
+//    }];
+//    
+//    return [dict copy];
+//}
 
 @end
