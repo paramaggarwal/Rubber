@@ -11,5 +11,6 @@
 @interface RBViewControllerModel : RBModel
 
 @property (nonatomic, copy, readonly) NSString *title;
+@property (nonatomic, assign, readonly) BOOL needsBackButton;
 
 @end

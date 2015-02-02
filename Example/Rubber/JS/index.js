@@ -64,15 +64,10 @@ var Cortex = {
               {Button3.render()}
             </ScrollView>
           </ViewController>
-          <ViewController title='Nike' style={{}}>
-            <ScrollView style={{
-              flex: 1,
-              backgroundColor: '#EEEEEE'
-            }} >
+          <ViewController title='Nike' needsBackButton={true} style={{}}>
               {CustomTableView.render({
                 data: products
               })}
-            </ScrollView>
           </ViewController>
         </NavigationController>
       );

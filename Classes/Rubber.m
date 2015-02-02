@@ -153,8 +153,18 @@
             [view addGestureRecognizer:gestureRecogniser];
             [view setUserInteractionEnabled:YES];
         }
+        
     }
     
+    if ([correspondingObject isKindOfClass:RBViewController.class]) {
+        RBViewController *viewController = (RBViewController *)correspondingObject;
+        RBViewControllerModel *viewControllerModel = (RBViewControllerModel *)model;
+        
+        if (viewControllerModel.needsBackButton) {
+            viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back-button-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(backButtonTapped:)];
+        }
+        
+    }
     
     return correspondingObject;
 }
@@ -179,6 +189,28 @@
     }
 
     NSLog(@"Tapped %@", path);
+}
+
+- (void)backButtonTapped:(UIBarButtonItem *)button {
+    
+//    NSString *path = [self.patchTree searchPath:@"0" forView:recognizer.view];
+//    
+//    if ([recognizer isKindOfClass:UITapGestureRecognizer.class]) {
+//        if ([self.gestureDelegate respondsToSelector:@selector(pathTapped:)]) {
+//            [self.gestureDelegate performSelector:@selector(pathTapped:) withObject:path];
+//        };
+//    } else if ([recognizer isKindOfClass:UIPanGestureRecognizer.class]) {
+//        UIPanGestureRecognizer *gestureRecognizer = (UIPanGestureRecognizer *)recognizer;
+//        CGPoint translation = [gestureRecognizer translationInView:[recognizer.view superview]];
+//        
+//        if ([self.gestureDelegate respondsToSelector:@selector(pathPanned::)]) {
+//            [self.gestureDelegate performSelector:@selector(pathPanned::) withObject:path withObject:[NSValue valueWithCGPoint:translation]];
+//        };
+//        
+//        [gestureRecognizer setTranslation:CGPointZero inView:[recognizer.view superview]];
+//    }
+//    
+//    NSLog(@"Tapped %@", path);
 }
 
 @end

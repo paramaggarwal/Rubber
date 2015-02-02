@@ -14,7 +14,8 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     NSDictionary *parentKeys = [super JSONKeyPathsByPropertyKey];
     return [parentKeys mtl_dictionaryByAddingEntriesFromDictionary:@{
-                                                                     @"title": @"props.title"
+                                                                     @"title": @"props.title",
+                                                                     @"needsBackButton": @"props.needsBackButton"
                                                                      }];
 }
 
