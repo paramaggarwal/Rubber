@@ -40,7 +40,7 @@ function diff (oldTree, newTree) {
     patch.type = newTree.type;
     patch.props = newTree.props;
 
-  } else if (newTree.type) {
+  } else if (!newTree.type) {
     patch.action = 'remove';
     patch.type = oldTree.type;
   

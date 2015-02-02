@@ -29,7 +29,7 @@
 
 - (void)update:(RBModel *)model {
     
-    if (CGRectEqualToRect(self.frame, model.layoutRect)) {
+    if (!CGRectEqualToRect(self.frame, model.layoutRect)) {
         self.frame = model.layoutRect;
     }
     
