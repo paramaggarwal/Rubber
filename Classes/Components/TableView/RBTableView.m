@@ -13,13 +13,8 @@
 @implementation RBTableView
 
 + (instancetype)create:(RBTableViewModel *)model {
-    
-    CGRect windowBox = CGRectMake(model.style.left.floatValue,
-                                  model.style.top.floatValue,
-                                  model.style.width.floatValue,
-                                  model.style.height.floatValue);
-    
-    RBTableView *tableView = [[RBTableView alloc] initWithFrame:windowBox];
+        
+    RBTableView *tableView = [[RBTableView alloc] initWithFrame:model.layoutRect];
     [tableView registerClass:RBTableViewCell.class forCellReuseIdentifier:@"cell"];
     
     tableView.dataSource = tableView;
@@ -32,29 +27,10 @@
 
 - (void)update:(RBTableViewModel *)model {
     
-    if (model.style.left || model.style.top || model.style.width || model.style.height) {
-        CGRect rect = self.frame;
-        
-        if (model.style.left) {
-            rect.origin.x = model.style.left.floatValue;
-        }
-        
-        if (model.style.top) {
-            rect.origin.y = model.style.top.floatValue;
-        }
-        
-        if (model.style.width) {
-            rect.size.width = model.style.width.floatValue;
-        }
-        
-        if (model.style.height) {
-            rect.size.height = model.style.height.floatValue;
-        }
-        
-        self.frame = rect;
+    if (!CGRectEqualToRect(self.frame, model.layoutRect)) {
+        self.frame = model.layoutRect;
     }
-    
-    
+
     if (model.style.backgroundColor) {
         self.backgroundColor = model.style.backgroundColor;
     }

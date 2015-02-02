@@ -9,9 +9,7 @@ var CustomTableView = {
 
     return <TableView style={{
             flex: 1,
-            backgroundColor: '#FFFFFF',
-            height: 400,
-            top: 800
+            backgroundColor: '#FFFFFF'
           }}>
             {_.map(products, function(product) {
               return TableRowItem.render({

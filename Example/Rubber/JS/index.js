@@ -14,10 +14,44 @@ var products = [{
 
 var previousRenderedTree;
 var renderedTree = {};
+var secondScreen;
+
+var left = 0;
+var top = 0;
+var Button3 = {
+  onClick: function (e) {
+    showResults();
+  },
+
+  onDrag: function (x, y) {
+    left += x;
+    top += y;
+  },
+
+  render: function () {
+
+    return (
+      <Text onClick={this.onClick}
+    needsClickHandler={true}
+    onDrag={this.onDrag}
+    needsPanGesture={true}
+    style={{
+      backgroundColor: '#1DD062',
+      color: '#FFFFFF',
+      borderRadius: 10,
+      textAlign: 'center',
+      height: 50,
+      width: 200,
+      top: top,
+      left: left
+    }}
+    value={'See some Nike shoes'} />);
+  }
+};
 
 var Cortex = {
   render: function () {
-    if (products.length > 1) {
+    if (secondScreen) {
       return (
         <NavigationController>
           <ViewController title='Demo' style={{}}>
@@ -27,6 +61,7 @@ var Cortex = {
             }} >
               {Button1.render()}
               {Button2.render()}
+              {Button3.render()}
             </ScrollView>
           </ViewController>
           <ViewController title='Nike' style={{}}>
@@ -51,6 +86,7 @@ var Cortex = {
             }} >
               {Button1.render()}
               {Button2.render()}
+              {Button3.render()}
             </ScrollView>
           </ViewController>
         </NavigationController>
@@ -58,23 +94,6 @@ var Cortex = {
     }
   }
 };
-
-// function mergeNodes (original, overlap) {
-//   original.props.style = original.props.style || {};
-//   original.props.style.left = overlap.left;
-//   original.props.style.top = overlap.top;
-//   original.props.style.width = overlap.width;
-//   original.props.style.height = overlap.height;
-
-//   // console.log(JSON.stringify(original, null, 2));
-//   // console.log(JSON.stringify(overlap, null, 2));
-
-//   for (var i=0; i< original.children.length; i++) {
-//     var childOriginal = original.children[i];
-//     var childOverlap = overlap.children[i];
-//     mergeNodes(childOriginal, childOverlap);
-//   }
-// };
 
 function nodeAtPath(tree, path) {
   
@@ -108,8 +127,6 @@ function panHandler(path, translation) {
 }
 
 function renderComponent (tree) {
-  // mergeNodes(tree, computeLayout(tree));
-
   previousRenderedTree = renderedTree;
   renderedTree = tree;
 
@@ -126,17 +143,20 @@ function renderComponent (tree) {
 renderComponent(Cortex.render());
 
 
-request.get('http://developer.myntra.com/search/data/nike', function (err, res) {
+function showResults() {
+  secondScreen = true;
+  renderComponent(Cortex.render());
 
-  if (err) {
-    console.log(err);
-    return;
-  }
+  request.get('http://developer.myntra.com/search/data/nike', function (err, res) {
+    if (err) {
+      console.log(err);
+      return;
+    }
 
-  // products = res.data.results.products;
-
-  // renderComponent(Cortex.render());
-});
+    products = res.data.results.products;
+    renderComponent(Cortex.render());
+  });  
+}
 
 // setup globals
 global.clickHandler = clickHandler;
