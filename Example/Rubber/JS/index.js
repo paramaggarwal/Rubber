@@ -18,24 +18,28 @@ var renderedTree = {};
 var Cortex = {
   render: function () {
     return (
-      <ViewController title='Demo' style={{}}>
-        <ScrollView style={{
-          flex: 1,
-          backgroundColor: '#EEEEEE',
-          justifyContent: 'center',
-          paddingBottom: 164
-        }} >
-          {Button1.render()}
-          {Button2.render()}
-          {CustomTableView.render({
-            data: products
-          })}
-        </ScrollView>
-      </ViewController>);
+      <NavigationController>
+        <ViewController title='Demo' style={{}}>
+          <ScrollView style={{
+            flex: 1,
+            backgroundColor: '#EEEEEE',
+            justifyContent: 'center',
+            paddingBottom: 164
+          }} >
+            {Button1.render()}
+            {Button2.render()}
+            {CustomTableView.render({
+              data: products
+            })}
+          </ScrollView>
+        </ViewController>
+      </NavigationController>
+    );
   }
 };
 
 function mergeNodes (original, overlap) {
+  original.props.style = original.props.style || {};
   original.props.style.left = overlap.left;
   original.props.style.top = overlap.top;
   original.props.style.width = overlap.width;

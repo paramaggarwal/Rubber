@@ -6,9 +6,9 @@
 //
 //
 
-#import "RBViewModel.h"
+#import "RBModel.h"
 
-@interface RBViewControllerModel : RBViewModel
+@interface RBViewControllerModel : RBModel
 
 @property (nonatomic, copy, readonly) NSString *title;
 

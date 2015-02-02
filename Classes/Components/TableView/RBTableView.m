@@ -8,7 +8,7 @@
 
 #import "RBTableView.h"
 #import "RBTableViewCell.h"
-#import "RBViewModel.h"
+#import "RBModel.h"
 
 @implementation RBTableView
 
@@ -63,7 +63,7 @@
     self.modelData = [model.children copy];
     [self beginUpdates];
     for (int i=0; i < model.children.count; i++) {
-        RBViewModel *childModel = model.children[i];
+        RBModel *childModel = model.children[i];
         
         if ([childModel.action isEqualToString:@"update"]) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
@@ -88,7 +88,7 @@
     RBTableViewCell *cell = [self dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
     if (indexPath.row <= self.modelData.count) {
-        RBViewModel *modelData = [self.modelData objectAtIndex:indexPath.row];
+        RBModel *modelData = [self.modelData objectAtIndex:indexPath.row];
         cell.modelData = modelData;
         [cell renderView];
     }
@@ -99,7 +99,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     if (indexPath.row <= self.modelData.count) {
-        RBViewModel *modelData = [self.modelData objectAtIndex:indexPath.row];
+        RBModel *modelData = [self.modelData objectAtIndex:indexPath.row];
         return modelData.style.height.floatValue;
     } else {
         return 44.0f;

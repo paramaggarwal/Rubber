@@ -11,7 +11,7 @@
 
 @interface RBViewController : UIViewController
 
-+ (UIViewController *)create:(RBViewControllerModel *)model;
++ (instancetype)create:(RBViewControllerModel *)model;
 - (void)update:(RBViewControllerModel *)model;
 
 @end

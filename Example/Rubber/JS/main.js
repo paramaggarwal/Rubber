@@ -232,24 +232,28 @@ var renderedTree = {};
 var Cortex = {
   render: function () {
     return (
-      tag("ViewController", {title:"Demo", style:{}}, [
-        tag("ScrollView", {style:{
-          flex: 1,
-          backgroundColor: '#EEEEEE',
-          justifyContent: 'center',
-          paddingBottom: 164
-        }} , [
-          Button1.render(),
-          Button2.render(),
-          CustomTableView.render({
-            data: products
-          })
+      tag("NavigationController", [
+        tag("ViewController", {title:"Demo", style:{}}, [
+          tag("ScrollView", {style:{
+            flex: 1,
+            backgroundColor: '#EEEEEE',
+            justifyContent: 'center',
+            paddingBottom: 164
+          }} , [
+            Button1.render(),
+            Button2.render(),
+            CustomTableView.render({
+              data: products
+            })
+          ])
         ])
-      ]));
+      ])
+    );
   }
 };
 
 function mergeNodes (original, overlap) {
+  original.props.style = original.props.style || {};
   original.props.style.left = overlap.left;
   original.props.style.top = overlap.top;
   original.props.style.width = overlap.width;

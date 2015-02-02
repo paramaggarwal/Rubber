@@ -6,8 +6,8 @@
 //
 //
 
-#import "RBViewModel.h"
+#import "RBModel.h"
 
-@interface RBScrollViewModel : RBViewModel
+@interface RBScrollViewModel : RBModel
 
 @end

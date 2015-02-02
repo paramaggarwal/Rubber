@@ -14,7 +14,7 @@
 
 @implementation RBViewController
 
-+ (UIViewController *)create:(RBViewControllerModel *)model {
++ (instancetype)create:(RBViewControllerModel *)model {
     
     RBViewController *controller = [[RBViewController alloc] init];
     [controller update:model];
@@ -29,7 +29,7 @@
     }
 
     // manage children
-    for (RBViewModel *childModel in model.children) {
+    for (RBModel *childModel in model.children) {
         UIView *childView = (UIView *)childModel.correspondingObject;
         
         if ([childModel.action isEqualToString:@"remove"]) {

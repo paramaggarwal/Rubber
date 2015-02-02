@@ -9,19 +9,21 @@
 #import "Rubber.h"
 #import "CSSLayout.h"
 
+#import "RBModel.h"
 #import "RBView.h"
 #import "RBScrollView.h"
 #import "RBTableView.h"
 #import "RBText.h"
 #import "RBViewController.h"
+#import "RBNavigationController.h"
 
 @interface Rubber ()
 
 // the changes to apply
-@property RBViewModel *patchTree;
+@property RBModel *patchTree;
 
 // primarily for references to the corresponding objects
-@property RBViewModel *previousPatchTree;
+@property RBModel *previousPatchTree;
 
 @end
 
@@ -29,12 +31,12 @@
 
 - (id)applyPatch:(NSDictionary *)patchDictionary {
     self.previousPatchTree = self.patchTree;
-    self.patchTree = [RBViewModel modelFromJSON:patchDictionary];
+    self.patchTree = [RBModel modelFromJSON:patchDictionary];
     [self applyPatch:self.patchTree previousPatch:self.previousPatchTree];
     return self.patchTree.correspondingObject;
 }
 
-- (void)applyPatch:(RBViewModel *)tree previousPatch:(RBViewModel *)previousTree {
+- (void)applyPatch:(RBModel *)tree previousPatch:(RBModel *)previousTree {
     
     tree.correspondingObject = previousTree.correspondingObject;
     
@@ -43,13 +45,35 @@
         // depth first, so that parent has access to rendered children
         for (int i=0; i < tree.children.count; i++) {
             
-            RBViewModel *child = (i < tree.children.count) ? [tree.children objectAtIndex:i] : nil;
-            RBViewModel *previousChild = (i < previousTree.children.count) ? [previousTree.children objectAtIndex:i] : nil;
+            RBModel *child = (i < tree.children.count) ? [tree.children objectAtIndex:i] : nil;
+            RBModel *previousChild = (i < previousTree.children.count) ? [previousTree.children objectAtIndex:i] : nil;
             
             [self applyPatch:child previousPatch:previousChild];
         }
 
-        [(RBView *)tree.correspondingObject update:tree];
+        if ([tree isKindOfClass:RBViewModel.class]) {
+            [(RBView *)tree.correspondingObject update:(RBViewModel *)tree];
+        }
+        
+        if ([tree isKindOfClass:RBScrollViewModel.class]) {
+            [(RBScrollView *)tree.correspondingObject update:(RBScrollViewModel *)tree];
+        }
+        
+        if ([tree isKindOfClass:RBTableViewModel.class]) {
+            [(RBTableView *)tree.correspondingObject update:(RBTableViewModel *)tree];
+        }
+        
+        if ([tree isKindOfClass:RBTextModel.class]) {
+            [(RBText *)tree.correspondingObject update:(RBTextModel *)tree];
+        }
+        
+        if ([tree isKindOfClass:RBViewControllerModel.class]) {
+            [(RBViewController *)tree.correspondingObject update:(RBViewControllerModel *)tree];
+        }
+        
+        if ([tree isKindOfClass:RBNavigationControllerModel.class]) {
+            [(RBNavigationController *)tree.correspondingObject update:(RBNavigationControllerModel *)tree];
+        }
         
     } else if ([tree.action isEqualToString:@"add"]) {
         tree.correspondingObject = [self createComponent:tree];
@@ -66,34 +90,38 @@
     
 }
 
-- (id)createComponent:(RBViewModel *)model {
+- (id)createComponent:(RBModel *)model {
     
     // depth first, so that parent has access to rendered children
-    for (RBViewModel *child in model.children) {
+    for (RBModel *child in model.children) {
         child.correspondingObject = [self createComponent:child];
     }
 
     id correspondingObject;
-    if ([model isKindOfClass:RBViewModel.class]) {
-        correspondingObject = [RBView create:model];
-    }
-    
     if ([model isKindOfClass:RBScrollViewModel.class]) {
-        correspondingObject = [RBScrollView create:model];
+        correspondingObject = [RBScrollView create:(RBScrollViewModel *)model];
     }
     
     if ([model isKindOfClass:RBTableViewModel.class]) {
-        correspondingObject = [RBTableView create:model];
+        correspondingObject = [RBTableView create:(RBTableViewModel *)model];
     }
     
     if ([model isKindOfClass:RBTextModel.class]) {
-        correspondingObject = [RBText create:model];
+        correspondingObject = [RBText create:(RBTextModel *)model];
     }
     
     if ([model isKindOfClass:RBViewControllerModel.class]) {
-        correspondingObject = [RBViewController create:model];
+        correspondingObject = [RBViewController create:(RBViewControllerModel *)model];
     }
     
+    if ([model isKindOfClass:RBNavigationControllerModel.class]) {
+        correspondingObject = [RBNavigationController create:(RBNavigationControllerModel *)model];
+    }
+
+    if ([model isKindOfClass:RBViewModel.class]) {
+        correspondingObject = [RBView create:(RBViewModel *)model];
+    }
+
     if ([correspondingObject isKindOfClass:UIView.class]) {
         UIView *view = (UIView *)correspondingObject;
         
@@ -115,7 +143,7 @@
 }
 
 + (NSDictionary *)computeLayout:(NSDictionary *)layoutDictionary {
-    RBViewModel *model = [RBViewModel modelFromJSON:layoutDictionary];
+    RBModel *model = [RBModel modelFromJSON:layoutDictionary];
     LayoutModel *layout = [CSSLayout computeLayout:model inRect:[[UIScreen mainScreen] bounds]];
     return [layout convertToDictionary];
 }

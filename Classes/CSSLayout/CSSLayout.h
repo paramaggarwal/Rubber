@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RBViewModel.h"
+#import "RBModel.h"
 #import "LayoutModel.h"
 
 @interface CSSLayout : NSObject
 
-+ (LayoutModel *)computeLayout:(RBViewModel *)component inRect:(CGRect)rect;
-+ (LayoutModel *)computeLayout:(RBViewModel *)component inRect:(CGRect)rect forceDimensions:(BOOL)force;
++ (LayoutModel *)computeLayout:(RBModel *)component inRect:(CGRect)rect;
++ (LayoutModel *)computeLayout:(RBModel *)component inRect:(CGRect)rect forceDimensions:(BOOL)force;
 
 @end

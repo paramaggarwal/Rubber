@@ -1,15 +1,15 @@
 //
-//  RBViewModel.m
+//  NavigationControllerModel.m
 //  Pods
 //
 //  Created by Param Aggarwal on 02/02/15.
 //
 //
 
-#import "RBViewModel.h"
+#import "RBNavigationControllerModel.h"
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 
-@implementation RBViewModel
+@implementation RBNavigationControllerModel
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     NSDictionary *parentKeys = [super JSONKeyPathsByPropertyKey];

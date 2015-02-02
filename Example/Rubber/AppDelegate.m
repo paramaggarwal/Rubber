@@ -14,7 +14,6 @@
 @interface AppDelegate ()
 
 @property JSContext *context;
-@property id renderedRoot;
 
 @end
 
@@ -66,14 +65,12 @@
         
         context[@"applyPatch"] = ^(NSDictionary *patchDictionary) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                id rootObject = [rubber applyPatch:patchDictionary];
+                UIViewController *rootController = [rubber applyPatch:patchDictionary];
                 
-                if (rootObject != self.renderedRoot) {
-                    self.renderedRoot = rootObject;
+                if (![self.window.rootViewController isEqual:rootController]) {
                     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
                     self.window.backgroundColor = [UIColor whiteColor];
-                    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:(UIViewController *)rootObject];
-                    [self.window setRootViewController:nc];
+                    [self.window setRootViewController:rootController];
                     [self.window makeKeyAndVisible];
                 }
             });

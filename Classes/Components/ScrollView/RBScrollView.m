@@ -14,7 +14,7 @@
 + (UIScrollView *)create:(RBScrollViewModel *)model {
     
     CGRect boundingBox = CGRectZero;
-    for (RBViewModel *child in model.children) {
+    for (RBModel *child in model.children) {
         CGRect childBox = CGRectMake(child.style.left.floatValue,
                                      child.style.top.floatValue,
                                      child.style.width.floatValue,
@@ -36,7 +36,7 @@
     return view;
 }
 
-- (void)update:(RBViewModel *)model {
+- (void)update:(RBModel *)model {
     
     if (model.style.left || model.style.top || model.style.width || model.style.height) {
         CGRect rect = self.frame;
@@ -93,7 +93,7 @@
     }
     
     // manage children
-    for (RBViewModel *childModel in model.children) {
+    for (RBModel *childModel in model.children) {
         UIView *childView = (UIView *)childModel.correspondingObject;
         
         if ([childModel.action isEqualToString:@"remove"]) {

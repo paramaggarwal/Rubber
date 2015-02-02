@@ -33,7 +33,7 @@
     self.contentView.clipsToBounds = YES;
     
     // manage children
-    for (RBViewModel *childModel in self.modelData.children) {
+    for (RBModel *childModel in self.modelData.children) {
         UIView *childView = (UIView *)childModel.correspondingObject;
         
         if ([childModel.action isEqualToString:@"remove"]) {
