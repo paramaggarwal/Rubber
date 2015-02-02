@@ -11,11 +11,11 @@
 
 @implementation RBView
 
-+ (UIView *)create:(RBViewModel *)model {
++ (instancetype)create:(RBViewModel *)model {
     
     RBView *view = [[RBView alloc] initWithFrame:model.layoutRect];
     view.clipsToBounds = YES;
-
+    
     [view update:model];
     
     return view;

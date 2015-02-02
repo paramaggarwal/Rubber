@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Param Aggarwal. All rights reserved.
 //
 
-#import "ImageComponentModel.h"
+#import "RBImageModel.h"
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 
-@implementation ImageComponentModel
+@implementation RBImageModel
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     NSDictionary *parentKeys = [super JSONKeyPathsByPropertyKey];

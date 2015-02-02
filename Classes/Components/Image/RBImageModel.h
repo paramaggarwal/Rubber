@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Param Aggarwal. All rights reserved.
 //
 
-#import "RBViewModel.h"
+#import "RBModel.h"
 
-@interface ImageComponentModel : RBViewModel
+@interface RBImageModel : RBModel
 
 @property (nonatomic, copy, readonly) NSString *src;
 

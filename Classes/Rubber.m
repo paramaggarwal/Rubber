@@ -14,6 +14,7 @@
 #import "RBScrollView.h"
 #import "RBTableView.h"
 #import "RBText.h"
+#import "RBImage.h"
 #import "RBViewController.h"
 #import "RBNavigationController.h"
 
@@ -71,6 +72,10 @@
             [(RBText *)tree.correspondingObject update:(RBTextModel *)tree];
         }
         
+        if ([tree isKindOfClass:RBImageModel.class]) {
+            [(RBImage *)tree.correspondingObject update:(RBImageModel *)tree];
+        }
+
         if ([tree isKindOfClass:RBViewControllerModel.class]) {
             [(RBViewController *)tree.correspondingObject updateChildren:(RBViewControllerModel *)tree];
         }
@@ -118,6 +123,10 @@
         correspondingObject = [RBText create:(RBTextModel *)model];
     }
     
+    if ([model isKindOfClass:RBImageModel.class]) {
+        correspondingObject = [RBImage create:(RBImageModel *)model];
+    }
+
     if ([model isKindOfClass:RBViewControllerModel.class]) {
         [(RBViewController *)correspondingObject updateChildren:(RBViewControllerModel *)model];
     }

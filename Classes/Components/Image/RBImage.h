@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ImageComponentModel.h"
-#import "LayoutModel.h"
+#import "RBImageModel.h"
 
-@interface ImageComponentRenderer : NSObject
+@interface RBImage : UIImageView
 
-+ (UIImageView *)render:(ImageComponentModel *)component fromLayout:(LayoutModel *)layout;
++ (instancetype)create:(RBImageModel *)model;
+- (void)update:(RBImageModel *)model;
 
 @end

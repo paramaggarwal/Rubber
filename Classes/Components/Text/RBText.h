@@ -11,7 +11,7 @@
 
 @interface RBText : UILabel
 
-+ (UILabel *)create:(RBTextModel *)model;
++ (instancetype)create:(RBTextModel *)model;
 - (void)update:(RBTextModel *)model;
 
 @end

@@ -11,7 +11,7 @@
 @implementation RBText
 
 
-+ (UILabel *)create:(RBTextModel *)model {
++ (instancetype)create:(RBTextModel *)model {
     
     RBText *label = [[RBText alloc] initWithFrame:model.layoutRect];
     label.numberOfLines = 0;

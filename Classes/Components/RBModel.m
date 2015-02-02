@@ -12,10 +12,10 @@
 #import "RBScrollViewModel.h"
 #import "RBTableViewModel.h"
 #import "RBTextModel.h"
+#import "RBImageModel.h"
 #import "RBViewControllerModel.h"
 #import "RBNavigationControllerModel.h"
 
-#import "ImageComponentModel.h"
 #import "IconComponentModel.h"
 #import "SlideshowComponentModel.h"
 
@@ -46,16 +46,16 @@
         return RBTextModel.class;
     }
     
+    if ([JSONDictionary[@"type"]  isEqual:@"Image"]) {
+        return RBImageModel.class;
+    }
+
     if ([JSONDictionary[@"type"]  isEqual:@"ViewController"]) {
         return RBViewControllerModel.class;
     }
 
     if ([JSONDictionary[@"type"]  isEqual:@"NavigationController"]) {
         return RBNavigationControllerModel.class;
-    }
-
-    if ([JSONDictionary[@"type"]  isEqual:@"image"]) {
-        return ImageComponentModel.class;
     }
     
     if ([JSONDictionary[@"type"]  isEqual:@"icon"]) {

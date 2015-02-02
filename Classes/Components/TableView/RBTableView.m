@@ -36,7 +36,7 @@
     }
     
     // manage children
-    self.modelData = [model.children copy];
+    self.modelData = model.children;
     [self beginUpdates];
     for (int i=0; i < model.children.count; i++) {
         RBModel *childModel = model.children[i];
