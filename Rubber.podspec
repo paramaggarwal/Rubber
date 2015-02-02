@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.0'
   s.requires_arc = true
   
-  s.public_header_files = "Classes/Rubber.h", "Classes/CSSLayout/CSSLayout.h"
+  s.public_header_files = "Classes/Rubber.h"
   s.source_files  = "Classes", "Classes/**/*.{h,m,c}"
   s.exclude_files = "Classes/Exclude"
   s.resources     = "Fonts/**/*.{ttf}"
