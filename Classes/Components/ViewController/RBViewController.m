@@ -17,8 +17,6 @@
 + (UIViewController *)create:(RBViewControllerModel *)model {
     
     RBViewController *controller = [[RBViewController alloc] init];
-    [self parseChildren:model intoView:controller.view];
-
     [controller update:model];
     
     return controller;
@@ -29,28 +27,15 @@
     if (model.title) {
         self.title = model.title;
     }
-    
-//    [self.class parseChildren:model intoView:self.view];
-}
 
-+ (void)parseChildren:(RBViewModel *)model intoView:(UIView *)view {
-    
+    // manage children
     for (RBViewModel *childModel in model.children) {
-        id childObject = childModel.correspondingObject;
+        UIView *childView = (UIView *)childModel.correspondingObject;
         
-        if ([childObject isKindOfClass:UIView.class]) {
-            UIView *childView = (UIView *)childObject;
-            if ([childModel.action isEqualToString:@"remove"]) {
-                [childView removeFromSuperview];
-            } else if ([childModel.action isEqualToString:@"update"]) {
-                if ([childView respondsToSelector:@selector(update:)]) {
-                    [childView performSelector:@selector(update:) withObject:childModel];
-                }
-            } else {
-                [view addSubview:childView];
-            }
-            
-            [self parseChildren:childModel intoView:childView];
+        if ([childModel.action isEqualToString:@"remove"]) {
+            [childView removeFromSuperview];
+        } else {
+            [self.view addSubview:childView];
         }
     }
 }

@@ -81,6 +81,17 @@
         
         [self insertSubview:imageView atIndex:0];
     }
+    
+    // manage children
+    for (RBViewModel *childModel in model.children) {
+        UIView *childView = (UIView *)childModel.correspondingObject;
+        
+        if ([childModel.action isEqualToString:@"remove"]) {
+            [childView removeFromSuperview];
+        } else {
+            [self addSubview:childView];
+        }
+    }
 }
 
 @end

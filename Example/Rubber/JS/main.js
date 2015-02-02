@@ -38,7 +38,7 @@ var Button1 = {
 };
 
 module.exports = Button1;
-},{"./tag":7}],2:[function(require,module,exports){
+},{"./tag":8}],2:[function(require,module,exports){
 /** @jsx tag */
 var tag = require('./tag');
 
@@ -78,36 +78,51 @@ var Button2 = {
 };
 
 module.exports = Button2;
-},{"./tag":7}],3:[function(require,module,exports){
+},{"./tag":8}],3:[function(require,module,exports){
 /** @jsx tag */
 var tag = require('./tag');
+var _ = require('underscore');
+var TableRowItem = require('./TableRowItem');
 
 var CustomTableView = {
-  render: function() {
+  render: function(props) {
+    var products = props.data;
+
     return tag("TableView", {style:{
             flex: 1,
             backgroundColor: '#FFFFFF',
             height: 400,
             top: 800
           }}, [
-            tag("Text", {style:{
-              color: '#F01D62',
-              height: 44,
-              width: 200
-            },
-            value:"Small Cell One"} ),
-            tag("Text", {style:{
-              color: '#1D62F0',
-              height: 88,
-              width: 200
-            },
-            value:"Large Cell Two"} )
+            _.map(products, function(product) {
+              return TableRowItem.render({
+                product: product
+              });
+            })
           ])
   }
 };
 
 module.exports = CustomTableView;
-},{"./tag":7}],4:[function(require,module,exports){
+},{"./TableRowItem":4,"./tag":8,"underscore":7}],4:[function(require,module,exports){
+/** @jsx tag */
+var tag = require('./tag');
+
+var TableRowItem = {
+  render: function(props) {
+    var product = props.product;
+
+    return tag("Text", {style:{
+            color: '#1D62F0',
+            height: 44,
+            width: 300          
+        },
+        value:product.product} )
+  }
+};
+
+module.exports = TableRowItem;
+},{"./tag":8}],5:[function(require,module,exports){
 /** @jsx tag */
 var tag = require('./tag');
 var _ = require('underscore');
@@ -195,7 +210,7 @@ var p3 = diff(example3.before, example3.after);
 //console.log('Example3', p3);
 
 module.exports = diff;
-},{"./tag":7,"underscore":6}],5:[function(require,module,exports){
+},{"./tag":8,"underscore":7}],6:[function(require,module,exports){
 (function (global){
 /** @jsx tag */
 var tag = require('./tag');
@@ -206,6 +221,10 @@ var diff = require('./diff');
 var Button1 = require('./Button1');
 var Button2 = require('./Button2');
 var CustomTableView = require('./CustomTableView');
+
+var products = [{
+  product: 'Loading...' //just to make it show as a cell for now
+}];
 
 var previousRenderedTree;
 var renderedTree = {};
@@ -218,11 +237,13 @@ var Cortex = {
           flex: 1,
           backgroundColor: '#EEEEEE',
           justifyContent: 'center',
-          paddingBottom: 300
+          paddingBottom: 164
         }} , [
           Button1.render(),
           Button2.render(),
-          CustomTableView.render()
+          CustomTableView.render({
+            data: products
+          })
         ])
       ]));
   }
@@ -263,7 +284,7 @@ function clickHandler(path) {
   var node = nodeAtPath(renderedTree, path.split('.'));
   node.props.onClick();
   
-  generatePatch();
+  renderComponent(Cortex.render());
 }
 
 function panHandler(path, translation) {
@@ -272,28 +293,26 @@ function panHandler(path, translation) {
   var node = nodeAtPath(renderedTree, path.split('.'));
   node.props.onDrag(translation.x, translation.y);
   
-  generatePatch();
+  renderComponent(Cortex.render());
 }
 
-function generatePatch (tree) {
-  if (!tree) {
-    tree = Cortex.render();
-  };
-
+function renderComponent (tree) {
   mergeNodes(tree, computeLayout(tree));
 
   previousRenderedTree = renderedTree;
   renderedTree = tree;
 
   var patch = diff(previousRenderedTree, renderedTree);
-  console.log(JSON.stringify(patch, null, 2));
+  // console.log(JSON.stringify(patch, null, 2));
 
   applyPatch(patch);
 
   return patch;
 }
 
-generatePatch();
+// console.log(JSON.stringify(Cortex.render(), null, 2));
+
+renderComponent(Cortex.render());
 
 
 request.get('http://developer.myntra.com/search/data/nike', function (err, res) {
@@ -303,30 +322,9 @@ request.get('http://developer.myntra.com/search/data/nike', function (err, res) 
     return;
   }
 
-  var products = res.data.results.products
+  products = res.data.results.products;
 
-  var productNames = _.pluck(products, 'product');
-
-  var renderedChildren = _.map(productNames, function (name) {
-    return {
-        type: 'Text',
-        props: {
-          style: {
-            color: '#1D62F0',
-            height: 44,
-            width: 300
-          },
-          value: name
-        },
-        children: []
-      };
-  });
-
-  var tree = Cortex.render();
-  tree.children[0].children[2].children = renderedChildren;
-
-  // generatePatch(tree);
-
+  renderComponent(Cortex.render());
 });
 
 // setup globals
@@ -339,7 +337,7 @@ global.panHandler = panHandler;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Button1":1,"./Button2":2,"./CustomTableView":3,"./diff":4,"./tag":7,"underscore":6}],6:[function(require,module,exports){
+},{"./Button1":1,"./Button2":2,"./CustomTableView":3,"./diff":5,"./tag":8,"underscore":7}],7:[function(require,module,exports){
 //     Underscore.js 1.7.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -1756,13 +1754,17 @@ global.panHandler = panHandler;
   }
 }.call(this));
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 function tag(name, props, children){
 	var o; 
 	if(Array.isArray(props)){
 		children = props;
 		props = {};
 	}
+
+	if (children && Array.isArray(children[0])) {
+		children = children[0];
+	};
 
 	return {
 		type: name,
@@ -1772,4 +1774,4 @@ function tag(name, props, children){
 }
 
 module.exports = tag;
-},{}]},{},[5]);
+},{}]},{},[6]);

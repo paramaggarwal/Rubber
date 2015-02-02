@@ -8,6 +8,10 @@ var Button1 = require('./Button1');
 var Button2 = require('./Button2');
 var CustomTableView = require('./CustomTableView');
 
+var products = [{
+  product: 'Loading...' //just to make it show as a cell for now
+}];
+
 var previousRenderedTree;
 var renderedTree = {};
 
@@ -19,11 +23,13 @@ var Cortex = {
           flex: 1,
           backgroundColor: '#EEEEEE',
           justifyContent: 'center',
-          paddingBottom: 300
+          paddingBottom: 164
         }} >
           {Button1.render()}
           {Button2.render()}
-          {CustomTableView.render()}
+          {CustomTableView.render({
+            data: products
+          })}
         </ScrollView>
       </ViewController>);
   }
@@ -64,7 +70,7 @@ function clickHandler(path) {
   var node = nodeAtPath(renderedTree, path.split('.'));
   node.props.onClick();
   
-  generatePatch();
+  renderComponent(Cortex.render());
 }
 
 function panHandler(path, translation) {
@@ -73,28 +79,26 @@ function panHandler(path, translation) {
   var node = nodeAtPath(renderedTree, path.split('.'));
   node.props.onDrag(translation.x, translation.y);
   
-  generatePatch();
+  renderComponent(Cortex.render());
 }
 
-function generatePatch (tree) {
-  if (!tree) {
-    tree = Cortex.render();
-  };
-
+function renderComponent (tree) {
   mergeNodes(tree, computeLayout(tree));
 
   previousRenderedTree = renderedTree;
   renderedTree = tree;
 
   var patch = diff(previousRenderedTree, renderedTree);
-  console.log(JSON.stringify(patch, null, 2));
+  // console.log(JSON.stringify(patch, null, 2));
 
   applyPatch(patch);
 
   return patch;
 }
 
-generatePatch();
+// console.log(JSON.stringify(Cortex.render(), null, 2));
+
+renderComponent(Cortex.render());
 
 
 request.get('http://developer.myntra.com/search/data/nike', function (err, res) {
@@ -104,30 +108,9 @@ request.get('http://developer.myntra.com/search/data/nike', function (err, res) 
     return;
   }
 
-  var products = res.data.results.products
+  products = res.data.results.products;
 
-  var productNames = _.pluck(products, 'product');
-
-  var renderedChildren = _.map(productNames, function (name) {
-    return {
-        type: 'Text',
-        props: {
-          style: {
-            color: '#1D62F0',
-            height: 44,
-            width: 300
-          },
-          value: name
-        },
-        children: []
-      };
-  });
-
-  var tree = Cortex.render();
-  tree.children[0].children[2].children = renderedChildren;
-
-  // generatePatch(tree);
-
+  renderComponent(Cortex.render());
 });
 
 // setup globals

@@ -42,21 +42,21 @@
         
         // depth first, so that parent has access to rendered children
         for (int i=0; i < tree.children.count; i++) {
-            RBViewModel *child = [tree.children objectAtIndex:i];
-            RBViewModel *previousChild = [previousTree.children objectAtIndex:i];
+            
+            RBViewModel *child = (i < tree.children.count) ? [tree.children objectAtIndex:i] : nil;
+            RBViewModel *previousChild = (i < previousTree.children.count) ? [previousTree.children objectAtIndex:i] : nil;
             
             [self applyPatch:child previousPatch:previousChild];
         }
 
-        RBView *renderedView = (RBView *)tree.correspondingObject;
-        [renderedView update:tree];
+        [(RBView *)tree.correspondingObject update:tree];
         
     } else if ([tree.action isEqualToString:@"add"]) {
         tree.correspondingObject = [self createComponent:tree];
         
     } else if ([tree.action isEqualToString:@"remove"]) {
         // will be handled by the parent internally
-        // [tree.correspondingObject removeFromSuperview];
+        // tree.correspondingObject = nil;
         
     } else if ([tree.action isEqualToString:@"replace"]) {
         // removal will be handled by the parent internally

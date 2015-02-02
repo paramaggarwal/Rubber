@@ -22,7 +22,7 @@
 
 - (void)renderView {
     
-    self.renderedView = [RBView create:self.modelData];
+    self.renderedView = (UIView *)self.modelData.correspondingObject;
     
     // reset frame origin
     CGRect frame = self.renderedView.frame;
@@ -31,6 +31,17 @@
     
     [self.contentView addSubview:self.renderedView];
     self.contentView.clipsToBounds = YES;
+    
+    // manage children
+    for (RBViewModel *childModel in self.modelData.children) {
+        UIView *childView = (UIView *)childModel.correspondingObject;
+        
+        if ([childModel.action isEqualToString:@"remove"]) {
+            [childView removeFromSuperview];
+        } else {
+            [self.renderedView addSubview:childView];
+        }
+    }
 }
 
 - (void)prepareForReuse {

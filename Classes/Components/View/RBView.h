@@ -9,7 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "RBViewModel.h"
 
-@interface RBView : UIView
+@protocol RubberComponent <NSObject>
+
+@required
++ (UIView *)create:(RBViewModel *)model;
+- (void)update:(RBViewModel *)model;
+
+@end
+
+
+@interface RBView : UIView <RubberComponent>
 
 + (UIView *)create:(RBViewModel *)model;
 - (void)update:(RBViewModel *)model;
