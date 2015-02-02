@@ -16,7 +16,10 @@
     "ios": "7.0"
   },
   "requires_arc": true,
-  "public_header_files": "Classes/Rubber.h",
+  "public_header_files": [
+    "Classes/Rubber.h",
+    "Classes/CSSLayout/CSSLayout.h"
+  ],
   "source_files": [
     "Classes",
     "Classes/**/*.{h,m,c}"

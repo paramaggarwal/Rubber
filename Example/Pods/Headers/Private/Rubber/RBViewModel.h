@@ -1,1 +1,1 @@
-../../../../../Classes/Components/RBViewModel.h
+../../../../../Classes/Components/View/RBViewModel.h
