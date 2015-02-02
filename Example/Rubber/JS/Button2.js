@@ -2,7 +2,7 @@
 var tag = require('./tag');
 
 var num = 0;
-var top = 500;
+var top = 200;
 var left = 50;
 
 var Button2 = {

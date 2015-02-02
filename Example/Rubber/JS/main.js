@@ -4,7 +4,7 @@ var window = this;
 var tag = require('./tag');
 
 var num = 0;
-var top = 300;
+var top = 0;
 var left = 50;
 
 var Button1 = {
@@ -43,7 +43,7 @@ module.exports = Button1;
 var tag = require('./tag');
 
 var num = 0;
-var top = 500;
+var top = 200;
 var left = 50;
 
 var Button2 = {
@@ -231,24 +231,48 @@ var renderedTree = {};
 
 var Cortex = {
   render: function () {
-    return (
-      tag("NavigationController", [
-        tag("ViewController", {title:"Demo", style:{}}, [
-          tag("ScrollView", {style:{
-            flex: 1,
-            backgroundColor: '#EEEEEE',
-            justifyContent: 'center',
-            paddingBottom: 164
-          }} , [
-            Button1.render(),
-            Button2.render(),
-            CustomTableView.render({
-              data: products
-            })
+    if (products.length > 1) {
+      return (
+        tag("NavigationController", [
+          tag("ViewController", {title:"Demo", style:{}}, [
+            tag("ScrollView", {style:{
+              height: 700,
+              backgroundColor: '#EEEEEE',
+              justifyContent: 'center'
+            }} , [
+              Button1.render(),
+              Button2.render()
+            ])
+          ]),
+          tag("ViewController", {title:"Nike", style:{}}, [
+            tag("ScrollView", {style:{
+              height: 700,
+              backgroundColor: '#EEEEEE',
+              justifyContent: 'center',
+            }} , [
+              CustomTableView.render({
+                data: products
+              })
+            ])
           ])
         ])
-      ])
-    );
+      );
+    } else {
+      return (
+        tag("NavigationController", [
+          tag("ViewController", {title:"Demo", style:{}}, [
+            tag("ScrollView", {style:{
+              height: 700,
+              backgroundColor: '#EEEEEE',
+              justifyContent: 'center'
+            }} , [
+              Button1.render(),
+              Button2.render()
+            ])
+          ])
+        ])
+      );
+    }
   }
 };
 

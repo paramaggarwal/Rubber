@@ -17,24 +17,48 @@ var renderedTree = {};
 
 var Cortex = {
   render: function () {
-    return (
-      <NavigationController>
-        <ViewController title='Demo' style={{}}>
-          <ScrollView style={{
-            flex: 1,
-            backgroundColor: '#EEEEEE',
-            justifyContent: 'center',
-            paddingBottom: 164
-          }} >
-            {Button1.render()}
-            {Button2.render()}
-            {CustomTableView.render({
-              data: products
-            })}
-          </ScrollView>
-        </ViewController>
-      </NavigationController>
-    );
+    if (products.length > 1) {
+      return (
+        <NavigationController>
+          <ViewController title='Demo' style={{}}>
+            <ScrollView style={{
+              height: 700,
+              backgroundColor: '#EEEEEE',
+              justifyContent: 'center'
+            }} >
+              {Button1.render()}
+              {Button2.render()}
+            </ScrollView>
+          </ViewController>
+          <ViewController title='Nike' style={{}}>
+            <ScrollView style={{
+              height: 700,
+              backgroundColor: '#EEEEEE',
+              justifyContent: 'center',
+            }} >
+              {CustomTableView.render({
+                data: products
+              })}
+            </ScrollView>
+          </ViewController>
+        </NavigationController>
+      );
+    } else {
+      return (
+        <NavigationController>
+          <ViewController title='Demo' style={{}}>
+            <ScrollView style={{
+              height: 700,
+              backgroundColor: '#EEEEEE',
+              justifyContent: 'center'
+            }} >
+              {Button1.render()}
+              {Button2.render()}
+            </ScrollView>
+          </ViewController>
+        </NavigationController>
+      );
+    }
   }
 };
 
