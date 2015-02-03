@@ -125,14 +125,15 @@
         
         if ([tree.correspondingObject isKindOfClass:UIView.class]) {
             UIView *view = (UIView *)tree.correspondingObject;
+            RBViewModel *viewModel = (RBViewModel *)tree.fullObject;
             
-            if (tree.needsClickHandler) {
+            if (viewModel.needsClickHandler) {
                 UITapGestureRecognizer *gestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
                 [view addGestureRecognizer:gestureRecogniser];
                 [view setUserInteractionEnabled:YES];
             }
             
-            if (tree.needsPanGesture) {
+            if (viewModel.needsPanGesture) {
                 UIPanGestureRecognizer *gestureRecogniser = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
                 [view addGestureRecognizer:gestureRecogniser];
                 [view setUserInteractionEnabled:YES];
@@ -157,7 +158,6 @@
     } else if ([tree.action isEqualToString:@"remove"]) {
         // will be handled by the parent internally
         // tree.correspondingObject = nil;
-        
     }
     
 }
@@ -180,30 +180,15 @@
 
         [gestureRecognizer setTranslation:CGPointZero inView:[recognizer.view superview]];
     }
-
-    NSLog(@"Tapped %@", path);
 }
 
 - (void)backButtonTapped:(UIBarButtonItem *)button {
-    
-//    NSString *path = [self.patchTree searchPath:@"0" forView:recognizer.view];
-//    
-//    if ([recognizer isKindOfClass:UITapGestureRecognizer.class]) {
-//        if ([self.gestureDelegate respondsToSelector:@selector(pathTapped:)]) {
-//            [self.gestureDelegate performSelector:@selector(pathTapped:) withObject:path];
-//        };
-//    } else if ([recognizer isKindOfClass:UIPanGestureRecognizer.class]) {
-//        UIPanGestureRecognizer *gestureRecognizer = (UIPanGestureRecognizer *)recognizer;
-//        CGPoint translation = [gestureRecognizer translationInView:[recognizer.view superview]];
-//        
-//        if ([self.gestureDelegate respondsToSelector:@selector(pathPanned::)]) {
-//            [self.gestureDelegate performSelector:@selector(pathPanned::) withObject:path withObject:[NSValue valueWithCGPoint:translation]];
-//        };
-//        
-//        [gestureRecognizer setTranslation:CGPointZero inView:[recognizer.view superview]];
-//    }
-//    
-//    NSLog(@"Tapped %@", path);
+
+    if ([self.gestureDelegate respondsToSelector:@selector(backButtonTapped)]) {
+        [self.gestureDelegate performSelector:@selector(backButtonTapped)];
+    };
+
+    NSLog(@"Back button tapped.");
 }
 
 @end

@@ -5,8 +5,8 @@ var Rubber = require('./rubber');
 var Button3 = Rubber.createClass({
   getInitialState: function () {
     return {
-      top: 0,
-      left: 0
+      top: 10,
+      left: 10
     };
   },
   

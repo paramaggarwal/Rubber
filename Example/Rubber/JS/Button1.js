@@ -3,10 +3,12 @@
 var Rubber = require('./rubber');
 
 var Button1 = Rubber.createClass({
-  state: {
-    num: 0,
-    top: 0,
-    left: 50
+  getInitialState: function () {
+    return {
+      num: 0,
+      top: 0,
+      left: 50
+    }
   },
   
   onClick: function (e) {

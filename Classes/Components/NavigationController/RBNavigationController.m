@@ -38,24 +38,24 @@
 
 - (void)update:(RBNavigationControllerModel *)model {
     
-//    RBViewControllerModel *firstControllerModel = (RBViewControllerModel *)[model.children firstObject];
-//    RBViewControllerModel *lastControllerModel = (RBViewControllerModel *)[model.children lastObject];
-    NSMutableArray *array = [[NSMutableArray alloc] init];
+    RBViewControllerModel *firstControllerModel = (RBViewControllerModel *)[model.children firstObject];
+    RBViewControllerModel *lastControllerModel = (RBViewControllerModel *)[model.children lastObject];
     
-    for (RBViewControllerModel *controller in model.children) {
-        [array addObject:controller.correspondingObject];
+    if (![firstControllerModel isEqual:lastControllerModel]) {
+        if ([lastControllerModel.action isEqualToString:@"remove"]) {
+            [self popViewControllerAnimated:YES];
+        } else if ([lastControllerModel.action isEqualToString:@"add"]) {
+            RBViewController *controller = (RBViewController *)lastControllerModel.correspondingObject;
+            [self pushViewController:controller animated:YES];
+        }
+    } else {
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+        for (RBViewControllerModel *controller in model.children) {
+            [array addObject:controller.correspondingObject];
+        }
+        [self setViewControllers:array animated:YES];
     }
-    
-    [self setViewControllers:array animated:YES];
-    
-//    if (![firstControllerModel isEqual:lastControllerModel]) {
-//        if ([lastControllerModel.action isEqualToString:@"remove"]) {
-//            [self popViewControllerAnimated:YES];
-//        } else if ([lastControllerModel.action isEqualToString:@"add"]) {
-//            RBViewController *controller = (RBViewController *)lastControllerModel.correspondingObject;
-//            [self pushViewController:controller animated:YES];
-//        }
-//    }
 }
 
 @end

@@ -5,10 +5,12 @@ var window = this;
 var Rubber = require('./rubber');
 
 var Button1 = Rubber.createClass({
-  state: {
-    num: 0,
-    top: 0,
-    left: 50
+  getInitialState: function () {
+    return {
+      num: 0,
+      top: 0,
+      left: 50
+    }
   },
   
   onClick: function (e) {
@@ -48,10 +50,12 @@ module.exports = Button1;
 var Rubber = require('./rubber');
 
 var Button2 = Rubber.createClass({
-  state: {
-    num: 0,
-    top: 200,
-    left: 50
+  getInitialState: function () {
+    return {
+      num: 0,
+      top: 200,
+      left: 50      
+    }
   },
 
   onClick: function (e) {
@@ -93,8 +97,8 @@ var Rubber = require('./rubber');
 var Button3 = Rubber.createClass({
   getInitialState: function () {
     return {
-      top: 0,
-      left: 0
+      top: 10,
+      left: 10
     };
   },
   
@@ -414,6 +418,18 @@ var Cortex = Rubber.createClass({
     };
   },
 
+  goBack: function () {
+
+    if (this.state.activeScreen = 'pdp') {
+      this.state.activeScreen = 'search';
+    };
+
+    if (this.state.activeScreen = 'search') {
+      this.state.activeScreen = 'home';
+    };
+
+  },
+
   showSearch: function (products) {
     console.log('Now will show search results: ' + products.length);
     this.state.activeScreen = 'search';
@@ -435,14 +451,14 @@ var Cortex = Rubber.createClass({
     var self = this;
 
     return (
-      Rubber.createElement("ViewController", {title:"Demo", style:{}}, [
+      Rubber.createElement("ViewController", {title:"Demo"}, [
         Rubber.createElement("ScrollView", {style:{
           flex: 1,
           backgroundColor: '#EEEEEE'
         }} , [
-          Button1().render(),
-          Button2().render(),
-          Button3().render({
+          Button1Rendered.render(),
+          Button2Rendered.render(),
+          Button3Rendered.render({
             onLoadResults: self.showSearch
           })
         ])
@@ -455,7 +471,7 @@ var Cortex = Rubber.createClass({
 
     return (
       Rubber.createElement("ViewController", {title:"Nike", needsBackButton:true, style:{}}, [
-        SearchResultsView().render({
+        SearchResultsViewRendered.render({
           data: self.state.products,
           onSelectRow: self.showPDP
         })
@@ -466,7 +482,7 @@ var Cortex = Rubber.createClass({
   pdpView: function () {
     var self = this;
 
-    return PDPView().render({
+    return PDPViewRendered.render({
       data: self.state.pdpData
     });
   },
@@ -509,21 +525,25 @@ function nodeAtPath(tree, path) {
 }
 
 global.clickHandler = function (path) {
-  console.log('Tapped path: ' + path);
-
   var node = nodeAtPath(renderedTree, path.split('.'));
   node.props.onClick();
   
   renderComponent(CortexApp.render());
+  console.log('Tapped path: ' + path);
 }
 
 global.panHandler = function (path, translation) {
-  console.log('Panned path: ' + path);
-
   var node = nodeAtPath(renderedTree, path.split('.'));
   node.props.onDrag(translation.x, translation.y);
   
   renderComponent(CortexApp.render());
+  console.log('Panned path: ' + path);
+}
+
+global.backButtonHandler = function () {
+  CortexApp.goBack();
+  renderComponent(CortexApp.render());
+  console.log('Going back...');
 }
 
 function renderComponent (tree) {
@@ -531,7 +551,7 @@ function renderComponent (tree) {
   renderedTree = tree;
 
   var patch = diff(previousRenderedTree, renderedTree);
-  // console.log(JSON.stringify(patch, null, 2));
+  console.log(JSON.stringify(patch, null, 2));
 
   applyPatch(patch);
 
@@ -539,6 +559,11 @@ function renderComponent (tree) {
 }
 
 var CortexApp = Cortex();
+var Button1Rendered = Button1();
+var Button2Rendered = Button2();
+var Button3Rendered = Button3();
+var SearchResultsViewRendered = SearchResultsView();
+var PDPViewRendered = PDPView();
 
 // console.log(JSON.stringify(CortexApp.render(), null, 2));
 

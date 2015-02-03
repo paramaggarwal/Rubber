@@ -118,4 +118,9 @@
     [JSClickHandler callWithArguments:@[path, pan]];
 }
 
+- (void)backButtonTapped {
+    JSValue *JSClickHandler = self.context[@"backButtonHandler"];
+    [JSClickHandler callWithArguments:@[]];
+}
+
 @end

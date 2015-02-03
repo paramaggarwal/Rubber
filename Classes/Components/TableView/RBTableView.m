@@ -46,13 +46,13 @@
         
         if ([childModel.action isEqualToString:@"update"]) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-            [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         } else if ([childModel.action isEqualToString:@"remove"]) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-            [self deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
         } else {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-            [self insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
         }
     }
     [self endUpdates];
