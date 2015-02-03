@@ -9,6 +9,7 @@ var Button1 = require('./Button1');
 var Button2 = require('./Button2');
 var Button3 = require('./Button3');
 var SearchResultsView = require('./SearchResultsView');
+var PDPView = require('./PDPView');
 
 var previousRenderedTree;
 var renderedTree = {};
@@ -20,7 +21,8 @@ var Cortex = Rubber.createClass({
       products: [{
         product: 'Loading...'
       }],
-      styleid: 379421
+      styleid: null,
+      pdpData: {}
     };
   },
 
@@ -32,10 +34,11 @@ var Cortex = Rubber.createClass({
     renderComponent(CortexApp.render());
   },
 
-  showPDP: function (styleid) {
+  showPDP: function (styleid, data) {
     console.log('Now will show PDP: ' + styleid);
     this.state.activeScreen = 'pdp';
     this.state.styleid = styleid;
+    if (data) this.state.pdpData = data;
 
     renderComponent(CortexApp.render());
   },
@@ -75,16 +78,9 @@ var Cortex = Rubber.createClass({
   pdpView: function () {
     var self = this;
 
-    return (
-      <ViewController title='PDP' needsBackButton={true} style={{}}>
-        <View style={{
-        flex: 1,
-        backgroundColor: '#EEEEEE'
-      }} >
-          <Text style={{flex: 1}} value={'PDP Page for ' + self.state.styleid}  />
-        </View>
-      </ViewController>
-    );
+    return PDPView().render({
+      data: self.state.pdpData
+    });
   },
 
   render: function () {

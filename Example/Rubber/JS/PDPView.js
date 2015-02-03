@@ -2,39 +2,37 @@
 
 var Rubber = require('./rubber');
 var _ = require('underscore');
-var TableRowItem = require('./TableRowItem');
 
 var SearchResultsView = Rubber.createClass({
   getInitialState: function () {
     return {
-      products: []
+      data: {}
     };
   },
 
-  didSelectRow: function (index) {
-    this.parentsOnSelectRow & this.parentsOnSelectRow(this.state.products[index].styleid);
-  },
-
   render: function (props) {
-    var products = props.data;
-
-    this.state.products = props.data;
-    this.parentsOnSelectRow = props.onSelectRow;
-
     var self = this;
+    var pdpData = props.data || {};
 
-    return <TableView style={{
-            flex: 1,
-            backgroundColor: '#FFFFFF'
-          }} rowHeight={100} >
-            {_.map(products, function(product, index) {
-              return TableRowItem().render({
-                product: product,
-                key: index,
-                didSelectRow: self.didSelectRow
-              });
-            })}
-          </TableView>
+    return (
+      <ViewController title={pdpData.brandName || 'PDP'} needsBackButton={true} style={{}}>
+        <ScrollView style={{
+        flex: 1,
+        backgroundColor: '#FFFFFF'
+      }} >
+        <View style={{height: 800}}>
+          <Image style={{flex: 10}} src={pdpData.styleImages && pdpData.styleImages['default'].resolutions['360X480']} />
+          <Text style={{flex: 1}} value={pdpData.productDisplayName || ''} />
+          <Text style={{flex: 1}} value={pdpData.discountedPrice ? ('Rs. ' + pdpData.discountedPrice) : ''} />
+          <Text style={{flex: 1}} value={pdpData.id ? ('Product Id: ' + pdpData.id) : ''} />
+          <Text style={{flex: 1}} value={pdpData.productDisplayName || ''} />
+
+          <Text style={{flex: 1}} value={'Product Description'} />
+          <Text style={{flex: 6}} value={pdpData.productDescriptors ? pdpData.productDescriptors.description.value : ''} />
+        </View>
+        </ScrollView>
+      </ViewController>
+    );
   }
 });
 

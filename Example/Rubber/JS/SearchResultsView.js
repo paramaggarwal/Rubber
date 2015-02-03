@@ -12,7 +12,18 @@ var SearchResultsView = Rubber.createClass({
   },
 
   didSelectRow: function (index) {
-    this.parentsOnSelectRow & this.parentsOnSelectRow(this.state.products[index].styleid);
+    var self = this;
+    var styleid = this.state.products[index].styleid;
+    self.parentsOnSelectRow & self.parentsOnSelectRow(styleid);
+
+    request.get('http://developer.myntra.com/style/' + styleid, function (err, res) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      self.parentsOnSelectRow & self.parentsOnSelectRow(styleid, res.data);
+    });
   },
 
   render: function (props) {

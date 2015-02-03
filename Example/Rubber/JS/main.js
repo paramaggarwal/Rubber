@@ -42,7 +42,7 @@ var Button1 = Rubber.createClass({
 });
 
 module.exports = Button1;
-},{"./rubber":9}],2:[function(require,module,exports){
+},{"./rubber":10}],2:[function(require,module,exports){
 /** @jsx Rubber.createElement */
 
 var Rubber = require('./rubber');
@@ -85,7 +85,7 @@ var Button2 = Rubber.createClass({
 });
 
 module.exports = Button2;
-},{"./rubber":9}],3:[function(require,module,exports){
+},{"./rubber":10}],3:[function(require,module,exports){
 /** @jsx Rubber.createElement */
 
 var Rubber = require('./rubber');
@@ -100,6 +100,9 @@ var Button3 = Rubber.createClass({
   
   showResults: function () {
     var self = this;
+    self.onLoadResults([{
+      product: 'Loading...'
+    }]);
 
     request.get('http://developer.myntra.com/search/data/nike-shoes', function (err, res) {
       if (err) {
@@ -143,7 +146,47 @@ var Button3 = Rubber.createClass({
 });
 
 module.exports = Button3;
-},{"./rubber":9}],4:[function(require,module,exports){
+},{"./rubber":10}],4:[function(require,module,exports){
+/** @jsx Rubber.createElement */
+
+var Rubber = require('./rubber');
+var _ = require('underscore');
+
+var SearchResultsView = Rubber.createClass({
+  getInitialState: function () {
+    return {
+      data: {}
+    };
+  },
+
+  render: function (props) {
+    var self = this;
+    var pdpData = props.data || {};
+
+    return (
+      Rubber.createElement("ViewController", {title:pdpData.brandName || 'PDP', needsBackButton:true, style:{}}, [
+        Rubber.createElement("ScrollView", {style:{
+        flex: 1,
+        backgroundColor: '#FFFFFF'
+      }} , [
+        Rubber.createElement("View", {style:{height: 800}}, [
+          Rubber.createElement("Image", {style:{flex: 10}, src:pdpData.styleImages && pdpData.styleImages['default'].resolutions['360X480']} ),
+          Rubber.createElement("Text", {style:{flex: 1}, value:pdpData.productDisplayName || ''} ),
+          Rubber.createElement("Text", {style:{flex: 1}, value:pdpData.discountedPrice ? ('Rs. ' + pdpData.discountedPrice) : ''} ),
+          Rubber.createElement("Text", {style:{flex: 1}, value:pdpData.id ? ('Product Id: ' + pdpData.id) : ''} ),
+          Rubber.createElement("Text", {style:{flex: 1}, value:pdpData.productDisplayName || ''} ),
+
+          Rubber.createElement("Text", {style:{flex: 1}, value:'Product Description'} ),
+          Rubber.createElement("Text", {style:{flex: 6}, value:pdpData.productDescriptors ? pdpData.productDescriptors.description.value : ''} )
+        ])
+        ])
+      ])
+    );
+  }
+});
+
+module.exports = SearchResultsView;
+},{"./rubber":10,"underscore":9}],5:[function(require,module,exports){
 /** @jsx Rubber.createElement */
 
 var Rubber = require('./rubber');
@@ -158,7 +201,18 @@ var SearchResultsView = Rubber.createClass({
   },
 
   didSelectRow: function (index) {
-    this.parentsOnSelectRow & this.parentsOnSelectRow(this.state.products[index].styleid);
+    var self = this;
+    var styleid = this.state.products[index].styleid;
+    self.parentsOnSelectRow & self.parentsOnSelectRow(styleid);
+
+    request.get('http://developer.myntra.com/style/' + styleid, function (err, res) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      self.parentsOnSelectRow & self.parentsOnSelectRow(styleid, res.data);
+    });
   },
 
   render: function (props) {
@@ -185,7 +239,7 @@ var SearchResultsView = Rubber.createClass({
 });
 
 module.exports = SearchResultsView;
-},{"./TableRowItem":5,"./rubber":9,"underscore":8}],5:[function(require,module,exports){
+},{"./TableRowItem":6,"./rubber":10,"underscore":9}],6:[function(require,module,exports){
 /** @jsx Rubber.createElement */
 
 var Rubber = require('./rubber');
@@ -237,7 +291,7 @@ var TableRowItem = Rubber.createClass({
 });
 
 module.exports = TableRowItem;
-},{"./rubber":9}],6:[function(require,module,exports){
+},{"./rubber":10}],7:[function(require,module,exports){
 /** @jsx Rubber.createElement */
 
 var Rubber = require('./rubber');
@@ -330,7 +384,7 @@ var p3 = diff(example3.before, example3.after);
 //console.log('Example3', p3);
 
 module.exports = diff;
-},{"./rubber":9,"underscore":8}],7:[function(require,module,exports){
+},{"./rubber":10,"underscore":9}],8:[function(require,module,exports){
 (function (global){
 /** @jsx Rubber.createElement */
 
@@ -343,6 +397,7 @@ var Button1 = require('./Button1');
 var Button2 = require('./Button2');
 var Button3 = require('./Button3');
 var SearchResultsView = require('./SearchResultsView');
+var PDPView = require('./PDPView');
 
 var previousRenderedTree;
 var renderedTree = {};
@@ -354,7 +409,8 @@ var Cortex = Rubber.createClass({
       products: [{
         product: 'Loading...'
       }],
-      styleid: 379421
+      styleid: null,
+      pdpData: {}
     };
   },
 
@@ -366,10 +422,11 @@ var Cortex = Rubber.createClass({
     renderComponent(CortexApp.render());
   },
 
-  showPDP: function (styleid) {
+  showPDP: function (styleid, data) {
     console.log('Now will show PDP: ' + styleid);
     this.state.activeScreen = 'pdp';
     this.state.styleid = styleid;
+    if (data) this.state.pdpData = data;
 
     renderComponent(CortexApp.render());
   },
@@ -409,16 +466,9 @@ var Cortex = Rubber.createClass({
   pdpView: function () {
     var self = this;
 
-    return (
-      Rubber.createElement("ViewController", {title:"PDP", needsBackButton:true, style:{}}, [
-        Rubber.createElement("View", {style:{
-        flex: 1,
-        backgroundColor: '#EEEEEE'
-      }} , [
-          Rubber.createElement("Text", {style:{flex: 1}, value:'PDP Page for ' + self.state.styleid}  )
-        ])
-      ])
-    );
+    return PDPView().render({
+      data: self.state.pdpData
+    });
   },
 
   render: function () {
@@ -495,7 +545,7 @@ var CortexApp = Cortex();
 renderComponent(CortexApp.render());
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Button1":1,"./Button2":2,"./Button3":3,"./SearchResultsView":4,"./diff":6,"./rubber":9,"underscore":8}],8:[function(require,module,exports){
+},{"./Button1":1,"./Button2":2,"./Button3":3,"./PDPView":4,"./SearchResultsView":5,"./diff":7,"./rubber":10,"underscore":9}],9:[function(require,module,exports){
 //     Underscore.js 1.7.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -1912,7 +1962,7 @@ renderComponent(CortexApp.render());
   }
 }.call(this));
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var _ = require('underscore');
 
 function createClass (spec) {
@@ -1964,4 +2014,4 @@ var Rubber = {
 };
 
 module.exports = Rubber;
-},{"underscore":8}]},{},[7]);
+},{"underscore":9}]},{},[8]);

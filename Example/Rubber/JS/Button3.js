@@ -12,6 +12,9 @@ var Button3 = Rubber.createClass({
   
   showResults: function () {
     var self = this;
+    self.onLoadResults([{
+      product: 'Loading...'
+    }]);
 
     request.get('http://developer.myntra.com/search/data/nike-shoes', function (err, res) {
       if (err) {
