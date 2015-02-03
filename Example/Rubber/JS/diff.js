@@ -1,5 +1,6 @@
-/** @jsx tag */
-var tag = require('./tag');
+/** @jsx Rubber.createElement */
+
+var Rubber = require('./rubber');
 var _ = require('underscore');
 
 var example1 = {

@@ -1,57 +1,49 @@
-/** @jsx tag */
-var tag = require('./tag');
+/** @jsx Rubber.createElement */
+
+var Rubber = require('./rubber');
 
 var _ = require('underscore');
 var diff = require('./diff');
 
 var Button1 = require('./Button1');
 var Button2 = require('./Button2');
-var CustomTableView = require('./CustomTableView');
-
-var products = [{
-  product: 'Loading...' //just to make it show as a cell for now
-}];
+var Button3 = require('./Button3');
+var SearchResultsView = require('./SearchResultsView');
 
 var previousRenderedTree;
 var renderedTree = {};
-var secondScreen;
 
-var left = 0;
-var top = 0;
-var Button3 = {
-  onClick: function (e) {
-    showResults();
+var Cortex = Rubber.createClass({
+  getInitialState: function () {
+    return {
+      activeScreen: 'home',
+      products: [{
+        product: 'Loading...'
+      }],
+      styleid: null
+    };
   },
 
-  onDrag: function (x, y) {
-    left += x;
-    top += y;
+  showSearch: function (products) {
+    console.log('Now will show search results: ' + products.length);
+    this.state.activeScreen = 'search';
+    this.state.products = products;
+
+    renderComponent(CortexApp.render());
+  },
+
+  showPDP: function (styleid) {
+    console.log('Now will show PDP: ' + styleid);
+    this.state.activeScreen = 'pdp';
+    this.state.styleid = styleid;
+
+    renderComponent(CortexApp.render());
   },
 
   render: function () {
+    var self = this;
 
-    return (
-      <Text onClick={this.onClick}
-    needsClickHandler={true}
-    onDrag={this.onDrag}
-    needsPanGesture={true}
-    style={{
-      backgroundColor: '#1DD062',
-      color: '#FFFFFF',
-      borderRadius: 10,
-      textAlign: 'center',
-      height: 50,
-      width: 200,
-      top: top,
-      left: left
-    }}
-    value={'See some Nike shoes'} />);
-  }
-};
-
-var Cortex = {
-  render: function () {
-    if (secondScreen) {
+    if (this.state.activeScreen === 'search') {
       return (
         <NavigationController>
           <ViewController title='Demo' style={{}}>
@@ -59,19 +51,22 @@ var Cortex = {
               flex: 1,
               backgroundColor: '#EEEEEE'
             }} >
-              {Button1.render()}
-              {Button2.render()}
-              {Button3.render()}
+              {Button1().render()}
+              {Button2().render()}
+              {Button3().render({
+                onLoadResults: self.showSearch
+              })}
             </ScrollView>
           </ViewController>
           <ViewController title='Nike' needsBackButton={true} style={{}}>
-              {CustomTableView.render({
-                data: products
+              {SearchResultsView().render({
+                data: self.state.products,
+                onSelectRow: self.showPDP
               })}
           </ViewController>
         </NavigationController>
       );
-    } else {
+    } else if (this.state.activeScreen === 'home') {
       return (
         <NavigationController>
           <ViewController title='Demo' style={{}}>
@@ -79,16 +74,49 @@ var Cortex = {
               flex: 1,
               backgroundColor: '#EEEEEE'
             }} >
-              {Button1.render()}
-              {Button2.render()}
-              {Button3.render()}
+              {Button1().render()}
+              {Button2().render()}
+              {Button3().render({
+                onLoadResults: self.showSearch
+              })}
             </ScrollView>
           </ViewController>
         </NavigationController>
       );
-    }
+    } else if (this.state.activeScreen === 'pdp') {
+      return (
+        <NavigationController>
+          <ViewController title='Demo' style={{}}>
+            <ScrollView style={{
+              flex: 1,
+              backgroundColor: '#EEEEEE'
+            }} >
+              {Button1().render()}
+              {Button2().render()}
+              {Button3().render({
+                onLoadResults: self.showSearch
+              })}
+            </ScrollView>
+          </ViewController>
+          <ViewController title='Nike' needsBackButton={true} style={{}}>
+            {SearchResultsView().render({
+              data: self.state.products,
+              onSelectRow: self.showPDP
+            })}
+          </ViewController>
+          <ViewController title='PDP' needsBackButton={true} style={{}}>
+            <View style={{
+            flex: 1,
+            backgroundColor: '#EEEEEE'
+          }} >
+              <Text style={{flex: 1}} value={'PDP Page' + self.state.styleid}  />
+            </View>
+          </ViewController>
+        </NavigationController>
+      );
+    } 
   }
-};
+});
 
 function nodeAtPath(tree, path) {
   
@@ -103,22 +131,22 @@ function nodeAtPath(tree, path) {
   }, tree);
 }
 
-function clickHandler(path) {
+global.clickHandler = function (path) {
   console.log('Tapped path: ' + path);
 
   var node = nodeAtPath(renderedTree, path.split('.'));
   node.props.onClick();
   
-  renderComponent(Cortex.render());
+  renderComponent(CortexApp.render());
 }
 
-function panHandler(path, translation) {
+global.panHandler = function (path, translation) {
   console.log('Panned path: ' + path);
 
   var node = nodeAtPath(renderedTree, path.split('.'));
   node.props.onDrag(translation.x, translation.y);
   
-  renderComponent(Cortex.render());
+  renderComponent(CortexApp.render());
 }
 
 function renderComponent (tree) {
@@ -126,38 +154,15 @@ function renderComponent (tree) {
   renderedTree = tree;
 
   var patch = diff(previousRenderedTree, renderedTree);
-  console.log(JSON.stringify(patch, null, 2));
+  // console.log(JSON.stringify(patch, null, 2));
 
   applyPatch(patch);
 
   return patch;
 }
 
-// console.log(JSON.stringify(Cortex.render(), null, 2));
+var CortexApp = Cortex();
 
-renderComponent(Cortex.render());
+// console.log(JSON.stringify(CortexApp.render(), null, 2));
 
-
-function showResults() {
-  secondScreen = true;
-  renderComponent(Cortex.render());
-
-  request.get('http://developer.myntra.com/search/data/nike', function (err, res) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-
-    products = res.data.results.products;
-    renderComponent(Cortex.render());
-  });  
-}
-
-// setup globals
-global.clickHandler = clickHandler;
-global.panHandler = panHandler;
-
-
-
-
-
+renderComponent(CortexApp.render());

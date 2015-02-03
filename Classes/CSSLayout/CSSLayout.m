@@ -217,7 +217,7 @@
 
 + (void)layoutNode:(css_node_t *)node {
     layoutNode(node, FLT_MAX);
-    print_css_node(node, CSS_PRINT_LAYOUT | CSS_PRINT_CHILDREN);
+//    print_css_node(node, CSS_PRINT_LAYOUT | CSS_PRINT_CHILDREN);
 }
 
 @end

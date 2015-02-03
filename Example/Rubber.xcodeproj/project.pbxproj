@@ -68,7 +68,6 @@
 		8BCF760E1A7E045100A2D551 = {
 			isa = PBXGroup;
 			children = (
-				8BCF76401A7E045D00A2D551 /* JavaScriptCore.framework */,
 				8BCF76191A7E045100A2D551 /* Rubber */,
 				8BCF76331A7E045100A2D551 /* RubberTests */,
 				8BCF76181A7E045100A2D551 /* Products */,
@@ -145,6 +144,7 @@
 		DCEB1F386B39DA3D8CE91D97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BCF76401A7E045D00A2D551 /* JavaScriptCore.framework */,
 				7622F4E8A3E38DDF796B1179 /* libPods-Rubber.a */,
 			);
 			name = Frameworks;

@@ -1,25 +1,28 @@
 var window = this;
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/** @jsx tag */
-var tag = require('./tag');
+/** @jsx Rubber.createElement */
 
-var num = 0;
-var top = 0;
-var left = 50;
+var Rubber = require('./rubber');
 
-var Button1 = {
+var Button1 = Rubber.createClass({
+  state: {
+    num: 0,
+    top: 0,
+    left: 50
+  },
+  
   onClick: function (e) {
-    num++;
+    this.state.num++;
   },
 
   onDrag: function (x, y) {
-    left += x;
-    top += y;
+    this.state.left += x;
+    this.state.top += y;
   },
 
   render: function () {
 
-    return tag("Text", {onClick:this.onClick,
+    return Rubber.createElement("Text", {onClick:this.onClick,
     needsClickHandler:true,
     onDrag:this.onDrag,
     needsPanGesture:true,
@@ -30,36 +33,40 @@ var Button1 = {
       textAlign: 'center',
       height: 50,
       width: 200,
-      top: top,
-      left: left
+      top: this.state.top,
+      left: this.state.left
     },
-    value:num ? ('Tapped me ' + num + ((num==1) ? ' time.' : ' times.')) : 'Hello there! Tap me...'} )
+    value:this.state.num ? ('Tapped me ' + this.state.num + ((this.state.num==1) ? ' time.' : ' times.')) : 'Hello there! Tap me...'} )
   }
-};
+
+});
 
 module.exports = Button1;
-},{"./tag":8}],2:[function(require,module,exports){
-/** @jsx tag */
-var tag = require('./tag');
+},{"./rubber":9}],2:[function(require,module,exports){
+/** @jsx Rubber.createElement */
 
-var num = 0;
-var top = 200;
-var left = 50;
+var Rubber = require('./rubber');
 
-var Button2 = {
+var Button2 = Rubber.createClass({
+  state: {
+    num: 0,
+    top: 200,
+    left: 50
+  },
+
   onClick: function (e) {
-    num++;
+    this.state.num++;
   },
 
   onDrag: function (x, y) {
-    left += x;
-    top += y;
+    this.state.left += x;
+    this.state.top += y;
   },
 
   render: function () {
 
     return (
-      tag("Text", {onClick:this.onClick,
+      Rubber.createElement("Text", {onClick:this.onClick,
     needsClickHandler:true,
     onDrag:this.onDrag,
     needsPanGesture:true,
@@ -70,64 +77,155 @@ var Button2 = {
       textAlign: 'center',
       height: 50,
       width: 200,
-      top: top,
-      left: left
+      top: this.state.top,
+      left: this.state.left
     },
-    value:num ? ('Tapped me ' + num + ((num==1) ? ' time.' : ' times.')) : 'Hello there! Tap me...'} ));
+    value:this.state.num ? ('Tapped me ' + this.state.num + ((this.state.num==1) ? ' time.' : ' times.')) : 'Hello there! Tap me...'} ));
   }
-};
+});
 
 module.exports = Button2;
-},{"./tag":8}],3:[function(require,module,exports){
-/** @jsx tag */
-var tag = require('./tag');
+},{"./rubber":9}],3:[function(require,module,exports){
+/** @jsx Rubber.createElement */
+
+var Rubber = require('./rubber');
+
+var Button3 = Rubber.createClass({
+  getInitialState: function () {
+    return {
+      top: 0,
+      left: 0
+    };
+  },
+  
+  showResults: function () {
+    var self = this;
+
+    request.get('http://developer.myntra.com/search/data/nike-shoes', function (err, res) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      self.onLoadResults(res.data.results.products);
+    });  
+  },
+
+  onClick: function (e) {
+    this.showResults();
+  },
+
+  onDrag: function (x, y) {
+    this.state.left += x;
+    this.state.top += y;
+  },
+
+  render: function (props) {
+    this.onLoadResults = props.onLoadResults;
+
+    return (
+      Rubber.createElement("Text", {onClick:this.onClick,
+    needsClickHandler:true,
+    onDrag:this.onDrag,
+    needsPanGesture:true,
+    style:{
+      backgroundColor: '#1DD062',
+      color: '#FFFFFF',
+      borderRadius: 10,
+      textAlign: 'center',
+      height: 50,
+      width: 200,
+      top: this.state.top,
+      left: this.state.left
+    },
+    value:'Search for Nike shoes'} ));
+  }
+});
+
+module.exports = Button3;
+},{"./rubber":9}],4:[function(require,module,exports){
+/** @jsx Rubber.createElement */
+
+var Rubber = require('./rubber');
 var _ = require('underscore');
 var TableRowItem = require('./TableRowItem');
 
-var CustomTableView = {
-  render: function(props) {
+var SearchResultsView = Rubber.createClass({
+  getInitialState: function () {
+    return {
+      products: []
+    };
+  },
+
+  didSelectRow: function (index) {
+    this.parentsOnSelectRow & this.parentsOnSelectRow(this.state.products[index].styleid);
+  },
+
+  render: function (props) {
     var products = props.data;
 
-    return tag("TableView", {style:{
+    this.state.products = props.data;
+    this.parentsOnSelectRow = props.onSelectRow;
+
+    var self = this;
+
+    return Rubber.createElement("TableView", {style:{
             flex: 1,
             backgroundColor: '#FFFFFF'
           }, rowHeight:100} , [
-            _.map(products, function(product, i) {
-              return TableRowItem.render({
-                product: product
+            _.map(products, function(product, index) {
+              return TableRowItem().render({
+                product: product,
+                key: index,
+                didSelectRow: self.didSelectRow
               });
             })
           ])
   }
-};
+});
 
-module.exports = CustomTableView;
-},{"./TableRowItem":4,"./tag":8,"underscore":7}],4:[function(require,module,exports){
-/** @jsx tag */
-var tag = require('./tag');
+module.exports = SearchResultsView;
+},{"./TableRowItem":5,"./rubber":9,"underscore":8}],5:[function(require,module,exports){
+/** @jsx Rubber.createElement */
 
-var TableRowItem = {
+var Rubber = require('./rubber');
+
+var TableRowItem = Rubber.createClass({
+  getInitialState: function() {
+    return {
+      name: '',
+      key: null,
+      didSelectRow: null
+    }
+  },
+
   onClick: function () {
+    this.didSelectRow && this.didSelectRow(this.state.key);
   },
 
   render: function(props) {
     var product = props.product;
+    var key = props.key;
+
+    this.state.name = props.product.product;
+    this.state.key = props.key;
+    this.didSelectRow = props.didSelectRow;
 
     return (
-      tag("View", {style:{height: 100, flexDirection: 'row'}, onClick:this.onClick, needsClickHandler:true} , [
-        tag("Image", {style:{
+      Rubber.createElement("View", {style:{height: 100, flexDirection: 'row'}, onClick:this.onClick, needsClickHandler:true} , [
+        Rubber.createElement("Image", {style:{
           flex: 1
         },
         src:product.search_image} ),
-        tag("View", {style:{
+        Rubber.createElement("View", {style:{
           flex: 3
         }}, [
-          tag("Text", {style:{
+          Rubber.createElement("Text", {style:{
             flex: 2,
             color: '#333333'
           },
-          value:product.product} ),
-          tag("Text", {style:{
+          value:key + ' ' + product.product} ),
+          Rubber.createElement("Text", {style:{
             flex: 1,
             color: '#666666'
           },
@@ -136,34 +234,35 @@ var TableRowItem = {
       ])
     );
   }
-};
+});
 
 module.exports = TableRowItem;
-},{"./tag":8}],5:[function(require,module,exports){
-/** @jsx tag */
-var tag = require('./tag');
+},{"./rubber":9}],6:[function(require,module,exports){
+/** @jsx Rubber.createElement */
+
+var Rubber = require('./rubber');
 var _ = require('underscore');
 
 var example1 = {
   before: {},
-  after: tag("tile", [
-    tag("text", {value:"hello"})
+  after: Rubber.createElement("tile", [
+    Rubber.createElement("text", {value:"hello"})
   ])
 };
 
 var example2 = {
-  before: tag("tile", [
-    tag("text", {value:"hello"})
+  before: Rubber.createElement("tile", [
+    Rubber.createElement("text", {value:"hello"})
   ]),
-  after: tag("tile")    
+  after: Rubber.createElement("tile")    
 };
 
 var example3 = {
-  before:tag("tile", [
-    tag("text", {value:"namaste"})
+  before:Rubber.createElement("tile", [
+    Rubber.createElement("text", {value:"namaste"})
   ]),
-  after:tag("tile", [
-    tag("text", {value:"hello"})
+  after:Rubber.createElement("tile", [
+    Rubber.createElement("text", {value:"hello"})
   ])
 
 };
@@ -231,99 +330,127 @@ var p3 = diff(example3.before, example3.after);
 //console.log('Example3', p3);
 
 module.exports = diff;
-},{"./tag":8,"underscore":7}],6:[function(require,module,exports){
+},{"./rubber":9,"underscore":8}],7:[function(require,module,exports){
 (function (global){
-/** @jsx tag */
-var tag = require('./tag');
+/** @jsx Rubber.createElement */
+
+var Rubber = require('./rubber');
 
 var _ = require('underscore');
 var diff = require('./diff');
 
 var Button1 = require('./Button1');
 var Button2 = require('./Button2');
-var CustomTableView = require('./CustomTableView');
-
-var products = [{
-  product: 'Loading...' //just to make it show as a cell for now
-}];
+var Button3 = require('./Button3');
+var SearchResultsView = require('./SearchResultsView');
 
 var previousRenderedTree;
 var renderedTree = {};
-var secondScreen;
 
-var left = 0;
-var top = 0;
-var Button3 = {
-  onClick: function (e) {
-    showResults();
+var Cortex = Rubber.createClass({
+  getInitialState: function () {
+    return {
+      activeScreen: 'home',
+      products: [{
+        product: 'Loading...'
+      }],
+      styleid: null
+    };
   },
 
-  onDrag: function (x, y) {
-    left += x;
-    top += y;
+  showSearch: function (products) {
+    console.log('Now will show search results: ' + products.length);
+    this.state.activeScreen = 'search';
+    this.state.products = products;
+
+    renderComponent(CortexApp.render());
+  },
+
+  showPDP: function (styleid) {
+    console.log('Now will show PDP: ' + styleid);
+    this.state.activeScreen = 'pdp';
+    this.state.styleid = styleid;
+
+    renderComponent(CortexApp.render());
   },
 
   render: function () {
+    var self = this;
 
-    return (
-      tag("Text", {onClick:this.onClick,
-    needsClickHandler:true,
-    onDrag:this.onDrag,
-    needsPanGesture:true,
-    style:{
-      backgroundColor: '#1DD062',
-      color: '#FFFFFF',
-      borderRadius: 10,
-      textAlign: 'center',
-      height: 50,
-      width: 200,
-      top: top,
-      left: left
-    },
-    value:'See some Nike shoes'} ));
-  }
-};
-
-var Cortex = {
-  render: function () {
-    if (secondScreen) {
+    if (this.state.activeScreen === 'search') {
       return (
-        tag("NavigationController", [
-          tag("ViewController", {title:"Demo", style:{}}, [
-            tag("ScrollView", {style:{
+        Rubber.createElement("NavigationController", [
+          Rubber.createElement("ViewController", {title:"Demo", style:{}}, [
+            Rubber.createElement("ScrollView", {style:{
               flex: 1,
               backgroundColor: '#EEEEEE'
             }} , [
-              Button1.render(),
-              Button2.render(),
-              Button3.render()
+              Button1().render(),
+              Button2().render(),
+              Button3().render({
+                onLoadResults: self.showSearch
+              })
             ])
           ]),
-          tag("ViewController", {title:"Nike", needsBackButton:true, style:{}}, [
-              CustomTableView.render({
-                data: products
+          Rubber.createElement("ViewController", {title:"Nike", needsBackButton:true, style:{}}, [
+              SearchResultsView().render({
+                data: self.state.products,
+                onSelectRow: self.showPDP
               })
           ])
         ])
       );
-    } else {
+    } else if (this.state.activeScreen === 'home') {
       return (
-        tag("NavigationController", [
-          tag("ViewController", {title:"Demo", style:{}}, [
-            tag("ScrollView", {style:{
+        Rubber.createElement("NavigationController", [
+          Rubber.createElement("ViewController", {title:"Demo", style:{}}, [
+            Rubber.createElement("ScrollView", {style:{
               flex: 1,
               backgroundColor: '#EEEEEE'
             }} , [
-              Button1.render(),
-              Button2.render(),
-              Button3.render()
+              Button1().render(),
+              Button2().render(),
+              Button3().render({
+                onLoadResults: self.showSearch
+              })
             ])
           ])
         ])
       );
-    }
+    } else if (this.state.activeScreen === 'pdp') {
+      return (
+        Rubber.createElement("NavigationController", [
+          Rubber.createElement("ViewController", {title:"Demo", style:{}}, [
+            Rubber.createElement("ScrollView", {style:{
+              flex: 1,
+              backgroundColor: '#EEEEEE'
+            }} , [
+              Button1().render(),
+              Button2().render(),
+              Button3().render({
+                onLoadResults: self.showSearch
+              })
+            ])
+          ]),
+          Rubber.createElement("ViewController", {title:"Nike", needsBackButton:true, style:{}}, [
+            SearchResultsView().render({
+              data: self.state.products,
+              onSelectRow: self.showPDP
+            })
+          ]),
+          Rubber.createElement("ViewController", {title:"PDP", needsBackButton:true, style:{}}, [
+            Rubber.createElement("View", {style:{
+            flex: 1,
+            backgroundColor: '#EEEEEE'
+          }} , [
+              Rubber.createElement("Text", {style:{flex: 1}, value:'PDP Page' + self.state.styleid}  )
+            ])
+          ])
+        ])
+      );
+    } 
   }
-};
+});
 
 function nodeAtPath(tree, path) {
   
@@ -338,22 +465,22 @@ function nodeAtPath(tree, path) {
   }, tree);
 }
 
-function clickHandler(path) {
+global.clickHandler = function (path) {
   console.log('Tapped path: ' + path);
 
   var node = nodeAtPath(renderedTree, path.split('.'));
   node.props.onClick();
   
-  renderComponent(Cortex.render());
+  renderComponent(CortexApp.render());
 }
 
-function panHandler(path, translation) {
+global.panHandler = function (path, translation) {
   console.log('Panned path: ' + path);
 
   var node = nodeAtPath(renderedTree, path.split('.'));
   node.props.onDrag(translation.x, translation.y);
   
-  renderComponent(Cortex.render());
+  renderComponent(CortexApp.render());
 }
 
 function renderComponent (tree) {
@@ -361,44 +488,21 @@ function renderComponent (tree) {
   renderedTree = tree;
 
   var patch = diff(previousRenderedTree, renderedTree);
-  console.log(JSON.stringify(patch, null, 2));
+  // console.log(JSON.stringify(patch, null, 2));
 
   applyPatch(patch);
 
   return patch;
 }
 
-// console.log(JSON.stringify(Cortex.render(), null, 2));
+var CortexApp = Cortex();
 
-renderComponent(Cortex.render());
+// console.log(JSON.stringify(CortexApp.render(), null, 2));
 
-
-function showResults() {
-  secondScreen = true;
-  renderComponent(Cortex.render());
-
-  request.get('http://developer.myntra.com/search/data/nike', function (err, res) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-
-    products = res.data.results.products;
-    renderComponent(Cortex.render());
-  });  
-}
-
-// setup globals
-global.clickHandler = clickHandler;
-global.panHandler = panHandler;
-
-
-
-
-
+renderComponent(CortexApp.render());
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Button1":1,"./Button2":2,"./CustomTableView":3,"./diff":5,"./tag":8,"underscore":7}],7:[function(require,module,exports){
+},{"./Button1":1,"./Button2":2,"./Button3":3,"./SearchResultsView":4,"./diff":6,"./rubber":9,"underscore":8}],8:[function(require,module,exports){
 //     Underscore.js 1.7.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -1815,24 +1919,56 @@ global.panHandler = panHandler;
   }
 }.call(this));
 
-},{}],8:[function(require,module,exports){
-function tag(name, props, children){
-	var o; 
-	if(Array.isArray(props)){
-		children = props;
-		props = {};
-	}
+},{}],9:[function(require,module,exports){
+var _ = require('underscore');
 
-	if (children && Array.isArray(children[0])) {
-		children = children[0];
-	};
+function createClass (spec) {
 
-	return {
-		type: name,
-		props: props || {},
-		children: children || []
-	}
+  var C = function() {
+
+    if (!(this instanceof C)) {
+      return new C();
+    }
+
+    var self = this;
+    _.each(C.prototype, function(v, k){
+      if (typeof self[k] === 'function') {
+        self[k] = self[k].bind(self);
+      }
+    });
+
+    if (self.getInitialState) {
+      self.state = self.getInitialState();
+    };
+  };
+
+  _.extend(C.prototype, spec);
+
+  return C;
 }
 
-module.exports = tag;
-},{}]},{},[6]);
+function createElement (name, props, children){
+  var o; 
+  if(Array.isArray(props)){
+    children = props;
+    props = {};
+  }
+
+  if (children && Array.isArray(children[0])) {
+    children = children[0];
+  };
+
+  return {
+    type: name,
+    props: props || {},
+    children: children || []
+  }
+}
+
+var Rubber = {
+  createClass: createClass,
+  createElement: createElement
+};
+
+module.exports = Rubber;
+},{"underscore":8}]},{},[7]);

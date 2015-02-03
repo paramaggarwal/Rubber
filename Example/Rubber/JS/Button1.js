@@ -1,18 +1,21 @@
-/** @jsx tag */
-var tag = require('./tag');
+/** @jsx Rubber.createElement */
 
-var num = 0;
-var top = 0;
-var left = 50;
+var Rubber = require('./rubber');
 
-var Button1 = {
+var Button1 = Rubber.createClass({
+  state: {
+    num: 0,
+    top: 0,
+    left: 50
+  },
+  
   onClick: function (e) {
-    num++;
+    this.state.num++;
   },
 
   onDrag: function (x, y) {
-    left += x;
-    top += y;
+    this.state.left += x;
+    this.state.top += y;
   },
 
   render: function () {
@@ -28,11 +31,12 @@ var Button1 = {
       textAlign: 'center',
       height: 50,
       width: 200,
-      top: top,
-      left: left
+      top: this.state.top,
+      left: this.state.left
     }}
-    value={num ? ('Tapped me ' + num + ((num==1) ? ' time.' : ' times.')) : 'Hello there! Tap me...'} />
+    value={this.state.num ? ('Tapped me ' + this.state.num + ((this.state.num==1) ? ' time.' : ' times.')) : 'Hello there! Tap me...'} />
   }
-};
+
+});
 
 module.exports = Button1;
