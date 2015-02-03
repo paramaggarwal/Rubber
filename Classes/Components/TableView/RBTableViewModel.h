@@ -10,4 +10,6 @@
 
 @interface RBTableViewModel : RBModel
 
+@property (nonatomic, copy, readonly) NSNumber *rowHeight;
+
 @end

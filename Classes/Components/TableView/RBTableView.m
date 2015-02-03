@@ -16,10 +16,8 @@
         
     RBTableView *tableView = [[RBTableView alloc] initWithFrame:model.layoutRect];
     [tableView registerClass:RBTableViewCell.class forCellReuseIdentifier:@"cell"];
-    
     tableView.dataSource = tableView;
     tableView.delegate = tableView;
-    tableView.rowHeight = 88.0f;
     
     [tableView update:model];
     
@@ -36,25 +34,30 @@
         self.backgroundColor = model.style.backgroundColor;
     }
     
-    // manage children
+    if (model.rowHeight != nil) {
+        self.rowHeight = model.rowHeight.floatValue;
+    }
+    
     self.modelData = model.children;
-//    [self beginUpdates];
-//    for (int i=0; i < model.children.count; i++) {
-//        RBModel *childModel = model.children[i];
-//        
-//        if ([childModel.action isEqualToString:@"update"]) {
-//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-//            [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//        } else if ([childModel.action isEqualToString:@"remove"]) {
-//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-//            [self deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//        } else {
-//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-//            [self insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//        }
-//    }
-//    [self endUpdates];
-    [self reloadData];
+    
+    [self beginUpdates];
+    for (int i=0; i < model.children.count; i++) {
+        RBModel *childModel = model.children[i];
+        
+        if ([childModel.action isEqualToString:@"update"]) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        } else if ([childModel.action isEqualToString:@"remove"]) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [self deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        } else {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [self insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    }
+    [self endUpdates];
+    
+//    [self reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -70,12 +73,6 @@
     [cell renderView];
     
     return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    RBModel *modelData = [self.modelData objectAtIndex:indexPath.row];
-    return modelData.style.height.floatValue;
 }
 
 @end

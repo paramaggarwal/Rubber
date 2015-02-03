@@ -13,7 +13,9 @@
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     NSDictionary *parentKeys = [super JSONKeyPathsByPropertyKey];
-    return [parentKeys mtl_dictionaryByAddingEntriesFromDictionary:@{}];
+    return [parentKeys mtl_dictionaryByAddingEntriesFromDictionary:@{
+                                                                     @"rowHeight": @"props.rowHeight"
+                                                                     }];
 }
 
 @end

@@ -91,8 +91,8 @@ var CustomTableView = {
     return tag("TableView", {style:{
             flex: 1,
             backgroundColor: '#FFFFFF'
-          }}, [
-            _.map(products, function(product) {
+          }, rowHeight:100} , [
+            _.map(products, function(product, i) {
               return TableRowItem.render({
                 product: product
               });
