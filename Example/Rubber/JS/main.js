@@ -299,15 +299,10 @@ var Cortex = {
               Button3.render()
             ])
           ]),
-          tag("ViewController", {title:"Nike", style:{}}, [
-            tag("ScrollView", {style:{
-              flex: 1,
-              backgroundColor: '#EEEEEE'
-            }} , [
+          tag("ViewController", {title:"Nike", needsBackButton:true, style:{}}, [
               CustomTableView.render({
                 data: products
               })
-            ])
           ])
         ])
       );

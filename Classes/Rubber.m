@@ -84,89 +84,82 @@
             [(RBNavigationController *)tree.correspondingObject update:(RBNavigationControllerModel *)tree];
         }
         
-    } else if ([tree.action isEqualToString:@"add"]) {
-        tree.correspondingObject = [self createComponent:tree];
+    } else if ([tree.action isEqualToString:@"add"] || [tree.action isEqualToString:@"replace"]) {
+        
+        if ([tree isKindOfClass:RBViewControllerModel.class]) {
+            tree.correspondingObject = [RBViewController create:(RBViewControllerModel *)tree];
+        }
+        
+        // depth first, so that parent has access to rendered children
+        for (RBModel *child in tree.children) {
+            [self applyPatch:child previousPatch:nil];
+        }
+        
+        if ([tree isKindOfClass:RBScrollViewModel.class]) {
+            tree.correspondingObject = [RBScrollView create:(RBScrollViewModel *)tree];
+        }
+        
+        if ([tree isKindOfClass:RBTableViewModel.class]) {
+            tree.correspondingObject = [RBTableView create:(RBTableViewModel *)tree];
+        }
+        
+        if ([tree isKindOfClass:RBTextModel.class]) {
+            tree.correspondingObject = [RBText create:(RBTextModel *)tree];
+        }
+        
+        if ([tree isKindOfClass:RBImageModel.class]) {
+            tree.correspondingObject = [RBImage create:(RBImageModel *)tree];
+        }
+        
+        if ([tree isKindOfClass:RBViewControllerModel.class]) {
+            [(RBViewController *)tree.correspondingObject updateChildren:(RBViewControllerModel *)tree];
+        }
+        
+        if ([tree isKindOfClass:RBNavigationControllerModel.class]) {
+            tree.correspondingObject = [RBNavigationController create:(RBNavigationControllerModel *)tree];
+        }
+        
+        if ([tree isKindOfClass:RBViewModel.class]) {
+            tree.correspondingObject = [RBView create:(RBViewModel *)tree];
+        }
+        
+        if ([tree.correspondingObject isKindOfClass:UIView.class]) {
+            UIView *view = (UIView *)tree.correspondingObject;
+            
+            if (tree.needsClickHandler) {
+                UITapGestureRecognizer *gestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+                [view addGestureRecognizer:gestureRecogniser];
+                [view setUserInteractionEnabled:YES];
+            }
+            
+            if (tree.needsPanGesture) {
+                UIPanGestureRecognizer *gestureRecogniser = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+                [view addGestureRecognizer:gestureRecogniser];
+                [view setUserInteractionEnabled:YES];
+            }
+            
+        }
+        
+        if ([tree.correspondingObject isKindOfClass:RBViewController.class]) {
+            RBViewController *viewController = (RBViewController *)tree.correspondingObject;
+            RBViewControllerModel *viewControllerModel = (RBViewControllerModel *)tree;
+            
+            if (viewControllerModel.needsBackButton) {
+                viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
+                                                                   initWithImage:[UIImage imageNamed:@"back-button-icon"]
+                                                                   style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(backButtonTapped:)];
+            }
+            
+        }
         
     } else if ([tree.action isEqualToString:@"remove"]) {
         // will be handled by the parent internally
         // tree.correspondingObject = nil;
         
-    } else if ([tree.action isEqualToString:@"replace"]) {
-        // removal will be handled by the parent internally
-        // [tree.correspondingObject removeFromSuperview];
-        tree.correspondingObject = [self createComponent:tree];
     }
     
-}
-
-- (id)createComponent:(RBModel *)model {
-    id correspondingObject;
-
-    if ([model isKindOfClass:RBViewControllerModel.class]) {
-        correspondingObject = [RBViewController create:(RBViewControllerModel *)model];
-    }
-
-    // depth first, so that parent has access to rendered children
-    for (RBModel *child in model.children) {
-        child.correspondingObject = [self createComponent:child];
-    }
-
-    if ([model isKindOfClass:RBScrollViewModel.class]) {
-        correspondingObject = [RBScrollView create:(RBScrollViewModel *)model];
-    }
-    
-    if ([model isKindOfClass:RBTableViewModel.class]) {
-        correspondingObject = [RBTableView create:(RBTableViewModel *)model];
-    }
-    
-    if ([model isKindOfClass:RBTextModel.class]) {
-        correspondingObject = [RBText create:(RBTextModel *)model];
-    }
-    
-    if ([model isKindOfClass:RBImageModel.class]) {
-        correspondingObject = [RBImage create:(RBImageModel *)model];
-    }
-
-    if ([model isKindOfClass:RBViewControllerModel.class]) {
-        [(RBViewController *)correspondingObject updateChildren:(RBViewControllerModel *)model];
-    }
-    
-    if ([model isKindOfClass:RBNavigationControllerModel.class]) {
-        correspondingObject = [RBNavigationController create:(RBNavigationControllerModel *)model];
-    }
-
-    if ([model isKindOfClass:RBViewModel.class]) {
-        correspondingObject = [RBView create:(RBViewModel *)model];
-    }
-
-    if ([correspondingObject isKindOfClass:UIView.class]) {
-        UIView *view = (UIView *)correspondingObject;
-        
-        if (model.needsClickHandler) {
-            UITapGestureRecognizer *gestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
-            [view addGestureRecognizer:gestureRecogniser];
-            [view setUserInteractionEnabled:YES];
-        }
-        
-        if (model.needsPanGesture) {
-            UIPanGestureRecognizer *gestureRecogniser = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
-            [view addGestureRecognizer:gestureRecogniser];
-            [view setUserInteractionEnabled:YES];
-        }
-        
-    }
-    
-    if ([correspondingObject isKindOfClass:RBViewController.class]) {
-        RBViewController *viewController = (RBViewController *)correspondingObject;
-        RBViewControllerModel *viewControllerModel = (RBViewControllerModel *)model;
-        
-        if (viewControllerModel.needsBackButton) {
-            viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back-button-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(backButtonTapped:)];
-        }
-        
-    }
-    
-    return correspondingObject;
 }
 
 - (void)handleGesture:(UIGestureRecognizer *)recognizer {

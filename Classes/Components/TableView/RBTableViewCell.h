@@ -13,7 +13,6 @@
 
 - (void)renderView;
 
-@property RBModel *modelData;
-@property UIView *renderedView;
+@property RBModel *model;
 
 @end

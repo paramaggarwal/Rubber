@@ -22,30 +22,41 @@
 
 - (void)renderView {
     
-    self.renderedView = (UIView *)self.modelData.correspondingObject;
+    UIView *view = (UIView *)self.model.correspondingObject;
     
     // reset frame origin
-    CGRect frame = self.renderedView.frame;
+    CGRect frame = view.frame;
     frame.origin = CGPointZero;
-    self.renderedView.frame = frame;
+    view.frame = frame;
     
-    [self.contentView addSubview:self.renderedView];
-    self.contentView.clipsToBounds = YES;
+    for (UIView *view in self.contentView.subviews) {
+        [view removeFromSuperview];
+    };
+    [self.contentView addSubview:view];
+//    self.contentView.clipsToBounds = YES;
     
-    // manage children
-    for (RBModel *childModel in self.modelData.children) {
-        UIView *childView = (UIView *)childModel.correspondingObject;
-        
-        if ([childModel.action isEqualToString:@"remove"]) {
-            [childView removeFromSuperview];
-        } else {
-            [self.renderedView addSubview:childView];
-        }
-    }
+//    // manage children
+//    for (RBModel *childModel in self.model.children) {
+//        UIView *childView = (UIView *)childModel.correspondingObject;
+//        
+//        if ([childModel.action isEqualToString:@"remove"]) {
+//            if ([view.subviews indexOfObject:childModel] != NSNotFound) {
+//                [childView removeFromSuperview];
+//            }
+//        } else {
+//            if ([view.subviews indexOfObject:childModel] == NSNotFound) {
+//                [view addSubview:childView];
+//            }
+//        }
+//    }
 }
 
 - (void)prepareForReuse {
-    [self.renderedView removeFromSuperview];
+//    UIView *view = (UIView *)self.model.correspondingObject;
+
+//    for (UIView *view in self.contentView.subviews) {
+//        [view removeFromSuperview];
+//    };
 }
 
 @end
