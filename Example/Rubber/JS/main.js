@@ -224,7 +224,7 @@ var TableRowItem = Rubber.createClass({
             flex: 2,
             color: '#333333'
           },
-          value:key + ' ' + product.product} ),
+          value:product.product} ),
           Rubber.createElement("Text", {style:{
             flex: 1,
             color: '#666666'
@@ -354,7 +354,7 @@ var Cortex = Rubber.createClass({
       products: [{
         product: 'Loading...'
       }],
-      styleid: null
+      styleid: 379421
     };
   },
 
@@ -374,81 +374,74 @@ var Cortex = Rubber.createClass({
     renderComponent(CortexApp.render());
   },
 
-  render: function () {
+  homeView: function() {
     var self = this;
 
+    return (
+      Rubber.createElement("ViewController", {title:"Demo", style:{}}, [
+        Rubber.createElement("ScrollView", {style:{
+          flex: 1,
+          backgroundColor: '#EEEEEE'
+        }} , [
+          Button1().render(),
+          Button2().render(),
+          Button3().render({
+            onLoadResults: self.showSearch
+          })
+        ])
+      ])
+    );
+  },
+
+  searchView: function () {
+    var self = this;
+
+    return (
+      Rubber.createElement("ViewController", {title:"Nike", needsBackButton:true, style:{}}, [
+        SearchResultsView().render({
+          data: self.state.products,
+          onSelectRow: self.showPDP
+        })
+      ])
+    );
+  },
+
+  pdpView: function () {
+    var self = this;
+
+    return (
+      Rubber.createElement("ViewController", {title:"PDP", needsBackButton:true, style:{}}, [
+        Rubber.createElement("View", {style:{
+        flex: 1,
+        backgroundColor: '#EEEEEE'
+      }} , [
+          Rubber.createElement("Text", {style:{flex: 1}, value:'PDP Page for ' + self.state.styleid}  )
+        ])
+      ])
+    );
+  },
+
+  render: function () {
+    var self = this;
+    var array = [];
+
+    if (this.state.activeScreen === 'home') {
+      array = [this.homeView()];
+    };
+
     if (this.state.activeScreen === 'search') {
-      return (
-        Rubber.createElement("NavigationController", [
-          Rubber.createElement("ViewController", {title:"Demo", style:{}}, [
-            Rubber.createElement("ScrollView", {style:{
-              flex: 1,
-              backgroundColor: '#EEEEEE'
-            }} , [
-              Button1().render(),
-              Button2().render(),
-              Button3().render({
-                onLoadResults: self.showSearch
-              })
-            ])
-          ]),
-          Rubber.createElement("ViewController", {title:"Nike", needsBackButton:true, style:{}}, [
-              SearchResultsView().render({
-                data: self.state.products,
-                onSelectRow: self.showPDP
-              })
-          ])
-        ])
-      );
-    } else if (this.state.activeScreen === 'home') {
-      return (
-        Rubber.createElement("NavigationController", [
-          Rubber.createElement("ViewController", {title:"Demo", style:{}}, [
-            Rubber.createElement("ScrollView", {style:{
-              flex: 1,
-              backgroundColor: '#EEEEEE'
-            }} , [
-              Button1().render(),
-              Button2().render(),
-              Button3().render({
-                onLoadResults: self.showSearch
-              })
-            ])
-          ])
-        ])
-      );
-    } else if (this.state.activeScreen === 'pdp') {
-      return (
-        Rubber.createElement("NavigationController", [
-          Rubber.createElement("ViewController", {title:"Demo", style:{}}, [
-            Rubber.createElement("ScrollView", {style:{
-              flex: 1,
-              backgroundColor: '#EEEEEE'
-            }} , [
-              Button1().render(),
-              Button2().render(),
-              Button3().render({
-                onLoadResults: self.showSearch
-              })
-            ])
-          ]),
-          Rubber.createElement("ViewController", {title:"Nike", needsBackButton:true, style:{}}, [
-            SearchResultsView().render({
-              data: self.state.products,
-              onSelectRow: self.showPDP
-            })
-          ]),
-          Rubber.createElement("ViewController", {title:"PDP", needsBackButton:true, style:{}}, [
-            Rubber.createElement("View", {style:{
-            flex: 1,
-            backgroundColor: '#EEEEEE'
-          }} , [
-              Rubber.createElement("Text", {style:{flex: 1}, value:'PDP Page' + self.state.styleid}  )
-            ])
-          ])
-        ])
-      );
-    } 
+      array = [this.homeView(), this.searchView()];
+    };
+
+    if (this.state.activeScreen === 'pdp') {
+      array = [this.homeView(), this.searchView(), this.pdpView()];
+    };
+
+    return (
+      Rubber.createElement("NavigationController", [
+        array
+      ])
+    );
   }
 });
 

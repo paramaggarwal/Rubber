@@ -20,7 +20,7 @@ var Cortex = Rubber.createClass({
       products: [{
         product: 'Loading...'
       }],
-      styleid: null
+      styleid: 379421
     };
   },
 
@@ -40,81 +40,74 @@ var Cortex = Rubber.createClass({
     renderComponent(CortexApp.render());
   },
 
-  render: function () {
+  homeView: function() {
     var self = this;
 
+    return (
+      <ViewController title='Demo' style={{}}>
+        <ScrollView style={{
+          flex: 1,
+          backgroundColor: '#EEEEEE'
+        }} >
+          {Button1().render()}
+          {Button2().render()}
+          {Button3().render({
+            onLoadResults: self.showSearch
+          })}
+        </ScrollView>
+      </ViewController>
+    );
+  },
+
+  searchView: function () {
+    var self = this;
+
+    return (
+      <ViewController title='Nike' needsBackButton={true} style={{}}>
+        {SearchResultsView().render({
+          data: self.state.products,
+          onSelectRow: self.showPDP
+        })}
+      </ViewController>
+    );
+  },
+
+  pdpView: function () {
+    var self = this;
+
+    return (
+      <ViewController title='PDP' needsBackButton={true} style={{}}>
+        <View style={{
+        flex: 1,
+        backgroundColor: '#EEEEEE'
+      }} >
+          <Text style={{flex: 1}} value={'PDP Page for ' + self.state.styleid}  />
+        </View>
+      </ViewController>
+    );
+  },
+
+  render: function () {
+    var self = this;
+    var array = [];
+
+    if (this.state.activeScreen === 'home') {
+      array = [this.homeView()];
+    };
+
     if (this.state.activeScreen === 'search') {
-      return (
-        <NavigationController>
-          <ViewController title='Demo' style={{}}>
-            <ScrollView style={{
-              flex: 1,
-              backgroundColor: '#EEEEEE'
-            }} >
-              {Button1().render()}
-              {Button2().render()}
-              {Button3().render({
-                onLoadResults: self.showSearch
-              })}
-            </ScrollView>
-          </ViewController>
-          <ViewController title='Nike' needsBackButton={true} style={{}}>
-              {SearchResultsView().render({
-                data: self.state.products,
-                onSelectRow: self.showPDP
-              })}
-          </ViewController>
-        </NavigationController>
-      );
-    } else if (this.state.activeScreen === 'home') {
-      return (
-        <NavigationController>
-          <ViewController title='Demo' style={{}}>
-            <ScrollView style={{
-              flex: 1,
-              backgroundColor: '#EEEEEE'
-            }} >
-              {Button1().render()}
-              {Button2().render()}
-              {Button3().render({
-                onLoadResults: self.showSearch
-              })}
-            </ScrollView>
-          </ViewController>
-        </NavigationController>
-      );
-    } else if (this.state.activeScreen === 'pdp') {
-      return (
-        <NavigationController>
-          <ViewController title='Demo' style={{}}>
-            <ScrollView style={{
-              flex: 1,
-              backgroundColor: '#EEEEEE'
-            }} >
-              {Button1().render()}
-              {Button2().render()}
-              {Button3().render({
-                onLoadResults: self.showSearch
-              })}
-            </ScrollView>
-          </ViewController>
-          <ViewController title='Nike' needsBackButton={true} style={{}}>
-            {SearchResultsView().render({
-              data: self.state.products,
-              onSelectRow: self.showPDP
-            })}
-          </ViewController>
-          <ViewController title='PDP' needsBackButton={true} style={{}}>
-            <View style={{
-            flex: 1,
-            backgroundColor: '#EEEEEE'
-          }} >
-              <Text style={{flex: 1}} value={'PDP Page' + self.state.styleid}  />
-            </View>
-          </ViewController>
-        </NavigationController>
-      );
-    } 
+      array = [this.homeView(), this.searchView()];
+    };
+
+    if (this.state.activeScreen === 'pdp') {
+      array = [this.homeView(), this.searchView(), this.pdpView()];
+    };
+
+    return (
+      <NavigationController>
+        {array}
+      </NavigationController>
+    );
   }
 });
 

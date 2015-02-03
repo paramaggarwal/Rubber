@@ -36,7 +36,7 @@ var TableRowItem = Rubber.createClass({
             flex: 2,
             color: '#333333'
           }}
-          value={key + ' ' + product.product} />
+          value={product.product} />
           <Text style={{
             flex: 1,
             color: '#666666'
