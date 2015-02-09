@@ -72,7 +72,19 @@
             });
         };
         
-        [context evaluateScript:jsString];
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://local.myntra.com:3000/main.js"]];
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        operation.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/javascript"];
+        
+        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *script = [NSString stringWithUTF8String:[responseObject bytes]];
+//            NSLog(@"%@", script);
+            [context evaluateScript:script];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"%@", error);
+        }];
+        [[NSOperationQueue mainQueue] addOperation:operation];
+            
     });
 
     return YES;
